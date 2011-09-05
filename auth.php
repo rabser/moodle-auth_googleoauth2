@@ -99,10 +99,6 @@ class auth_plugin_google extends auth_plugin_base {
                 $clientid = get_config('auth/google', 'googleclientid');
                 $clientsecret = get_config('auth/google', 'googleclientsecret');
                 
-                varlog($clientid);
-                varlog($clientsecret);
-
-
                 //with access token request by curl the email address
                 require_once($CFG->libdir . '/filelib.php');
                 $curl = new curl();
@@ -113,33 +109,50 @@ class auth_plugin_google extends auth_plugin_base {
                 $params['redirect_uri'] = $CFG->wwwroot . '/login/index.php';
                 $params['grant_type'] = 'authorization_code';
                 $postreturnvalues = $curl->post('https://accounts.google.com/o/oauth2/token', $params);
-                varlog($postreturnvalues);
+                $postreturnvalues = json_decode($postreturnvalues);
 
-                //get the username matching the email
-                //if email not existing in user database then create a new username (userX).
-                //We will call https://www.googleapis.com/userinfo/email?alt=json
+                $accesstoken = $postreturnvalues->access_token;
+                $refreshtoken = $postreturnvalues->refresh_token;
+                $expiresin = $postreturnvalues->expires_in;
+                $tokentype = $postreturnvalues->token_type;
 
-                //authenticate the user
-              //  $user = authenticate_user_login($username, null);
-                if ($user) {
-                    complete_user_login($user);
+                if (!empty($accesstoken)) {
 
-                    // Redirection
-                    if (user_not_fully_set_up($USER)) {
-                        $urltogo = $CFG->wwwroot.'/user/edit.php';
-                        // We don't delete $SESSION->wantsurl yet, so we get there later
-                    } else if (isset($SESSION->wantsurl) and (strpos($SESSION->wantsurl, $CFG->wwwroot) === 0)) {
-                        $urltogo = $SESSION->wantsurl;    // Because it's an address in this site
-                        unset($SESSION->wantsurl);
-                    } else {
-                        // No wantsurl stored or external - go to homepage
-                        $urltogo = $CFG->wwwroot.'/';
-                        unset($SESSION->wantsurl);
+                    //get the username matching the email                  
+                    //We will call https://www.googleapis.com/userinfo/email?alt=json
+                    $params = array();
+                    $params['access_token'] = $accesstoken;
+                    $params['alt'] = 'json';
+                    $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
+                    $useremail = json_decode($postreturnvalues)->data->email;
+
+                    //if email not existing in user database then create a new username (userX).
+
+
+                    //authenticate the user
+                  //  $user = authenticate_user_login($username, null);
+                    if ($user) {
+                        complete_user_login($user);
+
+                        // Redirection
+                        if (user_not_fully_set_up($USER)) {
+                            $urltogo = $CFG->wwwroot.'/user/edit.php';
+                            // We don't delete $SESSION->wantsurl yet, so we get there later
+                        } else if (isset($SESSION->wantsurl) and (strpos($SESSION->wantsurl, $CFG->wwwroot) === 0)) {
+                            $urltogo = $SESSION->wantsurl;    // Because it's an address in this site
+                            unset($SESSION->wantsurl);
+                        } else {
+                            // No wantsurl stored or external - go to homepage
+                            $urltogo = $CFG->wwwroot.'/';
+                            unset($SESSION->wantsurl);
+                        }
+                       // redirect($urltogo);
                     }
-                   // redirect($urltogo);
+                } else {
+                    throw new moodle_exception('googleauthenticationerror2');
                 }
             } else {
-                throw new moodle_exception('googleauthenticationerror');
+                throw new moodle_exception('googleauthenticationerror1');
             }
         
         }
