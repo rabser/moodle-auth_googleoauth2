@@ -31,3 +31,4 @@ $string['auth_googleclientsecret_key'] = 'Client secret';
 $string['auth_googledescription'] = 'Simple and straight forward Oauth2 Google authentication. 
     If the user email doesn\'t exists, then the authentiation plugin creates a new user with username "User_XXX", XXX being incremented every time.';
 $string['auth_googlesettings'] = 'Settings';
+$string['signinwithgoogleaccount'] = 'Sign in with your Google account:';

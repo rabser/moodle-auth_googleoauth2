@@ -117,6 +117,7 @@ class auth_plugin_google extends auth_plugin_base {
 
                 //get the username matching the email
                 //if email not existing in user database then create a new username (userX).
+                //We will call https://www.googleapis.com/userinfo/email?alt=json
 
                 //authenticate the user
               //  $user = authenticate_user_login($username, null);
