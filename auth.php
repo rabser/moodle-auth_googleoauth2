@@ -110,7 +110,7 @@ class auth_plugin_google extends auth_plugin_base {
                 $params['client_id'] = $clientid;
                 $params['client_secret'] = $clientsecret;
                 $params['code'] = $authorizationcode;
-                $params['redirect_uri'] = 'https:/www.socialfutsal.com/futsal/login/index.php';
+                $params['redirect_uri'] = $CFG->wwwroot . '/login/index.php';
                 $params['grant_type'] = 'authorization_code';
                 $postreturnvalues = $curl->post('https://accounts.google.com/o/oauth2/token', $params);
                 varlog($postreturnvalues);
