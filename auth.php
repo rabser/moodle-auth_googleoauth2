@@ -17,18 +17,18 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->libdir.'/authlib.php');
 
 /**
- * Google authentication plugin.
+ * Google Oauth2 authentication plugin.
  */
-class auth_plugin_google extends auth_plugin_base {
+class auth_plugin_googleoauth2 extends auth_plugin_base {
 
     /**
      * Constructor.
      */
-    function auth_plugin_google() {
-        $this->authtype = 'google';
-        $this->roleauth = 'auth_google';
-        $this->errorlogtag = '[AUTH GOOGLE] ';
-        $this->config = get_config('auth/google');
+    function auth_plugin_googleoauth2() {
+        $this->authtype = 'googleoauth2';
+        $this->roleauth = 'auth_googleoauth2';
+        $this->errorlogtag = '[AUTH GOOGLEOAUTH2] ';
+        $this->config = get_config('auth/googleoauth2');
     }
 
     /**
@@ -75,89 +75,103 @@ class auth_plugin_google extends auth_plugin_base {
      * for other authentication
      */
     function loginpage_hook() {
-        global $USER, $SESSION, $CFG;
+        global $USER, $SESSION, $CFG, $DB;
         
         $access_token = optional_param('access_token', '', PARAM_TEXT);
-        varlog($access_token);
         $expires_in = optional_param('expires_in', '', PARAM_INT);
-        varlog($expires_in);
         $token_type = optional_param('token_type', '', PARAM_TEXT);
-        varlog($token_type);
         $refresh_token = optional_param('refresh_token', '', PARAM_TEXT);
-        varlog($refresh_token);
         
         //get the authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
         if (!empty($authorizationcode)) {
-        
-            //if good => 4
-            //then request by curl an access token and refresh token
-            if (substr($authorizationcode, 0, 2) == '4/') {
-                $authorizationtoken = substr($authorizationcode, 2);
-                
-                
-                $clientid = get_config('auth/google', 'googleclientid');
-                $clientsecret = get_config('auth/google', 'googleclientsecret');
-                
-                //with access token request by curl the email address
-                require_once($CFG->libdir . '/filelib.php');
-                $curl = new curl();
+
+            $clientid = get_config('auth/googleoauth2', 'googleclientid');
+            $clientsecret = get_config('auth/googleoauth2', 'googleclientsecret');
+
+            //request by curl an access token and refresh token
+            require_once($CFG->libdir . '/filelib.php');
+            $curl = new curl();
+            $params = array();
+            $params['client_id'] = $clientid;
+            $params['client_secret'] = $clientsecret;
+            $params['code'] = $authorizationcode;
+            $params['redirect_uri'] = $CFG->wwwroot . '/login/index.php';
+            $params['grant_type'] = 'authorization_code';
+            $postreturnvalues = $curl->post('https://accounts.google.com/o/oauth2/token', $params);
+            $postreturnvalues = json_decode($postreturnvalues);
+            
+            $accesstoken = $postreturnvalues->access_token;
+            $refreshtoken = $postreturnvalues->refresh_token;
+            $expiresin = $postreturnvalues->expires_in;
+            $tokentype = $postreturnvalues->token_type;
+
+            //with access token request by curl the email address
+            if (!empty($accesstoken)) {
+
+                //get the username matching the email                  
+                //We will call https://www.googleapis.com/userinfo/email?alt=json
                 $params = array();
-                $params['client_id'] = $clientid;
-                $params['client_secret'] = $clientsecret;
-                $params['code'] = $authorizationcode;
-                $params['redirect_uri'] = $CFG->wwwroot . '/login/index.php';
-                $params['grant_type'] = 'authorization_code';
-                $postreturnvalues = $curl->post('https://accounts.google.com/o/oauth2/token', $params);
-                $postreturnvalues = json_decode($postreturnvalues);
+                $params['access_token'] = $accesstoken;
+                $params['alt'] = 'json';
+                $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
+                $useremail = json_decode($postreturnvalues)->data->email;
 
-                $accesstoken = $postreturnvalues->access_token;
-                $refreshtoken = $postreturnvalues->refresh_token;
-                $expiresin = $postreturnvalues->expires_in;
-                $tokentype = $postreturnvalues->token_type;
+                //if email not existing in user database then create a new username (userX).
+                if (empty($useremail) or $useremail != clean_param($useremail, PARAM_EMAIL)) {
+                    throw new moodle_exception('couldnotgetuseremail'); 
+                    //TODO: display a link for people to retry
+                }
+                //get the user - don't bother with auth = google, 
+                //authenticate_user_login() will fail it if it's not 'google'
+                $user = $DB->get_record('user', array('email' => $usermail, 'deleted' => 0, 'mnethostid' => $CFG->mnet_localhost_id)); 
+                
+                //create the user if it doesn't exist
+                if (empty($user)) {
+                    //retrieve maximum information
+                    $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
+                    $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
+                    
+                    //get following incremented username
+                    
+                    
+                    
+                    require_once($CFG->dirroot . '/user/externallib.php');
+                    $userlib = new moodle_user_external();
+                    $userparams = array(
+                        array(
+                            'username' => $username, 
+                            'password' => '',
+                            'firstname' => $userinfo->given_name,
+                            'lastname' => $userinfo->family_name,
+                            'email' => $email,
+                            'city' => $city,
+                            'country' => $country));
+                }
 
-                if (!empty($accesstoken)) {
+                //authenticate the user
+                $user = authenticate_user_login($username, null);
+                if ($user) {
+                    complete_user_login($user);
 
-                    //get the username matching the email                  
-                    //We will call https://www.googleapis.com/userinfo/email?alt=json
-                    $params = array();
-                    $params['access_token'] = $accesstoken;
-                    $params['alt'] = 'json';
-                    $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
-                    $useremail = json_decode($postreturnvalues)->data->email;
-
-                    //if email not existing in user database then create a new username (userX).
-
-
-                    //authenticate the user
-                  //  $user = authenticate_user_login($username, null);
-                    if ($user) {
-                        complete_user_login($user);
-
-                        // Redirection
-                        if (user_not_fully_set_up($USER)) {
-                            $urltogo = $CFG->wwwroot.'/user/edit.php';
-                            // We don't delete $SESSION->wantsurl yet, so we get there later
-                        } else if (isset($SESSION->wantsurl) and (strpos($SESSION->wantsurl, $CFG->wwwroot) === 0)) {
-                            $urltogo = $SESSION->wantsurl;    // Because it's an address in this site
-                            unset($SESSION->wantsurl);
-                        } else {
-                            // No wantsurl stored or external - go to homepage
-                            $urltogo = $CFG->wwwroot.'/';
-                            unset($SESSION->wantsurl);
-                        }
-                       // redirect($urltogo);
+                    // Redirection
+                    if (user_not_fully_set_up($USER)) {
+                        $urltogo = $CFG->wwwroot.'/user/edit.php';
+                        // We don't delete $SESSION->wantsurl yet, so we get there later
+                    } else if (isset($SESSION->wantsurl) and (strpos($SESSION->wantsurl, $CFG->wwwroot) === 0)) {
+                        $urltogo = $SESSION->wantsurl;    // Because it's an address in this site
+                        unset($SESSION->wantsurl);
+                    } else {
+                        // No wantsurl stored or external - go to homepage
+                        $urltogo = $CFG->wwwroot.'/';
+                        unset($SESSION->wantsurl);
                     }
-                } else {
-                    throw new moodle_exception('googleauthenticationerror2');
+                   // redirect($urltogo);
                 }
             } else {
-                throw new moodle_exception('googleauthenticationerror1');
+                throw new moodle_exception('couldnotgetgoogleaccesstoken');
             }
-        
-        }
-        
-        
+        } 
     }
     
     
@@ -188,7 +202,7 @@ class auth_plugin_google extends auth_plugin_base {
                <td colspan="3">
                     <h2 class="main">';
 
-        print_string('auth_googlesettings', 'auth_google'); 
+        print_string('auth_googlesettings', 'auth_googleoauth2'); 
 
         echo '</h2>
                </td>
@@ -196,7 +210,7 @@ class auth_plugin_google extends auth_plugin_base {
             <tr>
                 <td align="right"><label for="googleclientid">';
 
-        print_string('auth_googleclientid_key', 'auth_google');
+        print_string('auth_googleclientid_key', 'auth_googleoauth2');
 
         echo '</label></td><td>';
 
@@ -211,14 +225,14 @@ class auth_plugin_google extends auth_plugin_base {
 
         echo '</td><td>';
 
-        print_string('auth_googleclientid', 'auth_google') ;
+        print_string('auth_googleclientid', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
         
         echo '<tr>
                 <td align="right"><label for="googleclientsecret">';
 
-        print_string('auth_googleclientsecret_key', 'auth_google');
+        print_string('auth_googleclientsecret_key', 'auth_googleoauth2');
 
         echo '</label></td><td>';
 
@@ -233,11 +247,11 @@ class auth_plugin_google extends auth_plugin_base {
 
         echo '</td><td>';
 
-        print_string('auth_googleclientsecret', 'auth_google') ;
+        print_string('auth_googleclientsecret', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
 
-        print_auth_lock_options('google', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
+        print_auth_lock_options('googleoauth2', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
 
         echo '</table>';
     }
@@ -255,8 +269,8 @@ class auth_plugin_google extends auth_plugin_base {
         }
 
         // save settings
-        set_config('googleclientid', $config->googleclientid, 'auth/google');
-        set_config('googleclientsecret', $config->googleclientsecret, 'auth/google');
+        set_config('googleclientid', $config->googleclientid, 'auth/googleoauth2');
+        set_config('googleclientsecret', $config->googleclientsecret, 'auth/googleoauth2');
 
         return true;
     }

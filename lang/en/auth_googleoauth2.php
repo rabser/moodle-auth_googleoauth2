@@ -28,7 +28,7 @@ $string['auth_googleclientid'] = 'Your client ID - it can be found in the Google
 $string['auth_googleclientid_key'] = 'Client ID';
 $string['auth_googleclientsecret'] = 'Your client secret - it can be found in the Google console API.';
 $string['auth_googleclientsecret_key'] = 'Client secret';
-$string['auth_googledescription'] = 'Simple and straight forward Oauth2 Google authentication. 
+$string['auth_googleoauth2description'] = 'Simple and straight forward Oauth2 Google authentication. 
     If the user email doesn\'t exists, then the authentiation plugin creates a new user with username "User_XXX", XXX being incremented every time.';
 $string['auth_googlesettings'] = 'Settings';
 $string['signinwithgoogleaccount'] = 'Sign in with your Google account:';

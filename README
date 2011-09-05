@@ -2,9 +2,9 @@ WORK IN PROGRESS - NOT WORKING YET
 
 THIS IS NOT A OFFICIAL MOODLE AUTH PLUGIN - it is just a quick dirty one for my site (even thought I try make it generic)
 
-----------------------------
-Google Authentication Plugin
-----------------------------
+--------------------------------------
+Google Oauth 2.0 Authentication Plugin
+--------------------------------------
 
 Installation:
 1- add the plugin into /auth/google/
@@ -14,6 +14,10 @@ Installation:
 4- in your theme (most likely in login layout page) add the following HTML code:
 
 <div class="singingoogle">
-    <br/>You can also sign in with:<br/>
-    <a href="https://accounts.google.com/o/oauth2/auth?client_id=<?php echo get_config('auth/google', 'googleclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/login/index.php&scope=https://www.googleapis.com/auth/userinfo.email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/login/google_logo.jpg" /></a>
+    <br/><?php echo get_string('signinwithgoogleaccount','auth_googleoauth2'); ?><br/>
+    <a href="https://accounts.google.com/o/oauth2/auth?client_id=<?php echo get_config('auth/googleoauth2', 'googleclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/login/index.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/futsal/pix/google_logo.jpg" /></a>
 </div>
+
+Note about debugging: the plugin doesn't work in local. Google authentication will most likely fail to the first redirection,
+                      and if you enter manually the authorization code in the URL, then it will fail when trying
+                      to get the access token. Google will return a Missing authorization error.
