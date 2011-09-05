@@ -110,7 +110,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             if (!empty($accesstoken)) {
 
                 //get the username matching the email                  
-                //We will call https://www.googleapis.com/userinfo/email?alt=json
                 $params = array();
                 $params['access_token'] = $accesstoken;
                 $params['alt'] = 'json';
@@ -122,31 +121,51 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     throw new moodle_exception('couldnotgetuseremail'); 
                     //TODO: display a link for people to retry
                 }
-                //get the user - don't bother with auth = google, 
-                //authenticate_user_login() will fail it if it's not 'google'
+                //get the user - don't bother with auth = googleoauth2 because 
+                //authenticate_user_login() will fail it if it's not 'googleoauth2'
                 $user = $DB->get_record('user', array('email' => $usermail, 'deleted' => 0, 'mnethostid' => $CFG->mnet_localhost_id)); 
                 
                 //create the user if it doesn't exist
                 if (empty($user)) {
-                    //retrieve maximum information
+                    
+                    //TODO: get following incremented username
+                    
+                    //retrieve more information
                     $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
                     $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
                     
-                    //get following incremented username
+                    $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
+                    if (!empty($googleipinfodbkey)) {
+                        $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
+                            $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
+                        $locationdata = json_decode($locationdata);
+                    }
                     
-                    
-                    
+                    //create the user
                     require_once($CFG->dirroot . '/user/externallib.php');
                     $userlib = new moodle_user_external();
-                    $userparams = array(
-                        array(
+                    $newuser = array(
                             'username' => $username, 
                             'password' => '',
-                            'firstname' => $userinfo->given_name,
-                            'lastname' => $userinfo->family_name,
                             'email' => $email,
-                            'city' => $city,
-                            'country' => $country));
+                            'auth' => 'googleoauth2');
+                    if (!empty($userinfo->given_name)) {
+                        $newuser['given_name'] = $userinfo->given_name;
+                    }
+                    if (!empty($userinfo->family_name)) {
+                        $newuser['family_name'] = $userinfo->family_name;
+                    }
+                    if (!empty($userinfo->locale)) {
+                        $newuser['lang'] = $userinfo->locale;
+                    }
+                    if (!empty($locationdata)) {
+                        $newuser['country'] = $locationdata->countryCode;
+                        $newuser['city'] = $locationdata->cityName;
+                    }
+                    $users = $userlib->create_users(array($newuser));
+                    varlog($users);
+                    
+                    
                 }
 
                 //authenticate the user
@@ -166,7 +185,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $urltogo = $CFG->wwwroot.'/';
                         unset($SESSION->wantsurl);
                     }
-                   // redirect($urltogo);
+                    redirect($urltogo);
                 }
             } else {
                 throw new moodle_exception('couldnotgetgoogleaccesstoken');
@@ -196,6 +215,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset($config->googleclientsecret)) {
             $config->googleclientsecret = '';
         }
+        if (!isset($config->googleipinfodbkey)) {
+            $config->googleipinfodbkey = '';
+        }
+        if (!isset($config->googleuserprefix)) {
+            $config->googleuserprefix = 'google_user_';
+        }
 
         echo '<table cellspacing="0" cellpadding="5" border="0">
             <tr>
@@ -203,6 +228,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     <h2 class="main">';
 
         print_string('auth_googlesettings', 'auth_googleoauth2'); 
+        
+        // Google client id
 
         echo '</h2>
                </td>
@@ -229,6 +256,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td></tr>';
         
+        // Google client secret
+        
         echo '<tr>
                 <td align="right"><label for="googleclientsecret">';
 
@@ -250,6 +279,57 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_googleclientsecret', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
+        
+        // IPinfoDB
+        
+        echo '<tr>
+                <td align="right"><label for="googleipinfodbkey">';
+
+        print_string('auth_googleipinfodbkey_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input', 
+                array('type' => 'text', 'id' => 'googleipinfodbkey', 'name' => 'googleipinfodbkey', 
+                    'class' => 'googleipinfodbkey', 'value' => $config->googleipinfodbkey));
+
+        if (isset($err["googleipinfodbkey"])) {
+            echo $OUTPUT->error_text($err["googleipinfodbkey"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_googleipinfodbkey', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+        
+        // IPinfoDB
+        
+        echo '<tr>
+                <td align="right"><label for="googleuserprefix">';
+
+        print_string('auth_googleuserprefix_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input', 
+                array('type' => 'text', 'id' => 'googleuserprefix', 'name' => 'googleuserprefix', 
+                    'class' => 'googleuserprefix', 'value' => $config->googleuserprefix));
+
+        if (isset($err["googleuserprefix"])) {
+            echo $OUTPUT->error_text($err["googleuserprefix"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_googleuserprefix', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+        
+        
+        // Block field options
 
         print_auth_lock_options('googleoauth2', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
 
@@ -267,10 +347,18 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->googleclientsecret)) {
             $config->googleclientsecret = '';
         }
+        if (!isset ($config->googleipinfodbkey)) {
+            $config->googleipinfodbkey = '';
+        }
+        if (!isset ($config->googleuserprefix)) {
+            $config->googleuserprefix = 'google_user_';
+        }
 
         // save settings
         set_config('googleclientid', $config->googleclientid, 'auth/googleoauth2');
         set_config('googleclientsecret', $config->googleclientsecret, 'auth/googleoauth2');
+        set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
+        set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 
         return true;
     }
