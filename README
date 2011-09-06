@@ -1,14 +1,14 @@
-WORK IN PROGRESS
-
-THIS IS NOT A OFFICIAL MOODLE AUTH PLUGIN
-
 --------------------------------------
 Google Oauth 2.0 Authentication Plugin
 --------------------------------------
 
 Installation:
+-------------
+
 1- add the plugin into /auth/google/
+
 2- in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
+
 3- in the plugin settings, enter you client id + secret id. More information on Google: http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
 
 4- in your theme (most likely in login layout page) add the following HTML code:

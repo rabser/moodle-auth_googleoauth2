@@ -70,19 +70,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
     }
 
     /**
-     * Authentication choice (CAS or other)
-     * Redirection to the CAS form or to login/index.php
-     * for other authentication
+     * Authentication hook - is called every time user hit the login page
+     * The code is run only if the param code is mentionned.
      */
     function loginpage_hook() {
         global $USER, $SESSION, $CFG, $DB;
         
-        $access_token = optional_param('access_token', '', PARAM_TEXT);
-        $expires_in = optional_param('expires_in', '', PARAM_INT);
-        $token_type = optional_param('token_type', '', PARAM_TEXT);
-        $refresh_token = optional_param('refresh_token', '', PARAM_TEXT);
-        
-        //get the authorization code
+        //check the Google authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
         if (!empty($authorizationcode)) {
 
@@ -204,7 +198,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     redirect($urltogo);
                 }
             } else {
-                throw new moodle_exception('couldnotgetgoogleaccesstoken');
+                throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth/googleoauth2');
             }
         } 
     }
