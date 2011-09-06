@@ -128,6 +128,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //create the user if it doesn't exist
                 if (empty($user)) {
                     
+                    $isnewuser = true;
+                    
                     //get following incremented username
                     $lastusernumber = get_config('auth/googleoauth2', 'lastusernumber');
                     $lastusernumber = empty($lastusernumber)?1:$lastusernumber++;
@@ -140,47 +142,53 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
                     }
                     $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
-                    
-                    //retrieve more information
-                    $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
-                    $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
-                    
-                    $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
-                    if (!empty($googleipinfodbkey)) {
-                        $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
-                            $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
-                        $locationdata = json_decode($locationdata);
-                    }
-                    
-                    //create the user
-                    require_once($CFG->dirroot . '/user/externallib.php');
-                    $userlib = new moodle_user_external();
-                    $newuser = array(
-                            'username' => $username, 
-                            'password' => '',
-                            'email' => $email,
-                            'auth' => 'googleoauth2');
-                    if (!empty($userinfo->given_name)) {
-                        $newuser['given_name'] = $userinfo->given_name;
-                    }
-                    if (!empty($userinfo->family_name)) {
-                        $newuser['family_name'] = $userinfo->family_name;
-                    }
-                    if (!empty($userinfo->locale)) {
-                        $newuser['lang'] = $userinfo->locale;
-                    }
-                    if (!empty($locationdata)) {
-                        $newuser['country'] = $locationdata->countryCode;
-                        $newuser['city'] = $locationdata->cityName;
-                    }
-                    $users = $userlib->create_users(array($newuser));
+                
+                } else {
+                    $username = $user->username;
                 }
 
                 //authenticate the user
                 $user = authenticate_user_login($username, null);
                 if ($user) {
-                    complete_user_login($user);
+                                      
+                    //try to complete the user information has much as we can in case of new one
+                    if (!empty($isnewuser)) {
+                        //retrieve more information
+                        $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
+                        $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
 
+                        $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
+                        if (!empty($googleipinfodbkey)) {
+                            $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
+                                $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
+                            $locationdata = json_decode($locationdata);
+                        }
+
+                        //create the user
+                        require_once($CFG->dirroot . '/user/externallib.php');
+                        $userlib = new moodle_user_external();
+                        $newuser = array(
+                                'id' => $user->id,
+                                'email' => $useremail,
+                                'auth' => 'googleoauth2');
+                        if (!empty($userinfo->given_name)) {
+                            $newuser['firstname'] = $userinfo->given_name;
+                        }
+                        if (!empty($userinfo->family_name)) {
+                            $newuser['lastname'] = $userinfo->family_name;
+                        }
+                        if (!empty($userinfo->locale)) {
+                            $newuser['lang'] = $userinfo->locale;
+                        }
+                        if (!empty($locationdata)) {
+                            $newuser['country'] = $locationdata->countryCode;
+                            $newuser['city'] = $locationdata->cityName;
+                        }
+                        $users = $userlib->update_users(array($newuser));
+                    }
+                    
+                    complete_user_login($user);
+                    
                     // Redirection
                     if (user_not_fully_set_up($USER)) {
                         $urltogo = $CFG->wwwroot.'/user/edit.php';
