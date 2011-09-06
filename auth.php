@@ -198,7 +198,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     redirect($urltogo);
                 }
             } else {
-                throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth/googleoauth2');
+                throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
             }
         } 
     }
