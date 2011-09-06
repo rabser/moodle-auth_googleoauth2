@@ -150,6 +150,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //authenticate the user
                 $user = authenticate_user_login($username, null);
                 if ($user) {
+                  
+                    complete_user_login($user);
                                       
                     //try to complete the user information has much as we can in case of new one
                     if (!empty($isnewuser)) {
@@ -186,8 +188,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         }
                         $users = $userlib->update_users(array($newuser));
                     }
-                    
-                    complete_user_login($user);
                     
                     // Redirection
                     if (user_not_fully_set_up($USER)) {
