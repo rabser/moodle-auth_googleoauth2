@@ -150,9 +150,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //authenticate the user
                 $user = authenticate_user_login($username, null);
                 if ($user) {
-                  
-                    complete_user_login($user);
-                                      
+                                                      
                     //try to complete the user information has much as we can in case of new one
                     if (!empty($isnewuser)) {
                         //retrieve more information
@@ -167,8 +165,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         }
 
                         //create the user
-                        require_once($CFG->dirroot . '/user/externallib.php');
-                        $userlib = new moodle_user_external();
                         $newuser = array(
                                 'id' => $user->id,
                                 'email' => $useremail,
@@ -180,14 +176,18 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             $newuser['lastname'] = $userinfo->family_name;
                         }
                         if (!empty($userinfo->locale)) {
-                            $newuser['lang'] = $userinfo->locale;
+                            //$newuser['lang'] = $userinfo->locale;
+                            //TODO: convert the locale into correct Moodle language code
                         }
                         if (!empty($locationdata)) {
+                            //TODO: check that countryCode does match the Moodle country code
                             $newuser['country'] = $locationdata->countryCode;
                             $newuser['city'] = $locationdata->cityName;
                         }
-                        $users = $userlib->update_users(array($newuser));
+                        $DB->update_record('user', $newuser);
                     }
+                    
+                    complete_user_login($user);
                     
                     // Redirection
                     if (user_not_fully_set_up($USER)) {
