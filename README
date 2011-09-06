@@ -15,7 +15,7 @@ Installation:
 
 <div class="singingoogle">
     <br/><?php echo get_string('signinwithgoogleaccount','auth_googleoauth2'); ?><br/>
-    <a href="https://accounts.google.com/o/oauth2/auth?client_id=<?php echo get_config('auth/googleoauth2', 'googleclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/login/index.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/futsal/pix/google_logo.jpg" /></a>
+    <a href="https://accounts.google.com/o/oauth2/auth?client_id=<?php echo get_config('auth/googleoauth2', 'googleclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/login/index.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/YOURTHEME/pix/GOOGLELOGO.jpg" /></a>
 </div>
 
 5- (Recommended) Register on IPinfoDB for key: http://www.ipinfodb.com/register.php. Then enter the key in the plugin settings. Thus Moodle can pre-filled the city and the country of the user.
