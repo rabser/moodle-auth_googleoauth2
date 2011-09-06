@@ -128,7 +128,18 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //create the user if it doesn't exist
                 if (empty($user)) {
                     
-                    //TODO: get following incremented username
+                    //get following incremented username
+                    $lastusernumber = get_config('auth/googleoauth2', 'lastusernumber');
+                    $lastusernumber = empty($lastusernumber)?1:$lastusernumber++;
+                    //check the user doesn't exist
+                    $nextuser = $DB->get_record('user', 
+                            array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
+                    while (!empty($nextuser)) {
+                        $lastusernumber = $lastusernumber +1;
+                        $nextuser = $DB->get_record('user', 
+                            array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
+                    }
+                    $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
                     
                     //retrieve more information
                     $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
@@ -163,9 +174,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $newuser['city'] = $locationdata->cityName;
                     }
                     $users = $userlib->create_users(array($newuser));
-                    varlog($users);
-                    
-                    
                 }
 
                 //authenticate the user
