@@ -24,6 +24,10 @@
  */
 
 $string['pluginname'] = 'Google Oauth2';
+$string['auth_facebookclientid'] = 'Your App ID - it can be found at https://developers.facebook.com/apps/.';
+$string['auth_facebookclientid_key'] = 'App ID';
+$string['auth_facebookclientsecret'] = 'Your App secret - it can be found at https://developers.facebook.com/apps/.';
+$string['auth_facebookclientsecret_key'] = 'App secret';
 $string['auth_googleclientid'] = 'Your client ID - it can be found in the Google console API.';
 $string['auth_googleclientid_key'] = 'Client ID';
 $string['auth_googleclientsecret'] = 'Your client secret - it can be found in the Google console API.';
@@ -36,4 +40,4 @@ $string['auth_googleoauth2description'] = 'Simple and straight forward Oauth2 Go
     If the user email doesn\'t exists, then the authentiation plugin creates a new user with username "User_XXX", XXX being incremented every time.';
 $string['auth_googlesettings'] = 'Settings';
 $string['couldnotgetgoogleaccesstoken'] = 'Google sent us a communication error. Please try to sign-in again.';
-$string['signinwithgoogleaccount'] = 'Sign in with your Google account:';
+$string['signinwithanaccount'] = 'Sign in with:';

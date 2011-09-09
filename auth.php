@@ -122,8 +122,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //create the user if it doesn't exist
                 if (empty($user)) {
                     
-                    $isnewuser = true;
-                    
                     //get following incremented username
                     $lastusernumber = get_config('auth/googleoauth2', 'lastusernumber');
                     $lastusernumber = empty($lastusernumber)?1:$lastusernumber++;
@@ -136,48 +134,53 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
                     }
                     $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
-                
+                             
+                    //retrieve more information
+                    $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
+                    $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
+
+                    $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
+                    if (!empty($googleipinfodbkey)) {
+                        $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
+                            $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
+                        $locationdata = json_decode($locationdata);
+                    }
+
+                    //new user info
+                    $newuser = new stdClass();
+                    $newuser->email = $useremail;
+                    $newuser->auth = 'googleoauth2';
+                    if (!empty($userinfo->given_name)) {
+                        $newuser->firstname = $userinfo->given_name;
+                    }
+                    if (!empty($userinfo->family_name)) {
+                        $newuser->lastname = $userinfo->family_name;
+                    }
+                    if (!empty($userinfo->locale)) {
+                        //$newuser->lang = $userinfo->locale;
+                        //TODO: convert the locale into correct Moodle language code
+                    }
+                    if (!empty($locationdata)) {
+                        //TODO: check that countryCode does match the Moodle country code
+                        $newuser->country = $locationdata->countryCode;
+                        $newuser->city = $locationdata->cityName;
+                    }
+                    
                 } else {
                     $username = $user->username;
                 }
 
                 //authenticate the user
+                //TODO: delete this log later
+                add_to_log(SITEID, 'auth_googleoauth2', 'calling authenticate_user_login() with username: ' 
+                        . $username . ' email: ' . $useremail . 'New user: ' 
+                        . empty($user)?'YES':'NO', '', '');
                 $user = authenticate_user_login($username, null);
                 if ($user) {
                                                       
-                    //try to complete the user information has much as we can in case of new one
-                    if (!empty($isnewuser)) {
-                        //retrieve more information
-                        $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
-                        $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
-
-                        $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
-                        if (!empty($googleipinfodbkey)) {
-                            $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
-                                $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
-                            $locationdata = json_decode($locationdata);
-                        }
-
-                        //create the user
-                        $newuser = array(
-                                'id' => $user->id,
-                                'email' => $useremail,
-                                'auth' => 'googleoauth2');
-                        if (!empty($userinfo->given_name)) {
-                            $newuser['firstname'] = $userinfo->given_name;
-                        }
-                        if (!empty($userinfo->family_name)) {
-                            $newuser['lastname'] = $userinfo->family_name;
-                        }
-                        if (!empty($userinfo->locale)) {
-                            //$newuser['lang'] = $userinfo->locale;
-                            //TODO: convert the locale into correct Moodle language code
-                        }
-                        if (!empty($locationdata)) {
-                            //TODO: check that countryCode does match the Moodle country code
-                            $newuser['country'] = $locationdata->countryCode;
-                            $newuser['city'] = $locationdata->cityName;
-                        }
+                    //prefill more user information if new user
+                    if (!empty($newuser)) {
+                        $newuser->id = $user->id;
                         $DB->update_record('user', $newuser);
                     }
                     
@@ -224,6 +227,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         }
         if (!isset($config->googleclientsecret)) {
             $config->googleclientsecret = '';
+        }
+        if (!isset ($config->facebookclientid)) {
+            $config->facebookclientid = '';
+        }
+        if (!isset ($config->facebookclientsecret)) {
+            $config->facebookclientsecret = '';
         }
         if (!isset($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
@@ -287,6 +296,54 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</td><td>';
 
         print_string('auth_googleclientsecret', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+        
+        // Facebook client id
+        
+        echo '<tr>
+                <td align="right"><label for="facebookclientid">';
+
+        print_string('auth_facebookclientid_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input', 
+                array('type' => 'text', 'id' => 'facebookclientid', 'name' => 'facebookclientid', 
+                    'class' => 'facebookclientid', 'value' => $config->facebookclientid));
+
+        if (isset($err["facebookclientid"])) {
+            echo $OUTPUT->error_text($err["facebookclientid"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_facebookclientid', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+        
+        // Facebook client secret
+        
+        echo '<tr>
+                <td align="right"><label for="facebookclientsecret">';
+
+        print_string('auth_facebookclientsecret_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input', 
+                array('type' => 'text', 'id' => 'facebookclientsecret', 'name' => 'facebookclientsecret', 
+                    'class' => 'facebookclientsecret', 'value' => $config->facebookclientsecret));
+
+        if (isset($err["facebookclientsecret"])) {
+            echo $OUTPUT->error_text($err["facebookclientsecret"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_facebookclientsecret', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
         
@@ -357,6 +414,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->googleclientsecret)) {
             $config->googleclientsecret = '';
         }
+        if (!isset ($config->facebookclientid)) {
+            $config->facebookclientid = '';
+        }
+        if (!isset ($config->facebookclientsecret)) {
+            $config->facebookclientsecret = '';
+        }
         if (!isset ($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
@@ -367,6 +430,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         // save settings
         set_config('googleclientid', $config->googleclientid, 'auth/googleoauth2');
         set_config('googleclientsecret', $config->googleclientsecret, 'auth/googleoauth2');
+        set_config('facebookclientid', $config->facebookclientid, 'auth/googleoauth2');
+        set_config('facebookclientsecret', $config->facebookclientsecret, 'auth/googleoauth2');
         set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
         set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 
