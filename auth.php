@@ -117,8 +117,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             
             //request by curl an access token and refresh token
             require_once($CFG->libdir . '/filelib.php');
-            $curl = new curl();
-            $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
+            if ($authprovider == 'messenger') { //Windows Live returns an "Object moved" error with curl->post() encoding
+                $curl = new curl();
+                $postreturnvalues = $curl->get('https://oauth.live.com/token?client_id='.$params['client_id'].'&redirect_uri='.$params['redirect_uri'].'&client_secret='.$params['client_secret'].'&code='.$params['code'].'&grant_type=authorization_code');
+            } else {
+                $curl = new curl();
+                $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
+            }
             
             
             switch ($authprovider) {
@@ -136,6 +141,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 case 'messenger':
                     varlog('After requesting access_token on messenger:');
                     varlog($postreturnvalues);
+                    $accesstoken = $postreturnvalues->access_token;
+                    varlog($accesstoken);
                     break;
 
                 default:
@@ -164,6 +171,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $facebookuser = json_decode($postreturnvalues);
                         $useremail = $facebookuser->email;
                         $verified = $facebookuser->verified;
+                        break;
+                    
+                    case 'messenger':
+                        $params = array();
+                        $params['access_token'] = $accesstoken;
+                        $postreturnvalues = $curl->get('https://apis.live.net/v5.0/me', $params);                      
+                        varlog($messengeruser);
+                        $messengeruser = json_decode($postreturnvalues);
+                        $useremail = $messengeruser->emails->preferred;
+                        $verified = 1;
                         break;
 
                     default:
@@ -207,6 +224,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $newuser->email = $useremail;
                     switch ($authprovider) {
                         case 'google':
+                            $params = array();
+                            $params['access_token'] = $accesstoken;
+                            $params['alt'] = 'json';
                             $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
                             $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
 
@@ -226,6 +246,11 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         case 'facebook':
                             $newuser->firstname =  $facebookuser->first_name;
                             $newuser->lastname =  $facebookuser->last_name;
+                            break;
+                        
+                        case 'messenger':
+                            $newuser->firstname =  $messengeruser->first_name;
+                            $newuser->lastname =  $messengeruser->last_name;
                             break;
 
                         default:
