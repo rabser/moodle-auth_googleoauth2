@@ -5,9 +5,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package moodle multiauth
  *
- * Authentication Plugin: Google Authentication
- * If the gmail email doesn't exist, then the auth plugin creates the user.
- * If the gmail email exist, authenticate as the user related to this email.
+ * Authentication Plugin: Google/Facebook/Messenger Authentication
+ * If the email doesn't exist, then the auth plugin creates the user.
+ * If the email exist (and the user has for auth plugin this current one), 
+ * then the plugin login the user related to this email.
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -17,7 +18,7 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->libdir.'/authlib.php');
 
 /**
- * Google Oauth2 authentication plugin.
+ * Google/Facebook/Messenger Oauth2 authentication plugin.
  */
 class auth_plugin_googleoauth2 extends auth_plugin_base {
 
@@ -40,7 +41,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
     }
 
     /**
-     * Authenticates user against Google
+     * Authenticates user against the selected authentication provide (Google, Facebook...)
      *
      * @param string $username The username (with system magic quotes)
      * @param string $password The password (with system magic quotes)
@@ -101,6 +102,14 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php';
                     $params['code'] = $authorizationcode;
                     break;
+                case 'messenger':
+                    $params['client_id'] = get_config('auth/googleoauth2', 'messengerclientid');
+                    $params['client_secret'] = get_config('auth/googleoauth2', 'messengerclientsecret');
+                    $requestaccesstokenurl = 'https://oauth.live.com/token';
+                    $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/messenger_redirect.php';
+                    $params['code'] = $authorizationcode;
+                    $params['grant_type'] = 'authorization_code';
+                    break;
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
                     break;
@@ -119,11 +128,14 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     //$refreshtoken = $postreturnvalues->refresh_token;
                     //$expiresin = $postreturnvalues->expires_in;
                     //$tokentype = $postreturnvalues->token_type;
-
                     break;
                 case 'facebook':
                     parse_str($postreturnvalues, $returnvalues);
                     $accesstoken = $returnvalues['access_token'];
+                    break;
+                case 'messenger':
+                    varlog('After requesting access_token on messenger:');
+                    varlog($postreturnvalues);
                     break;
 
                 default:
@@ -302,11 +314,17 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->facebookclientsecret)) {
             $config->facebookclientsecret = '';
         }
+        if (!isset ($config->messengerclientid)) {
+            $config->messengerclientid = '';
+        }
+        if (!isset ($config->messengerclientsecret)) {
+            $config->messengerclientsecret = '';
+        }
         if (!isset($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
         if (!isset($config->googleuserprefix)) {
-            $config->googleuserprefix = 'google_user_';
+            $config->googleuserprefix = 'social_user_';
         }
 
         echo '<table cellspacing="0" cellpadding="5" border="0">
@@ -415,6 +433,54 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td></tr>';
         
+        // Messenger client id
+        
+        echo '<tr>
+                <td align="right"><label for="messengerclientid">';
+
+        print_string('auth_messengerclientid_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input', 
+                array('type' => 'text', 'id' => 'messengerclientid', 'name' => 'messengerclientid', 
+                    'class' => 'messengerclientid', 'value' => $config->messengerclientid));
+
+        if (isset($err["messengerclientid"])) {
+            echo $OUTPUT->error_text($err["messengerclientid"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_messengerclientid', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+        
+        // Messenger client secret
+        
+        echo '<tr>
+                <td align="right"><label for="messengerclientsecret">';
+
+        print_string('auth_messengerclientsecret_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input', 
+                array('type' => 'text', 'id' => 'messengerclientsecret', 'name' => 'messengerclientsecret', 
+                    'class' => 'messengerclientsecret', 'value' => $config->messengerclientsecret));
+
+        if (isset($err["messengerclientsecret"])) {
+            echo $OUTPUT->error_text($err["messengerclientsecret"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_messengerclientsecret', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+        
         // IPinfoDB
         
         echo '<tr>
@@ -439,7 +505,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td></tr>';
         
-        // IPinfoDB
+        // User prefix
         
         echo '<tr>
                 <td align="right"><label for="googleuserprefix">';
@@ -488,11 +554,17 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->facebookclientsecret)) {
             $config->facebookclientsecret = '';
         }
+        if (!isset ($config->messengerclientid)) {
+            $config->messengerclientid = '';
+        }
+        if (!isset ($config->messengerclientsecret)) {
+            $config->messengerclientsecret = '';
+        }
         if (!isset ($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
         if (!isset ($config->googleuserprefix)) {
-            $config->googleuserprefix = 'google_user_';
+            $config->googleuserprefix = 'social_user_';
         }
 
         // save settings
@@ -500,6 +572,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         set_config('googleclientsecret', $config->googleclientsecret, 'auth/googleoauth2');
         set_config('facebookclientid', $config->facebookclientid, 'auth/googleoauth2');
         set_config('facebookclientsecret', $config->facebookclientsecret, 'auth/googleoauth2');
+        set_config('messengerclientid', $config->messengerclientid, 'auth/googleoauth2');
+        set_config('messengerclientsecret', $config->messengerclientsecret, 'auth/googleoauth2');
         set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
         set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 
