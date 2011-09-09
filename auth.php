@@ -78,6 +78,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         
         //check the Google authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
+        varlog($authorizationcode);
         if (!empty($authorizationcode)) {
             
             $authprovider = required_param('authprovider', PARAM_ALPHANUMEXT);
@@ -98,7 +99,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $params['client_id'] = get_config('auth/googleoauth2', 'facebookclientid');
                     $params['client_secret'] = get_config('auth/googleoauth2', 'facebookclientsecret');
                     $requestaccesstokenurl = 'https://graph.facebook.com/oauth/access_token';
-                    $params['access_token'] = $authorizationcode;
+                    $params['code'] = $authorizationcode;
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php';
                     break;
                 default:
