@@ -141,7 +141,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 case 'messenger':
                     varlog('After requesting access_token on messenger:');
                     varlog($postreturnvalues);
-                    $accesstoken = $postreturnvalues->access_token;
+                    $accesstoken = json_decode($postreturnvalues)->access_token;
                     varlog($accesstoken);
                     break;
 
