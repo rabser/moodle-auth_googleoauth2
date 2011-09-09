@@ -234,11 +234,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //authenticate the user
                 //TODO: delete this log later
                 $userid = empty($user)?'new user':$user->id;
-                add_to_log(SITEID, 'auth_googleoauth2', '', 'calling authenticate_user_login() with username: '
-                        . $username . ' email: ' . $useremail . ' User: ' . $userid);
-                varlog( 'calling authenticate_user_login() with username: '
-                        . $username . ' email: ' . $useremail . ' User: ' . $userid
-                        );
+                add_to_log(SITEID, 'auth_googleoauth2', '', $username . '/' . $useremail . '/' . $userid);
                 $user = authenticate_user_login($username, null);
                 if ($user) {
                                                       
