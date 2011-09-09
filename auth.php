@@ -78,7 +78,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         
         //check the Google authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
-        varlog($authorizationcode);
         if (!empty($authorizationcode)) {
             
             $authprovider = required_param('authprovider', PARAM_ALPHANUMEXT);
@@ -130,11 +129,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 default:
                     break;
             }
-            
-            varlog('After requesting access token:');
-            varlog($postreturnvalues);
-            
-            
 
             //with access token request by curl the email address
             if (!empty($accesstoken)) {
@@ -154,8 +148,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params['access_token'] = $accesstoken;
                         $postreturnvalues = $curl->get('https://graph.facebook.com/me', $params);
                         $facebookuser = json_decode($postreturnvalues);
-                        varlog('After requesting email:');
-                        varlog($facebookuser);
                         $useremail = $facebookuser->email;
                         break;
 
@@ -212,9 +204,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             break;
                             
                         case 'facebook':
-                            //TODO
-//                            $newuser->firstname =  $facebookuser->firstname;
-//                            $newuser->lastname =  $facebookuser->lastname;
+                            $newuser->firstname =  $facebookuser->first_name;
+                            $newuser->lastname =  $facebookuser->last_name;
                             break;
 
                         default:
