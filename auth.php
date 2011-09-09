@@ -139,10 +139,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $accesstoken = $returnvalues['access_token'];
                     break;
                 case 'messenger':
-                    varlog('After requesting access_token on messenger:');
-                    varlog($postreturnvalues);
                     $accesstoken = json_decode($postreturnvalues)->access_token;
-                    varlog($accesstoken);
                     break;
 
                 default:
@@ -177,7 +174,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params = array();
                         $params['access_token'] = $accesstoken;
                         $postreturnvalues = $curl->get('https://apis.live.net/v5.0/me', $params);                      
-                        varlog($messengeruser);
                         $messengeruser = json_decode($postreturnvalues);
                         $useremail = $messengeruser->emails->preferred;
                         $verified = 1;

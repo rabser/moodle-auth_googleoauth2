@@ -9,14 +9,29 @@ Installation:
 
 2- in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
 
-3- in the plugin settings, enter you client id + secret id. More information on Google: http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
+3- in the plugin settings, enter your client ids + client secrets.
 
-4- in your theme (most likely in login layout page) add the following HTML code:
+4- in your theme (most likely in login layout page) add the following little piece of ugly HTML/PHP code:
 
-<div class="singingoogle">
-    <br/><?php echo get_string('signinwithgoogleaccount','auth_googleoauth2'); ?><br/>
-    <a href="https://accounts.google.com/o/oauth2/auth?client_id=<?php echo get_config('auth/googleoauth2', 'googleclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/login/index.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/YOURTHEME/pix/GOOGLELOGO.jpg" /></a>
+<?php echo get_string('signinwithanaccount','auth_googleoauth2'); ?><br/>
+<div style="width=1%">
+<?php if (get_config('auth/googleoauth2', 'googleclientid')) { ?>
+    <div class="singingoogle" style="display:inline-block;">
+        <a href="https://accounts.google.com/o/oauth2/auth?client_id=<?php echo get_config('auth/googleoauth2', 'googleclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/auth/googleoauth2/google_redirect.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/YOURTHEME/pix/GOOGLELOGO.jpg" /></a>
+    </div>
+<?php } ?>
+<?php if (get_config('auth/googleoauth2', 'facebookclientid')) { ?>
+    <div class="singinfacebook" style="display:inline-block;padding-left: 20px;">
+        <a href="https://www.facebook.com/dialog/oauth?client_id=<?php echo get_config('auth/googleoauth2', 'facebookclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/auth/googleoauth2/facebook_redirect.php&scope=email&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/YOURTHEME/pix/FACEBOOKLOGO.png" /></a>
+    </div>
+<?php } ?>
+<?php if (get_config('auth/googleoauth2', 'messengerclientid')) { ?>
+<div class="singinfacebook" style="display:inline-block">
+    <a href="https://oauth.live.com/authorize?client_id=<?php echo get_config('auth/googleoauth2', 'messengerclientid'); ?>&redirect_uri=<?php echo $CFG->wwwroot; ?>/auth/googleoauth2/messenger_redirect.php&scope=wl.basic wl.emails wl.signin&response_type=code"><img src="<?php echo $CFG->wwwroot ?>/theme/YOURTHEME/pix/MESSENGERLOGO.jpg" /></a>
 </div>
+<?php } ?>
+</div>
+
 
 5- (Recommended) Register on IPinfoDB for key: http://www.ipinfodb.com/register.php. Then enter the key in the plugin settings. Thus Moodle can pre-filled the city and the country of the user.
 
