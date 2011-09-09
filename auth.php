@@ -175,7 +175,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params['access_token'] = $accesstoken;
                         $postreturnvalues = $curl->get('https://apis.live.net/v5.0/me', $params);                      
                         $messengeruser = json_decode($postreturnvalues);
-                        $useremail = $messengeruser->emails->preferred;
+                        $useremail = $messengeruser->emails->account;
                         $verified = 1;
                         break;
 
