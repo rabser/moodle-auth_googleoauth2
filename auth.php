@@ -90,17 +90,17 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 case 'google':
                     $params['client_id'] = get_config('auth/googleoauth2', 'googleclientid');
                     $params['client_secret'] = get_config('auth/googleoauth2', 'googleclientsecret');
-                    $requestaccesstokenurl = 'https://accounts.google.com/o/oauth2/token';
-                    $params['code'] = $authorizationcode;
+                    $requestaccesstokenurl = 'https://accounts.google.com/o/oauth2/token';                  
                     $params['grant_type'] = 'authorization_code';
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php';
+                    $params['code'] = $authorizationcode;
                     break;
                 case 'facebook':
                     $params['client_id'] = get_config('auth/googleoauth2', 'facebookclientid');
                     $params['client_secret'] = get_config('auth/googleoauth2', 'facebookclientsecret');
                     $requestaccesstokenurl = 'https://graph.facebook.com/oauth/access_token';
-                    $params['code'] = $authorizationcode;
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php';
+                    $params['code'] = $authorizationcode;
                     break;
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
@@ -111,14 +111,30 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             require_once($CFG->libdir . '/filelib.php');
             $curl = new curl();
             $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
-            $postreturnvalues = json_decode($postreturnvalues);
+            
+            
+            switch ($authprovider) {
+                case 'google':
+                    $postreturnvalues = json_decode($postreturnvalues);
+                    $accesstoken = $postreturnvalues->access_token;
+                    //$refreshtoken = $postreturnvalues->refresh_token;
+                    //$expiresin = $postreturnvalues->expires_in;
+                    //$tokentype = $postreturnvalues->token_type;
+
+                    break;
+                case 'facebook':
+                    parse_str($postreturnvalues, $returnvalues);
+                    $accesstoken = $returnvalues['access_token'];
+                    break;
+
+                default:
+                    break;
+            }
+            
             varlog('After requesting access token:');
             varlog($postreturnvalues);
             
-            $accesstoken = $postreturnvalues->access_token;
-            $refreshtoken = $postreturnvalues->refresh_token;
-            $expiresin = $postreturnvalues->expires_in;
-            $tokentype = $postreturnvalues->token_type;
+            
 
             //with access token request by curl the email address
             if (!empty($accesstoken)) {
