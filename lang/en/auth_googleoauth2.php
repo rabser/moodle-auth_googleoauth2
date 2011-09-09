@@ -40,4 +40,5 @@ $string['auth_googleoauth2description'] = 'Simple and straight forward Oauth2 Go
     If the user email doesn\'t exists, then the authentiation plugin creates a new user with username "User_XXX", XXX being incremented every time.';
 $string['auth_googlesettings'] = 'Settings';
 $string['couldnotgetgoogleaccesstoken'] = 'Google sent us a communication error. Please try to sign-in again.';
+$string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address" link that Google or Facebook should have sent you during your subscribtion to their service.';
 $string['signinwithanaccount'] = 'Sign in with:';

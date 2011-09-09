@@ -140,7 +140,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params['access_token'] = $accesstoken;
                         $params['alt'] = 'json';
                         $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
-                        $useremail = json_decode($postreturnvalues)->data->email;
+                        $postreturnvalues = json_decode($postreturnvalues);
+                        $useremail = $postreturnvalues->data->email;
+                        $verified = $postreturnvalues->data->isVerified;
                         break;
                     
                     case 'facebook':
@@ -149,10 +151,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $postreturnvalues = $curl->get('https://graph.facebook.com/me', $params);
                         $facebookuser = json_decode($postreturnvalues);
                         $useremail = $facebookuser->email;
+                        $verified = $facebookuser->verified;
                         break;
 
                     default:
                         break;
+                }
+                
+                //throw an error if the email address is not verified
+                if (!$verified) {
+                    throw new moodle_exception('emailaddressmustbeverified', 'auth_googleoauth2');
                 }
                 
 
