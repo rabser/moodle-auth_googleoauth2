@@ -133,6 +133,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $nextuser = $DB->get_record('user', 
                             array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
                     }
+                    set_config('lastusernumber', $lastusernumber, 'auth/googleoauth2');
                     $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
                              
                     //retrieve more information
@@ -172,9 +173,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                 //authenticate the user
                 //TODO: delete this log later
-                add_to_log(SITEID, 'auth_googleoauth2', '', 'authenticate', 'calling authenticate_user_login() with username: ' 
-                        . $username . ' email: ' . $useremail . 'User: ' 
-                        . empty($user)?'new user':$user->id);
+                $userid = empty($user)?'new user':$user->id;
+                add_to_log(SITEID, 'auth_googleoauth2', '', 'calling authenticate_user_login() with username: '
+                        . $username . ' email: ' . $useremail . ' User: ' . $userid);
+                varlog( 'calling authenticate_user_login() with username: '
+                        . $username . ' email: ' . $useremail . ' User: ' . $userid
+                        );
                 $user = authenticate_user_login($username, null);
                 if ($user) {
                                                       
