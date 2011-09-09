@@ -79,11 +79,29 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         //check the Google authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
         if (!empty($authorizationcode)) {
+            
+            $authprovider = required_param('authprovider', PARAM_ALPHANUMEXT);
 
-            $clientid = get_config('auth/googleoauth2', 'googleclientid');
-            $clientsecret = get_config('auth/googleoauth2', 'googleclientsecret');
-
+            //set the params specific to the authentication provider
+            switch ($authprovider) {
+                case 'google':
+                    $clientid = get_config('auth/googleoauth2', 'googleclientid');
+                    $clientsecret = get_config('auth/googleoauth2', 'googleclientsecret');
+                    $requestaccesstokenurl = 'https://accounts.google.com/o/oauth2/token';
+                    break;
+                case 'facebook':
+                    $clientid = get_config('auth/googleoauth2', 'facebookclientid');
+                    $clientsecret = get_config('auth/googleoauth2', 'facebookclientsecret');
+                    $requestaccesstokenurl = 'https://graph.facebook.com/oauth/access_token';
+                    break;
+                default:
+                    throw new moodle_exception('unknown_oauth2_provider');
+                    break;
+            }
+            
             //request by curl an access token and refresh token
+            //NOTE: if we are lucky enough all authentication provider should implement Oauth2 respecting the norm
+            //      otherwise we will need to create bigger switch.
             require_once($CFG->libdir . '/filelib.php');
             $curl = new curl();
             $params = array();
@@ -92,8 +110,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             $params['code'] = $authorizationcode;
             $params['redirect_uri'] = $CFG->wwwroot . '/login/index.php';
             $params['grant_type'] = 'authorization_code';
-            $postreturnvalues = $curl->post('https://accounts.google.com/o/oauth2/token', $params);
+            $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
             $postreturnvalues = json_decode($postreturnvalues);
+            varlog('After requesting access token:');
+            varlog($postreturnvalues);
             
             $accesstoken = $postreturnvalues->access_token;
             $refreshtoken = $postreturnvalues->refresh_token;
@@ -103,12 +123,30 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             //with access token request by curl the email address
             if (!empty($accesstoken)) {
 
-                //get the username matching the email                  
-                $params = array();
-                $params['access_token'] = $accesstoken;
-                $params['alt'] = 'json';
-                $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
-                $useremail = json_decode($postreturnvalues)->data->email;
+                //get the username matching the email
+                switch ($authprovider) {
+                    case 'google':
+                        $params = array();
+                        $params['access_token'] = $accesstoken;
+                        $params['alt'] = 'json';
+                        $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
+                        $useremail = json_decode($postreturnvalues)->data->email;
+                        break;
+                    
+                    case 'facebook':
+                        $params = array();
+                        $params['access_token'] = $accesstoken;
+                        $postreturnvalues = $curl->get('https://graph.facebook.com/me', $params);
+                        $facebookuser = json_decode($postreturnvalues);
+                        varlog('After requesting email:');
+                        varlog($facebookuser);
+                        $useremail = $facebookuser->email;
+                        break;
+
+                    default:
+                        break;
+                }
+                
 
                 //if email not existing in user database then create a new username (userX).
                 if (empty($useremail) or $useremail != clean_param($useremail, PARAM_EMAIL)) {
@@ -135,36 +173,51 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     }
                     set_config('lastusernumber', $lastusernumber, 'auth/googleoauth2');
                     $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
-                             
-                    //retrieve more information
-                    $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
-                    $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
-
-                    $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
-                    if (!empty($googleipinfodbkey)) {
-                        $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
-                            $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
-                        $locationdata = json_decode($locationdata);
-                    }
-
-                    //new user info
+                    
+                    //retrieve more information from the provider
                     $newuser = new stdClass();
                     $newuser->email = $useremail;
-                    $newuser->auth = 'googleoauth2';
-                    if (!empty($userinfo->given_name)) {
-                        $newuser->firstname = $userinfo->given_name;
+                    switch ($authprovider) {
+                        case 'google':
+                            $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
+                            $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
+
+                            $newuser->auth = 'googleoauth2';
+                            if (!empty($userinfo->given_name)) {
+                                $newuser->firstname = $userinfo->given_name;
+                            }
+                            if (!empty($userinfo->family_name)) {
+                                $newuser->lastname = $userinfo->family_name;
+                            }
+                            if (!empty($userinfo->locale)) {
+                                //$newuser->lang = $userinfo->locale;
+                                //TODO: convert the locale into correct Moodle language code
+                            }
+                            break;
+                            
+                        case 'facebook':
+                            //TODO
+//                            $newuser->firstname =  $facebookuser->firstname;
+//                            $newuser->lastname =  $facebookuser->lastname;
+                            break;
+
+                        default:
+                            break;
                     }
-                    if (!empty($userinfo->family_name)) {
-                        $newuser->lastname = $userinfo->family_name;
-                    }
-                    if (!empty($userinfo->locale)) {
-                        //$newuser->lang = $userinfo->locale;
-                        //TODO: convert the locale into correct Moodle language code
-                    }
-                    if (!empty($locationdata)) {
-                        //TODO: check that countryCode does match the Moodle country code
-                        $newuser->country = $locationdata->countryCode;
-                        $newuser->city = $locationdata->cityName;
+                    
+                    //retrieve country and city if the provider failed to give it
+                    if (!isset($newuser->country) or !isset($newuser->city)) {
+                        $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
+                        if (!empty($googleipinfodbkey)) {
+                            $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
+                                $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
+                            $locationdata = json_decode($locationdata);
+                        }
+                        if (!empty($locationdata)) {
+                            //TODO: check that countryCode does match the Moodle country code
+                            $newuser->country = isset($newuser->country)?isset($newuser->country):$locationdata->countryCode;
+                            $newuser->city = isset($newuser->city)?isset($newuser->city):$locationdata->cityName;
+                        }
                     }
                     
                 } else {
