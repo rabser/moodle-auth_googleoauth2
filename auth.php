@@ -84,23 +84,22 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
             //set the params specific to the authentication provider
             $params = array();
-            $params['client_id'] = $clientid;
-            $params['client_secret'] = $clientsecret;
+            
             switch ($authprovider) {
                 case 'google':
-                    $clientid = get_config('auth/googleoauth2', 'googleclientid');
-                    $clientsecret = get_config('auth/googleoauth2', 'googleclientsecret');
+                    $params['client_id'] = get_config('auth/googleoauth2', 'googleclientid');
+                    $params['client_secret'] = get_config('auth/googleoauth2', 'googleclientsecret');
                     $requestaccesstokenurl = 'https://accounts.google.com/o/oauth2/token';
                     $params['code'] = $authorizationcode;
                     $params['grant_type'] = 'authorization_code';
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php';
                     break;
                 case 'facebook':
-                    $clientid = get_config('auth/googleoauth2', 'facebookclientid');
-                    $clientsecret = get_config('auth/googleoauth2', 'facebookclientsecret');
+                    $params['client_id'] = get_config('auth/googleoauth2', 'facebookclientid');
+                    $params['client_secret'] = get_config('auth/googleoauth2', 'facebookclientsecret');
                     $requestaccesstokenurl = 'https://graph.facebook.com/oauth/access_token';
                     $params['access_token'] = $authorizationcode;
-                    $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php';
+                    $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php';
                     break;
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
@@ -109,7 +108,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             
             //request by curl an access token and refresh token
             require_once($CFG->libdir . '/filelib.php');
-            $curl = new curl();            
+            $curl = new curl();
             $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
             $postreturnvalues = json_decode($postreturnvalues);
             varlog('After requesting access token:');
