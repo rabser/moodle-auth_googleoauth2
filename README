@@ -12,7 +12,7 @@ however no support is guarantee.
 Installation:
 -------------
 
-1- add the plugin into /auth/google/
+1- add the plugin into /auth/googleoauth2/
 
 2- in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
 
