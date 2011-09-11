@@ -551,10 +551,21 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</td></tr>';
         
         
-        // Block field options
-
+        /// Block field options
+        // Hidden email options - email must be set to: locked
+        echo html_writer::empty_tag('input', array('type' => 'hidden', 'value' => 'locked',
+                    'name' => 'lockconfig_field_lock_email'));
+        
+        //display other field options
+        foreach ($user_fields as $key => $user_field) {
+            if ($user_field == 'email') {
+                unset($user_fields[$key]);
+            }
+        }
         print_auth_lock_options('googleoauth2', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
-
+        
+        
+        
         echo '</table>';
     }
     
@@ -599,6 +610,24 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 
         return true;
+    }
+    
+    /**
+     * Called when the user record is updated.
+     *
+     * We check there is no hack-attempt by a user to change his/her email address
+     *
+     * @param mixed $olduser     Userobject before modifications    (without system magic quotes)
+     * @param mixed $newuser     Userobject new modified userobject (without system magic quotes)
+     * @return boolean result
+     *
+     */
+    function user_update($olduser, $newuser) {
+        if ($olduser->email != $newuser->email) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
