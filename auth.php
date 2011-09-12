@@ -176,7 +176,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $postreturnvalues = $curl->get('https://apis.live.net/v5.0/me', $params);                      
                         $messengeruser = json_decode($postreturnvalues);
                         $useremail = $messengeruser->emails->preferred;
-                        $verified = 1;
+                        $verified = 1; //not super good but there are no way to check it yet: 
+                                       //http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929 
                         break;
 
                     default:
@@ -278,6 +279,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 add_to_log(SITEID, 'auth_googleoauth2', '', '', $username . '/' . $useremail . '/' . $userid);
                 $user = authenticate_user_login($username, null);
                 if ($user) {
+                    
+                    //set a cookie to remember what auth provider was selected
+                    setcookie('MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie, $authprovider, 
+                            time()+(DAYSECS*60), $CFG->sessioncookiepath, 
+                            $CFG->sessioncookiedomain, $CFG->cookiesecure, 
+                            $CFG->cookiehttponly);
                                                       
                     //prefill more user information if new user
                     if (!empty($newuser)) {
