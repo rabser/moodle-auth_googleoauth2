@@ -47,4 +47,4 @@ $string['auth_googlesettings'] = 'Settings';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address" link that Google or Facebook should have sent you during your subscribtion to their service.';
 $string['moreproviderlink'] = 'Sign-in with another service.';
-$string['signinwithanaccount'] = 'Select a service to sign in:';
+$string['signinwithanaccount'] = 'Log in with:';
