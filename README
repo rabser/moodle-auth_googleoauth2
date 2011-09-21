@@ -6,7 +6,7 @@ Beta version
 
 This is a none-core contributed plugin. 
 You are welcome to do Pull Request on Github,
-to report issue on Moodle tracker (https://tracker.moodle.org/browse/CONTRIB#selectedTab=com.atlassian.jira.plugin.system.project%3Acomponents-panel), 
+to report issue (https://github.com/mouneyrac/auth_googleoauth2/issues), 
 however no support is guarantee.
 
 Setup the authentication services:
