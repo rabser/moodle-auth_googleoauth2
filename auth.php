@@ -119,8 +119,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             require_once($CFG->libdir . '/filelib.php');
             if ($authprovider == 'messenger') { //Windows Live returns an "Object moved" error with curl->post() encoding
                 $curl = new curl();
-                $postreturnvalues = $curl->get('https://oauth.live.com/token?client_id='.$params['client_id'].'&redirect_uri='.$params['redirect_uri'].'&client_secret='.$params['client_secret'].'&code='.$params['code'].'&grant_type=authorization_code');
-            } else {
+                //$postreturnvalues = $curl->get('https://oauth.live.com/token?client_id='.$params['client_id'].'&redirect_uri='.$params['redirect_uri'].'&client_secret='.$params['client_secret'].'&code='.$params['code'].'&grant_type=authorization_code');
+                $postreturnvalues = $curl->get('https://oauth.live.com/token?client_id=' . urlencode($params['client_id']) . '&redirect_uri=' . urlencode($params['redirect_uri'] ). '&client_secret=' . urlencode($params['client_secret']) . '&code=' .urlencode( $params['code']) . '&grant_type=authorization_code');
+
+           } else {
                 $curl = new curl();
                 $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
             }
