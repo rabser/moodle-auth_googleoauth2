@@ -75,7 +75,7 @@ http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1
             <?php if (!empty($authprovider)) { ?>
             <br/><br/>
             <div class="moreproviderlink">
-                <a href='<?php echo $CFG->wwwroot . '/login/index.php?allauthproviders=true'; ?>' onclick="changecss('singinprovider','display','inline-block');"><?php echo get_string('moreproviderlink', 'auth_googleoauth2');?></a>    
+                <a href='<?php echo $CFG->wwwroot . (isset($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true'; ?>' onclick="changecss('singinprovider','display','inline-block');"><?php echo get_string('moreproviderlink', 'auth_googleoauth2');?></a>
             </div>
             <?php } ?>
         </center>
