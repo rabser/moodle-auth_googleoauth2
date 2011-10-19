@@ -11,6 +11,10 @@ if (empty($code)) {
     throw new moodle_exception('facebook_failure');
 }
 
-$url = new moodle_url('/login/index.php', array('code' => $code, 'authprovider' => 'facebook'));
+$loginurl = '/login/index.php';
+if (isset($CFG->alternateloginurl)) {
+    $loginurl = $CFG->alternateloginurl;
+}
+$url = new moodle_url($loginurl, array('code' => $code, 'authprovider' => 'facebook'));
 redirect($url);
 ?>
