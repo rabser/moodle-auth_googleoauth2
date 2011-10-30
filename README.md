@@ -92,6 +92,9 @@ Note: Messenger connect is currently unsecured to be used in the way I use it be
             	</div>
             <?php } ?>
         </center>
+        
+    > More information about Moodle theme 2.0: http://docs.moodle.org/dev/Themes_2.0
+    Basically, you want to look to your theme/config.php. Find in it what is the login layout file name. Then add this example code in this layout file.
 
 5. (Recommended) Register on IPinfoDB for key: http://www.ipinfodb.com/register.php. Then enter the key in the plugin settings. Thus Moodle can pre-filled the city and the country of the user.
 
