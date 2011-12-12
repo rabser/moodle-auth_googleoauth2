@@ -12,7 +12,7 @@ if (empty($code)) {
 }
 
 $loginurl = '/login/index.php';
-if (isset($CFG->alternateloginurl)) {
+if (!empty($CFG->alternateloginurl)) {
     $loginurl = $CFG->alternateloginurl;
 }
 $url = new moodle_url($loginurl, array('code' => $code, 'authprovider' => 'facebook'));
