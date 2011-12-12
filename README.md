@@ -30,6 +30,9 @@ Setup the authentication services:
 Plugin installation:
 --------------------
 
+> Step 4. is about adding some code in Moodle to display the authentication providers logos. It is a just an example.
+It could actually be implemented anywhere (theme, block, alternative login page...). This step requires PHP and Moodle code knowledge.
+
 1. add the plugin into /auth/googleoauth2/
 
 2. in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
@@ -38,7 +41,7 @@ Plugin installation:
 Note: Messenger connect is currently unsecured to be used in the way I use it because of this issue: 
 (http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929)
 
-4. in your theme (most likely in login layout page /theme/YOURTHEME/layout/login.php) add the following little piece of ugly HTML/PHP code:
+4. in your theme (most likely in login layout page /theme/YOURTHEME/layout/login.php), add and edit the following little piece of ugly HTML/PHP code:
 
         <?php 
 	        //get previous auth provider
@@ -92,6 +95,9 @@ Note: Messenger connect is currently unsecured to be used in the way I use it be
             	</div>
             <?php } ?>
         </center>
+        
+    > More information about Moodle theme 2.0: http://docs.moodle.org/dev/Themes_2.0
+    Basically, you want to look to your theme/config.php. Find in it what is the login layout file name. Then add this example code in this layout file.
 
 5. (Recommended) Register on IPinfoDB for key: http://www.ipinfodb.com/register.php. Then enter the key in the plugin settings. Thus Moodle can pre-filled the city and the country of the user.
 
