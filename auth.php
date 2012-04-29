@@ -48,7 +48,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
      * @return bool Authentication success or failure.
      */
     function user_login($username, $password) {
-        global $DB;
+        global $DB, $CFG;
 
         //retrieve the user matching username
         $user = $DB->get_record('user', array('username' => $username,
