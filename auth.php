@@ -47,9 +47,20 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
      * @param string $password The password (with system magic quotes)
      * @return bool Authentication success or failure.
      */
-    function user_login ($username, $password) {
-        return true;
+    function user_login($username, $password) {
+        global $DB;
+
+        //retrieve the user matching username
+        $user = $DB->get_record('user', array('username' => $username,
+            'mnethostid' => $CFG->mnet_localhost_id));
+
+        //username must exist and have the right authentication method
+        if (!empty($user) && ($user->auth == 'googleoauth2')) {
+            return true;
         }
+
+        return false;
+    }
 
     /**
      * Returns true if this authentication plugin is 'internal'.
