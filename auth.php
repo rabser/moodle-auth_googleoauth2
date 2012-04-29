@@ -285,6 +285,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         }
                     }
 
+                    create_user_record($username, '', 'googleoauth2');
+
                 } else {
                     $username = $user->username;
                 }
