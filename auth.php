@@ -7,7 +7,7 @@
  *
  * Authentication Plugin: Google/Facebook/Messenger Authentication
  * If the email doesn't exist, then the auth plugin creates the user.
- * If the email exist (and the user has for auth plugin this current one), 
+ * If the email exist (and the user has for auth plugin this current one),
  * then the plugin login the user related to this email.
  */
 
@@ -34,7 +34,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
     /**
      * Prevent authenticate_user_login() to update the password in the DB
-     * @return boolean 
+     * @return boolean
      */
     function prevent_local_passwords() {
         return true;
@@ -87,21 +87,21 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
      */
     function loginpage_hook() {
         global $USER, $SESSION, $CFG, $DB;
-        
+
         //check the Google authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
         if (!empty($authorizationcode)) {
-            
+
             $authprovider = required_param('authprovider', PARAM_ALPHANUMEXT);
 
             //set the params specific to the authentication provider
             $params = array();
-            
+
             switch ($authprovider) {
                 case 'google':
                     $params['client_id'] = get_config('auth/googleoauth2', 'googleclientid');
                     $params['client_secret'] = get_config('auth/googleoauth2', 'googleclientsecret');
-                    $requestaccesstokenurl = 'https://accounts.google.com/o/oauth2/token';                  
+                    $requestaccesstokenurl = 'https://accounts.google.com/o/oauth2/token';
                     $params['grant_type'] = 'authorization_code';
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php';
                     $params['code'] = $authorizationcode;
@@ -125,7 +125,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     throw new moodle_exception('unknown_oauth2_provider');
                     break;
             }
-            
+
             //request by curl an access token and refresh token
             require_once($CFG->libdir . '/filelib.php');
             if ($authprovider == 'messenger') { //Windows Live returns an "Object moved" error with curl->post() encoding
@@ -136,8 +136,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 $curl = new curl();
                 $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
             }
-            
-            
+
+
             switch ($authprovider) {
                 case 'google':
                     $postreturnvalues = json_decode($postreturnvalues);
@@ -172,7 +172,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $useremail = $postreturnvalues->data->email;
                         $verified = $postreturnvalues->data->isVerified;
                         break;
-                    
+
                     case 'facebook':
                         $params = array();
                         $params['access_token'] = $accesstoken;
@@ -181,53 +181,57 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $useremail = $facebookuser->email;
                         $verified = $facebookuser->verified;
                         break;
-                    
+
                     case 'messenger':
                         $params = array();
                         $params['access_token'] = $accesstoken;
-                        $postreturnvalues = $curl->get('https://apis.live.net/v5.0/me', $params);                      
+                        $postreturnvalues = $curl->get('https://apis.live.net/v5.0/me', $params);
                         $messengeruser = json_decode($postreturnvalues);
                         $useremail = $messengeruser->emails->preferred;
-                        $verified = 1; //not super good but there are no way to check it yet: 
-                                       //http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929 
+                        $verified = 1; //not super good but there are no way to check it yet:
+                                       //http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929
                         break;
 
                     default:
                         break;
                 }
-                
+
                 //throw an error if the email address is not verified
                 if (!$verified) {
                     throw new moodle_exception('emailaddressmustbeverified', 'auth_googleoauth2');
                 }
-                
+
+                // Prohibit login if email belongs to the prohibited domain
+                if ($err = email_is_not_allowed($useremail)) {
+                   throw new moodle_exception($err, 'auth_googleoauth2');
+                }
 
                 //if email not existing in user database then create a new username (userX).
                 if (empty($useremail) or $useremail != clean_param($useremail, PARAM_EMAIL)) {
-                    throw new moodle_exception('couldnotgetuseremail'); 
+                    throw new moodle_exception('couldnotgetuseremail');
                     //TODO: display a link for people to retry
                 }
-                //get the user - don't bother with auth = googleoauth2 because 
+                //get the user - don't bother with auth = googleoauth2 because
                 //authenticate_user_login() will fail it if it's not 'googleoauth2'
-                $user = $DB->get_record('user', array('email' => $useremail, 'deleted' => 0, 'mnethostid' => $CFG->mnet_localhost_id)); 
-                
+                $user = $DB->get_record('user', array('email' => $useremail, 'deleted' => 0, 'mnethostid' => $CFG->mnet_localhost_id));
+
                 //create the user if it doesn't exist
                 if (empty($user)) {
-                    
+
                     //get following incremented username
                     $lastusernumber = get_config('auth/googleoauth2', 'lastusernumber');
                     $lastusernumber = empty($lastusernumber)?1:$lastusernumber++;
                     //check the user doesn't exist
-                    $nextuser = $DB->get_record('user', 
+                    $nextuser = $DB->get_record('user',
                             array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
                     while (!empty($nextuser)) {
                         $lastusernumber = $lastusernumber +1;
-                        $nextuser = $DB->get_record('user', 
+                        $nextuser = $DB->get_record('user',
                             array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
                     }
                     set_config('lastusernumber', $lastusernumber, 'auth/googleoauth2');
                     $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
-                    
+
                     //retrieve more information from the provider
                     $newuser = new stdClass();
                     $newuser->email = $useremail;
@@ -251,12 +255,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                                 //TODO: convert the locale into correct Moodle language code
                             }
                             break;
-                            
+
                         case 'facebook':
                             $newuser->firstname =  $facebookuser->first_name;
                             $newuser->lastname =  $facebookuser->last_name;
                             break;
-                        
+
                         case 'messenger':
                             $newuser->firstname =  $messengeruser->first_name;
                             $newuser->lastname =  $messengeruser->last_name;
@@ -265,12 +269,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         default:
                             break;
                     }
-                    
+
                     //retrieve country and city if the provider failed to give it
                     if (!isset($newuser->country) or !isset($newuser->city)) {
                         $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
                         if (!empty($googleipinfodbkey)) {
-                            $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' . 
+                            $locationdata = $curl->get('http://api.ipinfodb.com/v3/ip-city/?key=' .
                                 $googleipinfodbkey . '&ip='. getremoteaddr() . '&format=json' );
                             $locationdata = json_decode($locationdata);
                         }
@@ -280,7 +284,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             $newuser->city = isset($newuser->city)?isset($newuser->city):$locationdata->cityName;
                         }
                     }
-                    
+
                 } else {
                     $username = $user->username;
                 }
@@ -291,21 +295,21 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 add_to_log(SITEID, 'auth_googleoauth2', '', '', $username . '/' . $useremail . '/' . $userid);
                 $user = authenticate_user_login($username, null);
                 if ($user) {
-                    
+
                     //set a cookie to remember what auth provider was selected
-                    setcookie('MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie, $authprovider, 
-                            time()+(DAYSECS*60), $CFG->sessioncookiepath, 
-                            $CFG->sessioncookiedomain, $CFG->cookiesecure, 
+                    setcookie('MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie, $authprovider,
+                            time()+(DAYSECS*60), $CFG->sessioncookiepath,
+                            $CFG->sessioncookiedomain, $CFG->cookiesecure,
                             $CFG->cookiehttponly);
-                                                      
+
                     //prefill more user information if new user
                     if (!empty($newuser)) {
                         $newuser->id = $user->id;
                         $DB->update_record('user', $newuser);
                     }
-                    
+
                     complete_user_login($user);
-                    
+
                     // Redirection
                     if (user_not_fully_set_up($USER)) {
                         $urltogo = $CFG->wwwroot.'/user/edit.php';
@@ -323,23 +327,23 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             } else {
                 throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
             }
-        } 
+        }
     }
-    
-    
+
+
     /**
      * Prints a form for configuring this authentication plugin.
      *
      * This function is called from admin/auth.php, and outputs a full page with
      * a form for configuring this plugin.
-     * 
+     *
      * TODO: as print_auth_lock_options() core function displays an old-fashion HTML table, I didn't bother writing
      * some proper Moodle code. This code is similar to other auth plugins (04/09/11)
      *
      * @param array $page An object containing all the data for this page.
      */
     function config_form($config, $err, $user_fields) {
-        global $OUTPUT;    
+        global $OUTPUT;
 
         // set to defaults if undefined
         if (!isset($config->googleclientid)) {
@@ -372,8 +376,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                <td colspan="3">
                     <h2 class="main">';
 
-        print_string('auth_googlesettings', 'auth_googleoauth2'); 
-        
+        print_string('auth_googlesettings', 'auth_googleoauth2');
+
         // Google client id
 
         echo '</h2>
@@ -387,8 +391,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'googleclientid', 'name' => 'googleclientid', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'googleclientid', 'name' => 'googleclientid',
                     'class' => 'googleclientid', 'value' => $config->googleclientid));
 
         if (isset($err["googleclientid"])) {
@@ -400,9 +404,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_googleclientid', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // Google client secret
-        
+
         echo '<tr>
                 <td align="right"><label for="googleclientsecret">';
 
@@ -411,8 +415,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'googleclientsecret', 'name' => 'googleclientsecret', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'googleclientsecret', 'name' => 'googleclientsecret',
                     'class' => 'googleclientsecret', 'value' => $config->googleclientsecret));
 
         if (isset($err["googleclientsecret"])) {
@@ -424,9 +428,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_googleclientsecret', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // Facebook client id
-        
+
         echo '<tr>
                 <td align="right"><label for="facebookclientid">';
 
@@ -435,8 +439,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'facebookclientid', 'name' => 'facebookclientid', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'facebookclientid', 'name' => 'facebookclientid',
                     'class' => 'facebookclientid', 'value' => $config->facebookclientid));
 
         if (isset($err["facebookclientid"])) {
@@ -448,9 +452,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_facebookclientid', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // Facebook client secret
-        
+
         echo '<tr>
                 <td align="right"><label for="facebookclientsecret">';
 
@@ -459,8 +463,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'facebookclientsecret', 'name' => 'facebookclientsecret', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'facebookclientsecret', 'name' => 'facebookclientsecret',
                     'class' => 'facebookclientsecret', 'value' => $config->facebookclientsecret));
 
         if (isset($err["facebookclientsecret"])) {
@@ -472,9 +476,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_facebookclientsecret', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // Messenger client id
-        
+
         echo '<tr>
                 <td align="right"><label for="messengerclientid">';
 
@@ -483,8 +487,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'messengerclientid', 'name' => 'messengerclientid', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'messengerclientid', 'name' => 'messengerclientid',
                     'class' => 'messengerclientid', 'value' => $config->messengerclientid));
 
         if (isset($err["messengerclientid"])) {
@@ -496,9 +500,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_messengerclientid', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // Messenger client secret
-        
+
         echo '<tr>
                 <td align="right"><label for="messengerclientsecret">';
 
@@ -507,8 +511,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'messengerclientsecret', 'name' => 'messengerclientsecret', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'messengerclientsecret', 'name' => 'messengerclientsecret',
                     'class' => 'messengerclientsecret', 'value' => $config->messengerclientsecret));
 
         if (isset($err["messengerclientsecret"])) {
@@ -520,9 +524,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_messengerclientsecret', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // IPinfoDB
-        
+
         echo '<tr>
                 <td align="right"><label for="googleipinfodbkey">';
 
@@ -531,8 +535,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'googleipinfodbkey', 'name' => 'googleipinfodbkey', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'googleipinfodbkey', 'name' => 'googleipinfodbkey',
                     'class' => 'googleipinfodbkey', 'value' => $config->googleipinfodbkey));
 
         if (isset($err["googleipinfodbkey"])) {
@@ -544,9 +548,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_googleipinfodbkey', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
+
         // User prefix
-        
+
         echo '<tr>
                 <td align="right"><label for="googleuserprefix">';
 
@@ -555,8 +559,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</label></td><td>';
 
 
-        echo html_writer::empty_tag('input', 
-                array('type' => 'text', 'id' => 'googleuserprefix', 'name' => 'googleuserprefix', 
+        echo html_writer::empty_tag('input',
+                array('type' => 'text', 'id' => 'googleuserprefix', 'name' => 'googleuserprefix',
                     'class' => 'googleuserprefix', 'value' => $config->googleuserprefix));
 
         if (isset($err["googleuserprefix"])) {
@@ -568,13 +572,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         print_string('auth_googleuserprefix', 'auth_googleoauth2') ;
 
         echo '</td></tr>';
-        
-        
+
+
         /// Block field options
         // Hidden email options - email must be set to: locked
         echo html_writer::empty_tag('input', array('type' => 'hidden', 'value' => 'locked',
                     'name' => 'lockconfig_field_lock_email'));
-        
+
         //display other field options
         foreach ($user_fields as $key => $user_field) {
             if ($user_field == 'email') {
@@ -582,12 +586,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             }
         }
         print_auth_lock_options('googleoauth2', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
-        
-        
-        
+
+
+
         echo '</table>';
     }
-    
+
     /**
      * Processes and stores configuration data for this authentication plugin.
      */
@@ -630,7 +634,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         return true;
     }
-    
+
     /**
      * Called when the user record is updated.
      *
