@@ -48,3 +48,4 @@ $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a
 $string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address" link that Google or Facebook should have sent you during your subscribtion to their service.';
 $string['moreproviderlink'] = 'Sign-in with another service.';
 $string['signinwithanaccount'] = 'Log in with:';
+$string['noaccountyet'] = 'You do not have permission to use the site yet. Please contact your administrator and ask them to activate your account.';
