@@ -1,6 +1,3 @@
-WARNING: OTHER AUTHENTICATION METHODS NEED TO BE DISABLED DURE TO SECURITY BUG (https://github.com/mouneyrac/auth_googleoauth2/issues/14)
-
-
 Google/Facebook/WindowsLive Oauth 2.0 Authentication Plugin
 ===========================================================
 
