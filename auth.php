@@ -312,6 +312,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     if (!empty($newuser)) {
                         $newuser->id = $user->id;
                         $DB->update_record('user', $newuser);
+                        $user = (object) array_merge((array) $user, (array) $newuser);
                     }
 
                     complete_user_login($user);
