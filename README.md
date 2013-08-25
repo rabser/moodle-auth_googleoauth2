@@ -13,18 +13,18 @@ You are welcome to do Pull Request on Github, to report [issues](https://github.
 Setup the authentication services:
 ----------------------------------
 
-* Google (https://code.google.com/apis/console/):
+* Google https://code.google.com/apis/console/
 
 	> Google console API > API Access  
 	> Redirect URLs: https://www.YOURDOMAINENAME/auth/googleoauth2/google_redirect.php  
 	> Javascript origins: https://YOURDOMAINNAME
 
-* Facebook (https://developers.facebook.com/apps):
+* Facebook https://developers.facebook.com/apps/
 
 	> Site URL: https://YOURDOMAINENAME/auth/googleoauth2/facebook_redirect.php  
 	> Site domaine: www.YOURDOMAINNAME  
 
-* Messenger Connect (https://manage.dev.live.com/Applications/Index):  
+* Messenger Connect https://manage.dev.live.com/Applications/Index 
 	
 	> Redirect domain: https://www.YOURDOMAINNAME
 
