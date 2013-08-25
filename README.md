@@ -41,7 +41,7 @@ It could actually be implemented anywhere (theme, block, alternative login page.
 Note: Messenger connect is currently unsecured to be used in the way I use it because of this issue: 
 (http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929)
 
-4. in your theme (most likely in login layout page /theme/YOURTHEME/layout/login.php), add and edit the following little piece of ugly HTML/PHP code:
+4. in your theme (most likely in login/index.html. Or in the login layout page if you theme has a specific login page, something like /theme/YOURTHEME/layout/login.php), add and edit the following little piece of ugly HTML/PHP code:
 
         <?php 
 	        //get previous auth provider
