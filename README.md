@@ -2,7 +2,7 @@ Google/Facebook/WindowsLive Oauth 2.0 Authentication Plugin
 ===========================================================
 
 This plugin adds a Google/Facebook/Windows Live button on the front page (see the installation process on how to edit your login page).
-If the plugin matches the Google/Facebook/Windows email address to a Moodle account, the user gets connected to the Moodle account. Otherwise (if "authpreventaccountcreation" is unset) a new account is created.
+The first time the user clicks on the button, a new account is created. The "authpreventaccountcreation" setting must be unset.
 
 Warning about Windows Live:
 when I implemented the solution, Microsoft didn't send a verified field, so the Windows Live authentication is unsecured.
