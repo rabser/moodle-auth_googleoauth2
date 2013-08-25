@@ -91,7 +91,7 @@ Note: Messenger connect is currently unsecured to be used in the way I use it be
             <?php if (!empty($authprovider)) { ?>
             	<br/><br/>
             	<div class="moreproviderlink">
-                	<a href='<?php echo $CFG->wwwroot . (isset($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true'; ?>' onclick="changecss('singinprovider','display','inline-block');">
+                	<a href='<?php echo $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true'; ?>' onclick="changecss('singinprovider','display','inline-block');">
 						<?php echo get_string('moreproviderlink', 'auth_googleoauth2');?>
 					</a>
             	</div>
