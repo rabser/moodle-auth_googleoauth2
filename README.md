@@ -7,9 +7,6 @@ The first time the user clicks on the button, a new account is created.
 Plugin installation:
 --------------------
 
-> Step 4. is about adding some code in Moodle to display the authentication providers logos. It is a just an example.
-It could actually be implemented anywhere (theme, block, alternative login page...). This step requires PHP and Moodle code knowledge.
-
 1. add the plugin into /auth/googleoauth2/
 
 2. in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
