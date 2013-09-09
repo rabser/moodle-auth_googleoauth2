@@ -17,7 +17,7 @@ Plugin installation:
 
 	<?php
 	require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
-	display_buttons();
+	auth_googleoauth2_display_buttons();
 	?>
 
 
