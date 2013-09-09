@@ -26,3 +26,8 @@ FAQ and Support
 
 Read the [Wiki](https://github.com/mouneyrac/auth_googleoauth2/wiki).
 You are welcome to send Pull Request and to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
+
+Credits
+-------
+* [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
+* [CSS social buttons](http://zocial.smcllns.com/)
