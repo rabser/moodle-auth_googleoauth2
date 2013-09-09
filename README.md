@@ -15,10 +15,10 @@ Plugin installation:
 
 4. add the following code to your login page (For most of you copy it at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.):
 
-	<?php
+	`<?php
 	require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
 	auth_googleoauth2_display_buttons();
-	?>
+	?>`
 
 
 FAQ and Support
