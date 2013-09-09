@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
  * The very ugly code to display the buttons.
  * It's been moved quickly here from the README.md to make it easy for people to add the code into login/index_form.php
  */
-function display_buttons() {
+function auth_googleoauth2_display_buttons() {
     global $CFG;
 
     // Load the CSS social buttons
