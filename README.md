@@ -2,14 +2,7 @@ Google/Facebook/WindowsLive Oauth 2.0 Authentication Plugin
 ===========================================================
 
 This plugin adds a Google/Facebook/Windows Live button on the front page (see the installation process on how to edit your login page).
-The first time the user clicks on the button, a new account is created. The "authpreventaccountcreation" setting must be unset.
-
-Warning about Windows Live:
-when I implemented the solution, Microsoft didn't send a verified field, so the Windows Live authentication is unsecured.
-
-This is a none-core contributed plugin. 
-You are welcome to do Pull Request on Github, to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
-
+The first time the user clicks on the button, a new account is created.
 
 Plugin installation:
 --------------------
@@ -83,6 +76,10 @@ It could actually be implemented anywhere (theme, block, alternative login page.
 
 5. (Recommended) Register on IPinfoDB for key: http://www.ipinfodb.com/register.php. Then enter the key in the plugin settings. Thus Moodle can pre-filled the city and the country of the user.
 
-6. (Optional) Change the prefix of new users. By default they are name google_user_XXX.
+6. (Optional) Change the prefix of new users. By default they are name social_user_XXX.
 
-> Note about debugging: the plugin doesn't work in local. Google authentication will most likely fail to the first redirection, and if you enter manually the authorization code in the URL, then it will fail when trying to get the access token. Google will return a Missing authorization error.
+FAQ and Support
+---------------
+
+Read the [Wiki](https://github.com/mouneyrac/auth_googleoauth2/wiki).
+You are welcome to send Pull Request and to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
