@@ -23,24 +23,34 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Google Oauth2';
-$string['auth_facebookclientid'] = 'Your App ID - it can be found in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>.';
+$string['pluginname'] = 'Oauth2';
+$string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>:
+<br/>Site URL: {$a->siteurl}
+<br/>Site domaine: {$a->sitedomain}';
 $string['auth_facebookclientid_key'] = 'Facebook App ID';
-$string['auth_facebookclientsecret'] = 'Your App secret - it can be found in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>.';
+$string['auth_facebookclientsecret'] = 'See above.';
 $string['auth_facebookclientsecret_key'] = 'Facebook App secret';
-$string['auth_googleclientid'] = 'Your client ID - it can be found in the <a href="https://code.google.com/apis/console">Google console API</a>.';
+$string['auth_googleclientid'] = 'Your client ID/Secret can be generated in the <a href="https://code.google.com/apis/console">Google console API</a>:
+<br/>
+Google console API > API Access > Create another client ID...
+<br/>
+Redirect URLs: {$a->redirecturls}
+<br/>
+Javascript origins: {$a->jsorigins}';
 $string['auth_googleclientid_key'] = 'Google Client ID';
-$string['auth_googleclientsecret'] = 'Your client secret - it can be found in the <a href="https://code.google.com/apis/console">Google console API</a>.';
+$string['auth_googleclientsecret'] = 'See above.';
 $string['auth_googleclientsecret_key'] = 'Google Client secret';
 $string['auth_googleipinfodbkey'] = 'IPinfoDB is a service that let you find out what is the country and city of the visitor. You must subscribe to the <a href="http://www.ipinfodb.com/register.php">IPinfoDB</a> to get a Key.';
 $string['auth_googleipinfodbkey_key'] = 'IPinfoDB Key';
 $string['auth_googleuserprefix'] = 'This is the username prefix that is used for every new user authenticated by Google Oauth2. Change it if it conflicts with anything else in your Moodle. On a basic Moodle site you don\'t need to change it.';
 $string['auth_googleuserprefix_key'] = 'Username prefix';
-$string['auth_googleoauth2description'] = 'Simple and straight forward Oauth2 Google/Facebook/Messenger authentication. 
-    If the user email doesn\'t exists, then the authentication plugin creates a new user with username "social_user_XXX", XXX being incremented every time.';
-$string['auth_messengerclientid'] = 'Your Client ID - it can be found in your <a href="https://manage.dev.live.com/Applications">Windows Live apps page</a>.';
+$string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external service: Google/Facebook/Windows Live. The first time the user connect with an external service, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
+<br/><br/>
+<i>Warning about Windows Live: Microsoft doesn\'t tell the plugin if the user\'s email address has been verified. More info in the <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
+$string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://manage.dev.live.com/Applications/Index">Windows Live apps page</a>:
+<br/>Redirect domain: {$a->domain}';
 $string['auth_messengerclientid_key'] = 'Messenger Client ID';
-$string['auth_messengerclientsecret'] = 'Your Client secret - it can be found  in your <a href="https://manage.dev.live.com/Applications">Windows Live apps page</a>.';
+$string['auth_messengerclientsecret'] = 'See above.';
 $string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
 
 $string['auth_googlesettings'] = 'Settings';

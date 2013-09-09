@@ -354,7 +354,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
      * @param array $page An object containing all the data for this page.
      */
     function config_form($config, $err, $user_fields) {
-        global $OUTPUT;
+        global $OUTPUT, $CFG;
 
         // set to defaults if undefined
         if (!isset($config->googleclientid)) {
@@ -412,7 +412,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td><td>';
 
-        print_string('auth_googleclientid', 'auth_googleoauth2') ;
+        print_string('auth_googleclientid', 'auth_googleoauth2',
+            array('jsorigins' => $CFG->wwwroot, 'redirecturls' => $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php')) ;
 
         echo '</td></tr>';
 
@@ -460,7 +461,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td><td>';
 
-        print_string('auth_facebookclientid', 'auth_googleoauth2') ;
+        print_string('auth_facebookclientid', 'auth_googleoauth2',
+            (object) array('siteurl' => $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php',
+                'sitedomain' => parse_url($CFG->wwwroot)['host'])) ;
 
         echo '</td></tr>';
 
@@ -508,7 +511,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td><td>';
 
-        print_string('auth_messengerclientid', 'auth_googleoauth2') ;
+        print_string('auth_messengerclientid', 'auth_googleoauth2', (object) array('domain' => $CFG->wwwroot)) ;
 
         echo '</td></tr>';
 
