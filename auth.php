@@ -560,7 +560,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td><td>';
 
-        print_string('auth_googleipinfodbkey', 'auth_googleoauth2') ;
+        print_string('auth_googleipinfodbkey', 'auth_googleoauth2', (object) array('website' => $CFG->wwwroot)) ;
 
         echo '</td></tr>';
 

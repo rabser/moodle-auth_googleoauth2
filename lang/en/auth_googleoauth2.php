@@ -40,7 +40,8 @@ Javascript origins: {$a->jsorigins}';
 $string['auth_googleclientid_key'] = 'Google Client ID';
 $string['auth_googleclientsecret'] = 'See above.';
 $string['auth_googleclientsecret_key'] = 'Google Client secret';
-$string['auth_googleipinfodbkey'] = 'IPinfoDB is a service that let you find out what is the country and city of the visitor. You must subscribe to the <a href="http://www.ipinfodb.com/register.php">IPinfoDB</a> to get a Key.';
+$string['auth_googleipinfodbkey'] = 'IPinfoDB is a service that let you find out what is the country and city of the visitor. This setting is optional. You can subscribe to <a href="http://www.ipinfodb.com/register.php">IPinfoDB</a> to get a free key.<br/>
+Website: {$a->website}';
 $string['auth_googleipinfodbkey_key'] = 'IPinfoDB Key';
 $string['auth_googleuserprefix'] = 'This is the username prefix that is used for every new user authenticated by Google Oauth2. Change it if it conflicts with anything else in your Moodle. On a basic Moodle site you don\'t need to change it.';
 $string['auth_googleuserprefix_key'] = 'Username prefix';
