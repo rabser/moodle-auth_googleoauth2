@@ -10,24 +10,6 @@ when I implemented the solution, Microsoft didn't send a verified field, so the 
 This is a none-core contributed plugin. 
 You are welcome to do Pull Request on Github, to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
 
-Setup the authentication services:
-----------------------------------
-
-* Google https://code.google.com/apis/console/
-
-	> Google console API > API Access  
-	> Redirect URLs: https://www.YOURDOMAINENAME/auth/googleoauth2/google_redirect.php  
-	> Javascript origins: https://YOURDOMAINNAME
-
-* Facebook https://developers.facebook.com/apps/
-
-	> Site URL: https://YOURDOMAINENAME/auth/googleoauth2/facebook_redirect.php  
-	> Site domaine: www.YOURDOMAINNAME  
-
-* Messenger Connect https://manage.dev.live.com/Applications/Index 
-	
-	> Redirect domain: https://www.YOURDOMAINNAME
-
 
 Plugin installation:
 --------------------
@@ -39,9 +21,7 @@ It could actually be implemented anywhere (theme, block, alternative login page.
 
 2. in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
 
-3. in the plugin settings, enter your client ids + client secrets.
-Note: Messenger connect is currently unsecured to be used in the way I use it because of this issue: 
-(http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929)
+3. in the plugin settings, follow the instructions to your client ids + client secrets.
 
 4. in your theme (most likely in login/index.html. Or in the login layout page if you theme has a specific login page, something like /theme/YOURTHEME/layout/login.php), add and edit the following little piece of ugly HTML/PHP code:
 
