@@ -26,7 +26,7 @@
 $string['pluginname'] = 'Oauth2';
 $string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>:
 <br/>Site URL: {$a->siteurl}
-<br/>Site domaine: {$a->sitedomain}';
+<br/>Site domain: {$a->sitedomain}';
 $string['auth_facebookclientid_key'] = 'Facebook App ID';
 $string['auth_facebookclientsecret'] = 'See above.';
 $string['auth_facebookclientsecret_key'] = 'Facebook App secret';
@@ -47,7 +47,7 @@ $string['auth_googleuserprefix_key'] = 'Username prefix';
 $string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external service: Google/Facebook/Windows Live. The first time the user connect with an external service, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
 <br/><br/>
 <i>Warning about Windows Live: Microsoft doesn\'t tell the plugin if the user\'s email address has been verified. More info in the <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
-$string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://manage.dev.live.com/Applications/Index">Windows Live apps page</a>:
+$string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://account.live.com/developers/applications">Windows Live apps page</a>:
 <br/>Redirect domain: {$a->domain}';
 $string['auth_messengerclientid_key'] = 'Messenger Client ID';
 $string['auth_messengerclientsecret'] = 'See above.';
