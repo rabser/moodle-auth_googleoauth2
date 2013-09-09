@@ -411,9 +411,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         }
 
         echo '</td><td>';
-
+        $parse = parse_url($CFG->wwwroot);
         print_string('auth_googleclientid', 'auth_googleoauth2',
-            array('jsorigins' => $CFG->wwwroot, 'redirecturls' => $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php')) ;
+            array('jsorigins' => $parse['scheme'].'://'.$parse['host'],
+                  'redirecturls' => $CFG->wwwroot . '/auth/googleoauth2/google_redirect.php')) ;
 
         echo '</td></tr>';
 
