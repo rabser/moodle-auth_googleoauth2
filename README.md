@@ -2,32 +2,7 @@ Google/Facebook/WindowsLive Oauth 2.0 Authentication Plugin
 ===========================================================
 
 This plugin adds a Google/Facebook/Windows Live button on the front page (see the installation process on how to edit your login page).
-The first time the user clicks on the button, a new account is created. The "authpreventaccountcreation" setting must be unset.
-
-Warning about Windows Live:
-when I implemented the solution, Microsoft didn't send a verified field, so the Windows Live authentication is unsecured.
-
-This is a none-core contributed plugin. 
-You are welcome to do Pull Request on Github, to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
-
-Setup the authentication services:
-----------------------------------
-
-* Google https://code.google.com/apis/console/
-
-	> Google console API > API Access  
-	> Redirect URLs: https://www.YOURDOMAINENAME/auth/googleoauth2/google_redirect.php  
-	> Javascript origins: https://YOURDOMAINNAME
-
-* Facebook https://developers.facebook.com/apps/
-
-	> Site URL: https://YOURDOMAINENAME/auth/googleoauth2/facebook_redirect.php  
-	> Site domaine: www.YOURDOMAINNAME  
-
-* Messenger Connect https://manage.dev.live.com/Applications/Index 
-	
-	> Redirect domain: https://www.YOURDOMAINNAME
-
+The first time the user clicks on the button, a new account is created.
 
 Plugin installation:
 --------------------
@@ -39,9 +14,7 @@ It could actually be implemented anywhere (theme, block, alternative login page.
 
 2. in Moodle admin, enable the plugin (Admin block > Plugins > Auhtentication)
 
-3. in the plugin settings, enter your client ids + client secrets.
-Note: Messenger connect is currently unsecured to be used in the way I use it because of this issue: 
-(http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929)
+3. in the plugin settings, follow the instructions to your client ids + client secrets.
 
 4. in your theme (most likely in login/index.html. Or in the login layout page if you theme has a specific login page, something like /theme/YOURTHEME/layout/login.php), add and edit the following little piece of ugly HTML/PHP code:
 
@@ -103,6 +76,10 @@ Note: Messenger connect is currently unsecured to be used in the way I use it be
 
 5. (Recommended) Register on IPinfoDB for key: http://www.ipinfodb.com/register.php. Then enter the key in the plugin settings. Thus Moodle can pre-filled the city and the country of the user.
 
-6. (Optional) Change the prefix of new users. By default they are name google_user_XXX.
+6. (Optional) Change the prefix of new users. By default they are name social_user_XXX.
 
-> Note about debugging: the plugin doesn't work in local. Google authentication will most likely fail to the first redirection, and if you enter manually the authorization code in the URL, then it will fail when trying to get the access token. Google will return a Missing authorization error.
+FAQ and Support
+---------------
+
+Read the [Wiki](https://github.com/mouneyrac/auth_googleoauth2/wiki).
+You are welcome to send Pull Request and to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
