@@ -1,5 +1,5 @@
-Google/Facebook/WindowsLive Oauth 2.0 Authentication Plugin
-===========================================================
+Oauth 2.0 authentication plugin for Moodle
+==========================================
 
 This plugin adds a Google/Facebook/Windows Live button on the front page (see the installation process on how to edit your login page).
 The first time the user clicks on the button, a new account is created.
