@@ -31,12 +31,12 @@ defined('MOODLE_INTERNAL') || die();
 function display_buttons() {
     global $CFG;
 
-    // Load the CSS
+    // Load the CSS social buttons
     echo '
     <script language="javascript">
         linkElement = document.createElement("link");
         linkElement.rel = "stylesheet";
-        linkElement.href = "../auth/googleoauth2/csssocialbuttons/css/zocial.css";
+        linkElement.href = "' . $CFG->wwwroot . '/auth/googleoauth2/csssocialbuttons/css/zocial.css";
         document.head.appendChild(linkElement);
     </script>
     ';
@@ -56,7 +56,7 @@ function display_buttons() {
     $providerdisplaystyle = $displayprovider?'display:inline-block;':'display:none;';
     echo '<div class="singinprovider" style="' . $providerdisplaystyle .'">
             <a class="zocial googleplus" href="https://accounts.google.com/o/oauth2/auth?client_id='.
-              get_config('auth/googleoauth2', 'googleclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/google_redirect.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code">
+              get_config('auth/googleoauth2', 'googleclientid') .'&redirect_uri='.$CFG->wwwroot .'/auth/googleoauth2/google_redirect.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code">
                 Sign-in with Google
             </a>
         </div>';
