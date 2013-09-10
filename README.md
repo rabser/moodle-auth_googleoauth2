@@ -13,7 +13,11 @@ Plugin installation:
 
 3. in the plugin settings, follow the instructions.
 
-4. add the following code to your login page (For most of you copy it at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.):
+4. install this theme extending bootstrap: https://github.com/mouneyrac/moodle-theme_easy/archive/googleoauth2.zip
+
+    or
+    
+   add the following code to your login page (For most of you copy it at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.):
 
 `<?php
 require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
