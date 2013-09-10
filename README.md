@@ -6,6 +6,7 @@ The first time the user clicks on the button, a new account is created.
 
 Plugin installation:
 --------------------
+Since Moodle 2.5 you can automatically install the plugin from [Moodle.org](https://moodle.org/plugins/view.php?plugin=auth_googleoauth2). For manual installation or other versions, follow these steps:
 
 1. add the plugin into /auth/googleoauth2/
 
