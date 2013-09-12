@@ -30,7 +30,7 @@ before_script:
  - sh -c "if [ '$DB' = 'pgsql' ]; then sed -i s/\'username\'/\'postgres\'/ config.php; fi"
  - mkdir -m777 $HOME/moodledata
  - php admin/tool/phpunit/cli/init.php
- - "php -S localhost:8000 > /dev/null &"
+ - "(php -S localhost:8000 &) 2> /dev/null > /dev/null"
  - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
  - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
  - php admin/tool/behat/cli/init.php
