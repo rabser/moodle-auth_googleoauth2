@@ -27,7 +27,7 @@ before_script:
  - mkdir -m777 $HOME/moodledata
  - php admin/tool/phpunit/cli/init.php
  - sudo apt-get update > /dev/null
- - php -S localhost:8000
+ - php -S localhost:8000&
  - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
  - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
  - sleep 5
