@@ -1,0 +1,23 @@
+language: php
+php:
+  - "5.4"
+  - "5.3"
+env:
+ - DB=mysqli
+ - DB=pgsql
+before_script:
+ - git clone git://github.com/moodle/moodle ../moodle && cd ../moodle
+ - mv ../moodle-auth_googleoauth2 auth/googleoauth2
+ - git clone git://github.com/mouneyrac/moodle-theme_easy theme/oauth2easy
+ - pear channel-discover pear.phpunit.de
+ - pear channel-discover pear.symfony.com
+ - pear install pear.phpunit.de/DbUnit
+ - phpenv rehash
+ - cp config-dist.php config.php
+ - sh -c "sed -i -e s/'password'/''/ -e s/example.com/localhost/ -e s%/home/example%$HOME% -e 's%\(\$CFG.*phpu\)%\n\1%' config.php"
+ - sh -c "if [ '$DB' = 'mysqli' ]; then mysql -e 'create database moodle default character set UTF8 collate UTF8_bin;'; fi"
+ - sh -c "if [ '$DB' = 'mysqli' ]; then sed -i -e s/\'pgsql\'/\'mysqli\'/ -e s/\'username\'/\'root\'/ config.php; fi"
+ - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database moodle;' -U postgres; fi"
+ - sh -c "if [ '$DB' = 'pgsql' ]; then sed -i s/\'username\'/\'postgres\'/ config.php; fi"
+ - mkdir -m777 $HOME/moodledata
+ - php admin/tool/phpunit/cli/init.php
