@@ -27,10 +27,9 @@ before_script:
  - mkdir -m777 $HOME/moodledata
  - php admin/tool/phpunit/cli/init.php
  - sudo apt-get update > /dev/null
- - php -S localhost:8000&
+ - "php -S localhost:8000 > /dev/null &"
  - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
  - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
- - sleep 5
  - php admin/tool/behat/cli/init.php
 script:
  - phpunit auth_googleoauth2_lib_testcase auth/googleoauth2/tests/lib_test.php
