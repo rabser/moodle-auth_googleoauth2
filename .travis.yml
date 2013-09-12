@@ -35,7 +35,5 @@ before_script:
  - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
  - php admin/tool/behat/cli/init.php
 script:
- - if [ '$MOODLE_VERSION' = 'master']; then
- - vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2
- - fi
+ - if [ '$MOODLE_VERSION' = 'master' ]; then vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2; fi
  - phpunit auth_googleoauth2_lib_testcase auth/googleoauth2/tests/lib_test.php
