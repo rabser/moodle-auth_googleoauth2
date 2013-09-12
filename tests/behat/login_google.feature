@@ -23,7 +23,7 @@ Feature: Sign in with a Google account
     When I expand "Themes" node
     When I follow "Theme selector"
     When I click on "//*[@id=\"admindeviceselector\"]/tbody/tr[1]/td[3]/div/form/div/input[1]" "xpath_element"
-    When I click on "//*[@id=\"adminthemeselector\"]/tbody/tr[16]/td[2]/div/form/div/input[1]" "xpath_element"
+    When I click on "//*[@id=\"adminthemeselector\"]/tbody/tr[15]/td[2]/div/form/div/input[1]" "xpath_element"
     When I follow "Log out"
     Then I should see "Home"
     When I follow "Log in"

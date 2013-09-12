@@ -9,6 +9,7 @@ env:
  - DB=pgsql
 before_script:
  - git clone git://github.com/moodle/moodle ../moodle && cd ../moodle
+ - sudo apt-get update > /dev/null
  - composer self-update
  - composer install --dev --prefer-dist
  - mv ../moodle-auth_googleoauth2 auth/googleoauth2
@@ -26,11 +27,10 @@ before_script:
  - sh -c "if [ '$DB' = 'pgsql' ]; then sed -i s/\'username\'/\'postgres\'/ config.php; fi"
  - mkdir -m777 $HOME/moodledata
  - php admin/tool/phpunit/cli/init.php
- - sudo apt-get update > /dev/null
  - "php -S localhost:8000 > /dev/null &"
  - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
  - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
  - php admin/tool/behat/cli/init.php
 script:
- - phpunit auth_googleoauth2_lib_testcase auth/googleoauth2/tests/lib_test.php
  - vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2
+ - phpunit auth_googleoauth2_lib_testcase auth/googleoauth2/tests/lib_test.php
