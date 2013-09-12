@@ -32,7 +32,7 @@ before_script:
  - php admin/tool/phpunit/cli/init.php
  - "(php -S localhost:8000 &) 2> /dev/null > /dev/null"
  - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
- - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
+ - "(java -jar selenium-server-standalone-2.31.0.jar &) 2> /dev/null > /dev/null"
  - php admin/tool/behat/cli/init.php
 script:
  - if [ $MOODLE_VERSION = 'master' ]; then vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2; fi
