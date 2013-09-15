@@ -30,6 +30,12 @@ $string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your 
 $string['auth_facebookclientid_key'] = 'Facebook App ID';
 $string['auth_facebookclientsecret'] = 'See above.';
 $string['auth_facebookclientsecret_key'] = 'Facebook App secret';
+$string['auth_githubclientid'] = 'Your client ID/Secret can be generated in your <a href="https://github.com/settings/applications/new">Github register application page</a>:
+<br/>Homepage URL: {$a->siteurl}
+<br/>Authorization callback URL: {$a->callbackurl}';
+$string['auth_githubclientid_key'] = 'Github client ID';
+$string['auth_githubclientsecret'] = 'See above.';
+$string['auth_githubclientsecret_key'] = 'Github client secret';
 $string['auth_googleclientid'] = 'Your client ID/Secret can be generated in the <a href="https://code.google.com/apis/console">Google console API</a>:
 <br/>
 Google console API > API Access > Create another client ID...

@@ -69,6 +69,14 @@ function auth_googleoauth2_display_buttons() {
             </a>
         </div>';
 
+    $displayprovider = ((empty($authprovider) || $authprovider == 'github' || $allauthproviders) && get_config('auth/googleoauth2', 'githubclientid'));
+    $providerdisplaystyle = $displayprovider?'display:inline-block;':'display:none;';
+    echo '<div class="singinprovider" style="'. $providerdisplaystyle .' padding-left: 20px;">
+            <a class="zocial github" href="https://github.com/login/oauth/authorize?client_id='. get_config('auth/googleoauth2', 'githubclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/github_redirect.php&scope=user:email&response_type=code">
+                Sign-in with Github
+            </a>
+        </div>';
+
 
      $displayprovider = ((empty($authprovider) || $authprovider == 'messenger' || $allauthproviders) && get_config('auth/googleoauth2', 'messengerclientid'));
      $providerdisplaystyle = $displayprovider?'display:inline-block;':'display:none;';
@@ -79,7 +87,7 @@ function auth_googleoauth2_display_buttons() {
         </div>
     </div>';
 
-    if (!empty($authprovider)) {
+    if (!empty($authprovider) and !$allauthproviders) {
         echo '<br/><br/>
             <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true' .'" onclick="changecss(\'singinprovider\',\'display\',\'inline-block\');">

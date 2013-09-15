@@ -125,6 +125,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $params['code'] = $authorizationcode;
                     $params['grant_type'] = 'authorization_code';
                     break;
+                case 'github':
+                    $params['client_id'] = get_config('auth/googleoauth2', 'githubclientid');
+                    $params['client_secret'] = get_config('auth/googleoauth2', 'githubclientsecret');
+                    $requestaccesstokenurl = 'https://github.com/login/oauth/access_token';
+                    $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/github_redirect.php';
+                    $params['code'] = $authorizationcode;
+                    break;
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
                     break;
@@ -151,13 +158,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     //$tokentype = $postreturnvalues->token_type;
                     break;
                 case 'facebook':
+                case 'github':
                     parse_str($postreturnvalues, $returnvalues);
                     $accesstoken = $returnvalues['access_token'];
                     break;
                 case 'messenger':
                     $accesstoken = json_decode($postreturnvalues)->access_token;
                     break;
-
                 default:
                     break;
             }
@@ -194,6 +201,15 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $useremail = $messengeruser->emails->preferred;
                         $verified = 1; //not super good but there are no way to check it yet:
                                        //http://social.msdn.microsoft.com/Forums/en-US/messengerconnect/thread/515d546d-1155-4775-95d8-89dadc5ee929
+                        break;
+
+                    case 'github':
+                        $params = array();
+                        $params['access_token'] = $accesstoken;
+                        $postreturnvalues = $curl->get('https://api.github.com/user', $params);
+                        $githubuser = json_decode($postreturnvalues);
+                        $useremail = $githubuser->email;
+                        $verified = 1; // The field will be available in the final version of the API v3.
                         break;
 
                     default:
@@ -272,6 +288,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         case 'messenger':
                             $newuser->firstname =  $messengeruser->first_name;
                             $newuser->lastname =  $messengeruser->last_name;
+                            break;
+
+                        case 'github':
+                            //As Github doesn't provide firstname/lastname, we'll split the name at the first whitespace.
+                            $githubusername = explode(' ', $githubuser->name, 2);
+                            $newuser->firstname =  $githubusername[0];
+                            $newuser->lastname =  $githubusername[1];
                             break;
 
                         default:
@@ -374,6 +397,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         }
         if (!isset ($config->messengerclientsecret)) {
             $config->messengerclientsecret = '';
+        }
+        if (!isset ($config->githubclientid)) {
+            $config->githubclientid = '';
+        }
+        if (!isset ($config->githubclientsecret)) {
+            $config->githubclientsecret = '';
         }
         if (!isset($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
@@ -540,6 +569,57 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td></tr>';
 
+        // Github client id
+
+        echo '<tr>
+                <td align="right"><label for="githubclientid">';
+
+        print_string('auth_githubclientid_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'githubclientid', 'name' => 'githubclientid',
+                'class' => 'githubclientid', 'value' => $config->githubclientid));
+
+        if (isset($err["githubclientid"])) {
+            echo $OUTPUT->error_text($err["githubclientid"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_githubclientid', 'auth_googleoauth2',
+            (object) array('callbackurl' => $CFG->wwwroot . '/auth/googleoauth2/github_redirect.php',
+                'siteurl' => $CFG->wwwroot)) ;
+
+        echo '</td></tr>';
+
+        // Github client secret
+
+        echo '<tr>
+                <td align="right"><label for="githubclientsecret">';
+
+        print_string('auth_githubclientsecret_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'githubclientsecret', 'name' => 'githubclientsecret',
+                'class' => 'githubclientsecret', 'value' => $config->githubclientsecret));
+
+        if (isset($err["githubclientsecret"])) {
+            echo $OUTPUT->error_text($err["githubclientsecret"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_githubclientsecret', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+
+
         // IPinfoDB
 
         echo '<tr>
@@ -630,6 +710,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->messengerclientsecret)) {
             $config->messengerclientsecret = '';
         }
+        if (!isset ($config->githubclientid)) {
+            $config->githubclientid = '';
+        }
+        if (!isset ($config->githubclientsecret)) {
+            $config->githubclientsecret = '';
+        }
         if (!isset ($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
@@ -644,6 +730,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         set_config('facebookclientsecret', $config->facebookclientsecret, 'auth/googleoauth2');
         set_config('messengerclientid', $config->messengerclientid, 'auth/googleoauth2');
         set_config('messengerclientsecret', $config->messengerclientsecret, 'auth/googleoauth2');
+        set_config('githubclientid', $config->githubclientid, 'auth/googleoauth2');
+        set_config('githubclientsecret', $config->githubclientsecret, 'auth/googleoauth2');
         set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
         set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 
