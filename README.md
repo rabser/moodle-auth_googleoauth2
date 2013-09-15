@@ -14,7 +14,7 @@ Since Moodle 2.5 you can automatically install the plugin from [Moodle.org](http
 
 3. in the plugin settings, follow the instructions.
 
-4. **[Moodle 2.5+]** install this theme extending bootstrap: https://github.com/mouneyrac/moodle-theme_easy/archive/googleoauth2.zip
+4. **[Moodle 2.5+]** install this theme extending bootstrap: https://github.com/mouneyrac/moodle-theme_oauth2easy/archive/oauth2easy.zip
 
     or
     
@@ -30,7 +30,10 @@ FAQ and Support
 ---------------
 
 Read the [Wiki](https://github.com/mouneyrac/auth_googleoauth2/wiki).
+
 You are welcome to send Pull Request and to report [issues](https://github.com/mouneyrac/auth_googleoauth2/issues).
+
+Continuous testing is done with [Travis-ci](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2).
 
 Credits
 -------
