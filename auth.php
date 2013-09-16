@@ -220,7 +220,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params['access_token'] = $accesstoken;
                         $postreturnvalues = $curl->get('https://api.github.com/user', $params);
                         $githubuser = json_decode($postreturnvalues);
-                        $useremail = $githubuser->email;
+                        $useremails = json_decode($curl->get('https://api.github.com/user/emails', $params));
+                        $useremail = $useremails[0];
                         $verified = 1; // The field will be available in the final version of the API v3.
                         break;
 
