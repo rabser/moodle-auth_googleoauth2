@@ -77,6 +77,14 @@ function auth_googleoauth2_display_buttons() {
             </a>
         </div>';
 
+    $displayprovider = ((empty($authprovider) || $authprovider == 'linkedin' || $allauthproviders) && get_config('auth/googleoauth2', 'linkedinclientid'));
+    $providerdisplaystyle = $displayprovider?'display:inline-block;':'display:none;';
+    echo '<div class="singinprovider" style="'. $providerdisplaystyle .' padding-left: 20px;">
+            <a class="zocial linkedin" href="https://www.linkedin.com/uas/oauth2/authorization?client_id='. get_config('auth/googleoauth2', 'linkedinclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/linkedin_redirect.php&state=332567b2367&scope=r_basicprofile%20r_emailaddress&response_type=code">
+                Sign-in with Linkedin
+            </a>
+        </div>';
+
 
      $displayprovider = ((empty($authprovider) || $authprovider == 'messenger' || $allauthproviders) && get_config('auth/googleoauth2', 'messengerclientid'));
      $providerdisplaystyle = $displayprovider?'display:inline-block;':'display:none;';

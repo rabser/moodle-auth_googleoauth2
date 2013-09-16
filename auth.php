@@ -132,6 +132,14 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/github_redirect.php';
                     $params['code'] = $authorizationcode;
                     break;
+                case 'linkedin':
+                    $params['grant_type'] = 'authorization_code';
+                    $params['code'] = $authorizationcode;
+                    $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/linkedin_redirect.php';
+                    $params['client_id'] = get_config('auth/googleoauth2', 'linkedinclientid');
+                    $params['client_secret'] = get_config('auth/googleoauth2', 'linkedinclientsecret');
+                    $requestaccesstokenurl = 'https://www.linkedin.com/uas/oauth2/accessToken';
+                    break;
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
                     break;
@@ -143,14 +151,18 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 $curl = new curl();
                 $postreturnvalues = $curl->get('https://oauth.live.com/token?client_id=' . urlencode($params['client_id']) . '&redirect_uri=' . urlencode($params['redirect_uri'] ). '&client_secret=' . urlencode($params['client_secret']) . '&code=' .urlencode( $params['code']) . '&grant_type=authorization_code');
 
+           } else if ($authprovider == 'linkedin') {
+                $curl = new curl();
+                $postreturnvalues = $curl->get($requestaccesstokenurl . '?client_id=' . urlencode($params['client_id']) . '&redirect_uri=' . urlencode($params['redirect_uri'] ). '&client_secret=' . urlencode($params['client_secret']) . '&code=' .urlencode( $params['code']) . '&grant_type=authorization_code');
+
            } else {
                 $curl = new curl();
                 $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
             }
 
-
             switch ($authprovider) {
                 case 'google':
+                case 'linkedin':
                     $postreturnvalues = json_decode($postreturnvalues);
                     $accesstoken = $postreturnvalues->access_token;
                     //$refreshtoken = $postreturnvalues->refresh_token;
@@ -210,6 +222,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $githubuser = json_decode($postreturnvalues);
                         $useremail = $githubuser->email;
                         $verified = 1; // The field will be available in the final version of the API v3.
+                        break;
+
+                    case 'linkedin':
+                        $params = array();
+                        $params['format'] = 'json';
+                        $params['oauth2_access_token'] = $accesstoken;
+                        $postreturnvalues = $curl->get('https://api.linkedin.com/v1/people/~:(first-name,last-name,email-address,location:(name,country:(code)))', $params);
+                        $linkedinuser = json_decode($postreturnvalues);
+                        $useremail = $linkedinuser->emailAddress;
+                        $verified = 1;
                         break;
 
                     default:
@@ -295,6 +317,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             $githubusername = explode(' ', $githubuser->name, 2);
                             $newuser->firstname =  $githubusername[0];
                             $newuser->lastname =  $githubusername[1];
+                            break;
+
+                        case 'linkedin':
+                            $newuser->firstname =  $linkedinuser->firstName;
+                            $newuser->lastname =  $linkedinuser->lastName;
+                            $newuser->country = $linkedinuser->country->code;
+                            $newuser->city = $linkedinuser->name;
                             break;
 
                         default:
@@ -403,6 +432,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         }
         if (!isset ($config->githubclientsecret)) {
             $config->githubclientsecret = '';
+        }
+        if (!isset ($config->linkedinclientid)) {
+            $config->linkedinclientid = '';
+        }
+        if (!isset ($config->linkedinclientsecret)) {
+            $config->linkedinclientsecret = '';
         }
         if (!isset($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
@@ -619,6 +654,56 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td></tr>';
 
+        // Linkedin client id
+
+        echo '<tr>
+                <td align="right"><label for="linkedinclientid">';
+
+        print_string('auth_linkedinclientid_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'linkedinclientid', 'name' => 'linkedinclientid',
+                'class' => 'linkedinclientid', 'value' => $config->linkedinclientid));
+
+        if (isset($err["linkedinclientid"])) {
+            echo $OUTPUT->error_text($err["linkedinclientid"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_linkedinclientid', 'auth_googleoauth2',
+            (object) array('callbackurl' => $CFG->wwwroot . '/auth/googleoauth2/linkedin_redirect.php',
+                'siteurl' => $CFG->wwwroot)) ;
+
+        echo '</td></tr>';
+
+        // Linkedin client secret
+
+        echo '<tr>
+                <td align="right"><label for="linkedinclientsecret">';
+
+        print_string('auth_linkedinclientsecret_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'linkedinclientsecret', 'name' => 'linkedinclientsecret',
+                'class' => 'linkedinclientsecret', 'value' => $config->linkedinclientsecret));
+
+        if (isset($err["linkedinclientsecret"])) {
+            echo $OUTPUT->error_text($err["linkedinclientsecret"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_linkedinclientsecret', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+
 
         // IPinfoDB
 
@@ -716,6 +801,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->githubclientsecret)) {
             $config->githubclientsecret = '';
         }
+        if (!isset ($config->linkedinclientid)) {
+            $config->linkedinclientid = '';
+        }
+        if (!isset ($config->linkedinclientsecret)) {
+            $config->linkedinclientsecret = '';
+        }
         if (!isset ($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
@@ -732,6 +823,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         set_config('messengerclientsecret', $config->messengerclientsecret, 'auth/googleoauth2');
         set_config('githubclientid', $config->githubclientid, 'auth/googleoauth2');
         set_config('githubclientsecret', $config->githubclientsecret, 'auth/googleoauth2');
+        set_config('linkedinclientid', $config->linkedinclientid, 'auth/googleoauth2');
+        set_config('linkedinclientsecret', $config->linkedinclientsecret, 'auth/googleoauth2');
         set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
         set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 

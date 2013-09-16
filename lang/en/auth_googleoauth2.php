@@ -54,6 +54,12 @@ $string['auth_googleuserprefix_key'] = 'Username prefix';
 $string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external service: Google/Facebook/Windows Live. The first time the user connect with an external service, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
 <br/><br/>
 <i>Warning about Windows Live: Microsoft doesn\'t tell the plugin if the user\'s email address has been verified. More info in the <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
+$string['auth_linkedinclientid'] = 'Your API/Secret keys can be generated in your <a href="https://www.linkedin.com/secure/developer">Linkedin register application page</a>:
+<br/>Website URL: {$a->siteurl}
+<br/>OAuth 1.0 Accept Redirect URL: {$a->callbackurl}';
+$string['auth_linkedinclientid_key'] = 'Linkedin API Key';
+$string['auth_linkedinclientsecret'] = 'See above.';
+$string['auth_linkedinclientsecret_key'] = 'Linkedin Secret key';
 $string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://account.live.com/developers/applications">Windows Live apps page</a>:
 <br/>Redirect domain: {$a->domain}';
 $string['auth_messengerclientid_key'] = 'Messenger Client ID';
