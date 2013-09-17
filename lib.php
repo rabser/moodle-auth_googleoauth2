@@ -25,6 +25,19 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
+ * Get (generate) session state token.
+ *
+ * @return string the state token.
+ */
+function auth_googleoauth2_get_state_token() {
+    // Create a state token to prevent request forgery.
+    // Store it in the session for later validation.
+    $state = md5(rand());
+    $_SESSION['STATETOKEN'] = $state;
+    return $state;
+}
+
+/**
  * The very ugly code to display the buttons.
  * It's been moved quickly here from the README.md to make it easy for people to add the code into login/index_form.php
  */
@@ -80,7 +93,7 @@ function auth_googleoauth2_display_buttons() {
     $displayprovider = ((empty($authprovider) || $authprovider == 'linkedin' || $allauthproviders) && get_config('auth/googleoauth2', 'linkedinclientid'));
     $providerdisplaystyle = $displayprovider?'display:inline-block;':'display:none;';
     echo '<div class="singinprovider" style="'. $providerdisplaystyle .' padding-left: 20px;">
-            <a class="zocial linkedin" href="https://www.linkedin.com/uas/oauth2/authorization?client_id='. get_config('auth/googleoauth2', 'linkedinclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/linkedin_redirect.php&state=332567b2367&scope=r_basicprofile%20r_emailaddress&response_type=code">
+            <a class="zocial linkedin" href="https://www.linkedin.com/uas/oauth2/authorization?client_id='. get_config('auth/googleoauth2', 'linkedinclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/linkedin_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=r_basicprofile%20r_emailaddress&response_type=code">
                 Sign-in with Linkedin
             </a>
         </div>';

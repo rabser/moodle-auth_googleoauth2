@@ -11,6 +11,12 @@ if (empty($code)) {
     throw new moodle_exception('linkedin_failure');
 }
 
+// Ensure that this is no request forgery going on, and that the user
+// sending us this connect request is the user that was supposed to.
+if ($_SESSION['STATETOKEN'] !== required_param('state', PARAM_TEXT)) {
+    throw new moodle_exception('Invalid state parameter');
+}
+
 $loginurl = '/login/index.php';
 if (!empty($CFG->alternateloginurl)) {
     $loginurl = $CFG->alternateloginurl;
