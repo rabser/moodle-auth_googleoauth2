@@ -32,9 +32,11 @@ defined('MOODLE_INTERNAL') || die();
 function auth_googleoauth2_get_state_token() {
     // Create a state token to prevent request forgery.
     // Store it in the session for later validation.
-    $state = md5(rand());
-    $_SESSION['STATETOKEN'] = $state;
-    return $state;
+    if (empty($_SESSION['STATETOKEN'])) {
+        $state = md5(rand());
+        $_SESSION['STATETOKEN'] = $state;
+    }
+    return $_SESSION['STATETOKEN'];
 }
 
 /**
@@ -69,7 +71,7 @@ function auth_googleoauth2_display_buttons() {
     $providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
     echo '<div class="singinprovider" style="' . $providerdisplaystyle .'">
             <a class="zocial googleplus" href="https://accounts.google.com/o/oauth2/auth?client_id='.
-              get_config('auth/googleoauth2', 'googleclientid') .'&redirect_uri='.$CFG->wwwroot .'/auth/googleoauth2/google_redirect.php&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code">
+              get_config('auth/googleoauth2', 'googleclientid') .'&redirect_uri='.$CFG->wwwroot .'/auth/googleoauth2/google_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&response_type=code">
                 Sign-in with Google
             </a>
         </div>';
@@ -77,7 +79,7 @@ function auth_googleoauth2_display_buttons() {
      $displayprovider = ((empty($authprovider) || $authprovider == 'facebook' || $allauthproviders) && get_config('auth/googleoauth2', 'facebookclientid'));
      $providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
      echo '<div class="singinprovider" style="'. $providerdisplaystyle .'">
-            <a class="zocial facebook" href="https://www.facebook.com/dialog/oauth?client_id='. get_config('auth/googleoauth2', 'facebookclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/facebook_redirect.php&scope=email&response_type=code">
+            <a class="zocial facebook" href="https://www.facebook.com/dialog/oauth?client_id='. get_config('auth/googleoauth2', 'facebookclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/facebook_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=email&response_type=code">
                 Sign-in with Facebook
             </a>
         </div>';
@@ -85,7 +87,7 @@ function auth_googleoauth2_display_buttons() {
     $displayprovider = ((empty($authprovider) || $authprovider == 'github' || $allauthproviders) && get_config('auth/googleoauth2', 'githubclientid'));
     $providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
     echo '<div class="singinprovider" style="'. $providerdisplaystyle .'">
-            <a class="zocial github" href="https://github.com/login/oauth/authorize?client_id='. get_config('auth/googleoauth2', 'githubclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/github_redirect.php&scope=user:email&response_type=code">
+            <a class="zocial github" href="https://github.com/login/oauth/authorize?client_id='. get_config('auth/googleoauth2', 'githubclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/github_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=user:email&response_type=code">
                 Sign-in with Github
             </a>
         </div>';
@@ -102,7 +104,7 @@ function auth_googleoauth2_display_buttons() {
      $displayprovider = ((empty($authprovider) || $authprovider == 'messenger' || $allauthproviders) && get_config('auth/googleoauth2', 'messengerclientid'));
      $providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
      echo '<div class="singinprovider" style="'. $providerdisplaystyle .'">
-            <a class="zocial windows" href="https://oauth.live.com/authorize?client_id='. get_config('auth/googleoauth2', 'messengerclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/messenger_redirect.php&scope=wl.basic wl.emails wl.signin&response_type=code">
+            <a class="zocial windows" href="https://oauth.live.com/authorize?client_id='. get_config('auth/googleoauth2', 'messengerclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/messenger_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=wl.basic wl.emails wl.signin&response_type=code">
                 Sign-in with Windows Live
             </a>
         </div>
