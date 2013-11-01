@@ -4,9 +4,11 @@ Oauth 2.0 authentication plugin for Moodle
 This plugin adds a Google/Facebook/Github/Linkedin/Windows Live button on the front page.
 The first time the user clicks on the button, a new account is created.
 
+Requirement: this plugin version requires Moodle 2.6 and later. Get the STABLE_25 branch for Moodle 2.5 and earlier.
+
 Plugin installation:
 --------------------
-Since Moodle 2.5 you can automatically install the plugin from [Moodle.org](https://moodle.org/plugins/view.php?plugin=auth_googleoauth2). For manual installation or other versions, follow these steps:
+You can automatically install the plugin from [Moodle.org](https://moodle.org/plugins/view.php?plugin=auth_googleoauth2). For manual installation or other versions, follow these steps:
 
 1. add the plugin into /auth/googleoauth2/
 
@@ -14,11 +16,11 @@ Since Moodle 2.5 you can automatically install the plugin from [Moodle.org](http
 
 3. in the plugin settings, follow the instructions.
 
-4. **[Moodle 2.5+]** install this [theme extending bootstrap](https://moodle.org/plugins/view.php?plugin=theme_oauth2easy)
+4. install this [theme extending bootstrap](https://moodle.org/plugins/view.php?plugin=theme_oauth2easy)
 
     or
     
-   **[All versions]** add the following code to your login page (For most of you copy it at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.):
+   add the following code to your login page (For most of you copy it at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.):
 
 `<?php
 require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
