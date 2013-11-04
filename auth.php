@@ -92,6 +92,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
     function loginpage_hook() {
         global $USER, $SESSION, $CFG, $DB;
 
+	// adding this here negates the need for any theme mods.
+	// makes the plugin more useful for those who cannot modify hosted files.
+	require_once($CFG->dirroot . '/auth/googleoauth2/lib.php'); auth_googleoauth2_display_buttons();
+
         //check the Google authorization code
         $authorizationcode = optional_param('code', '', PARAM_TEXT);
         if (!empty($authorizationcode)) {
