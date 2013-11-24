@@ -48,7 +48,7 @@ function auth_googleoauth2_display_buttons() {
 
 /**
  * The very ugly code to render the html buttons.
- * TODO remove ugly html like <center> and inline styles, implement a moodle renderer
+ * TODO remove ugly html like center-tag and inline styles, implement a moodle renderer
  * @return string: returns the html for buttons and some JavaScript 
  */
 function auth_googleoauth2_render_buttons() {
@@ -127,4 +127,5 @@ function auth_googleoauth2_render_buttons() {
             </div>';
 	}
 	$html .= "</center>";	
+	return $html;
 }
