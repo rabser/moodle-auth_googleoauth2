@@ -140,6 +140,15 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $params['client_secret'] = get_config('auth/googleoauth2', 'linkedinclientsecret');
                     $requestaccesstokenurl = 'https://www.linkedin.com/uas/oauth2/accessToken';
                     break;
+                case 'vk':
+                    $params['grant_type'] = 'authorization_code';
+                    $params['code'] = $authorizationcode;
+                    $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/vk_redirect.php';
+                    $params['client_id'] = get_config('auth/googleoauth2', 'vkappid');
+		    $params['client_secret'] = get_config('auth/googleoauth2','vkappsecret');
+                    $requestaccesstokenurl = 'https://oauth.vk.com/access_token';
+                    break;
+		    
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
                     break;
@@ -177,6 +186,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 case 'messenger':
                     $accesstoken = json_decode($postreturnvalues)->access_token;
                     break;
+                case 'vk':
+                    $accesstoken = json_decode($postreturnvalues)->access_token;
+                    break;
+		    
                 default:
                     break;
             }
@@ -234,7 +247,18 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $useremail = $linkedinuser->emailAddress;
                         $verified = 1;
                         break;
-
+			
+                    case 'vk':
+                        $params = array();
+                        $params['access_token'] = $accesstoken;
+                        $params['v'] = '5.9';
+                        $api_raw_responce = $curl->get('https://api.vk.com/method/users.get',$params);
+                        $vk_user = json_decode($curl->get('https://api.vk.com/method/users.get',$params))->response["0"];
+                        if ($vk_user->id != "") {
+                           $useremail = 'id'.$vk_user->id.'@vkmessenger.com';
+                        };
+                        $verified = 1;			
+                        break;  
                     default:
                         break;
                 }
@@ -326,7 +350,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             $newuser->country = $linkedinuser->country->code;
                             $newuser->city = $linkedinuser->name;
                             break;
-
+                       case 'vk':
+                            $newuser->firstname = $vk_user->first_name;
+                            $newuser->lastname = $vk_user->last_name;
+                            break;
                         default:
                             break;
                     }
@@ -347,7 +374,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     }
 
                     create_user_record($username, '', 'googleoauth2');
-
                 } else {
                     $username = $user->username;
                 }
@@ -373,13 +399,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     }
 
                     complete_user_login($user);
-
-                    // Create event for authenticated user.
-                    $event = \auth_googleoauth2\event\user_loggedin::create(
-                        array('context'=>context_system::instance(),
-                            'objectid'=>$user->id, 'relateduserid'=>$user->id,
-                            'other'=>array('accesstoken' => $accesstoken)));
-                    $event->trigger();
 
                     // Redirection
                     if (user_not_fully_set_up($USER)) {
@@ -450,6 +469,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
+        if (!isset($config->vkappid)) {
+            $config->vkappid = '';
+        }
+        if (!isset($config->vkappsecret)) {
+	    $config->vkappsecret = '';
+        }
+
         if (!isset($config->googleuserprefix)) {
             $config->googleuserprefix = 'social_user_';
         }
@@ -737,6 +763,41 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '</td></tr>';
 
+        // VK app id
+        echo '<tr>
+                <td align="right"><label for="vkappid">';
+        print_string('auth_vkappid_key', 'auth_googleoauth2');
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'vkappid', 'name' => 'vkappid',
+                'class' => 'vkappid', 'value' => $config->vkappid));
+        if (isset($err["vkappid"])) {
+            echo $OUTPUT->error_text($err["vkappid"]);
+        }
+        echo '</td><td>';
+        print_string('auth_vkappid', 'auth_googleoauth2',
+            (object) array('callbackurl' => $CFG->wwwroot . '/auth/googleoauth2/vk_redirect.php',
+                'siteurl' => $CFG->wwwroot)) ;
+        echo '</td></tr>';
+        
+        // VK app secret
+        echo '<tr>
+                <td align="right"><label for="vkappsecret">';
+        print_string('auth_vkappsecret_key', 'auth_googleoauth2');
+        echo '</label></td><td>';
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'vkappsecret', 'name' => 'vkappsecret',
+                'class' => 'vkappsecret', 'value' => $config->vkappsecret));
+        if (isset($err["vkappsecret"])) {
+            echo $OUTPUT->error_text($err["vkappsecret"]);
+        }
+        echo '</td><td>';
+        print_string('auth_vkappsecret', 'auth_googleoauth2');
+        echo '</td></tr>';
+
         // User prefix
 
         echo '<tr>
@@ -818,6 +879,13 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->googleipinfodbkey)) {
             $config->googleipinfodbkey = '';
         }
+        if (!isset ($config->vkappid)) {
+            $config->vkappid = '';
+        }
+        if (!isset ($config->vkappsecret)) {
+            $config->vkappsecret = '';
+        }
+	
         if (!isset ($config->googleuserprefix)) {
             $config->googleuserprefix = 'social_user_';
         }
@@ -834,6 +902,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         set_config('linkedinclientid', $config->linkedinclientid, 'auth/googleoauth2');
         set_config('linkedinclientsecret', $config->linkedinclientsecret, 'auth/googleoauth2');
         set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
+        set_config('vkappid', $config->vkappid, 'auth/googleoauth2');
+        set_config('vkappsecret', $config->vkappsecret, 'auth/googleoauth2');
         set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
 
         return true;

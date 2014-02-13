@@ -1,7 +1,7 @@
 Oauth 2.0 authentication plugin for Moodle
 ==========================================
 
-This plugin adds a Google/Facebook/Github/Linkedin/Windows Live button on the front page.
+This plugin adds a Google/Facebook/Github/Linkedin/Windows Live/VK button on the front page.
 The first time the user clicks on the button, a new account is created.
 
 Requirement: this plugin version requires Moodle 2.6 and later. Get the STABLE_25 branch for Moodle 2.5 and earlier.

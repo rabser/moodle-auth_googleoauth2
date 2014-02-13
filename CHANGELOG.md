@@ -1,5 +1,8 @@
 Changelog
 ==========
+v1.6
+----
+* add support for vk.com login
 
 v1.5
 ----
