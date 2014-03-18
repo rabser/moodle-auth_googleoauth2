@@ -323,8 +323,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         case 'linkedin':
                             $newuser->firstname =  $linkedinuser->firstName;
                             $newuser->lastname =  $linkedinuser->lastName;
-                            $newuser->country = $linkedinuser->country->code;
-                            $newuser->city = $linkedinuser->name;
+                            if (!empty($linkedinuser->location->country->code)) {
+                                $newuser->country = $linkedinuser->location->country->code;
+                            }
+                            if (!empty($linkedinuser->location->name)) {
+                                $newuser->city = $linkedinuser->location->name;
+                            }
                             break;
 
                         default:
