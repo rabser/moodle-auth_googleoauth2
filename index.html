@@ -37,12 +37,13 @@
 <li>add the plugin into /auth/googleoauth2/</li>
 <li>in the Moodle administration, enable the plugin (Admin block &gt; Plugins &gt; Authentication)</li>
 <li>in the plugin settings, follow the displayed instructions.</li>
-<li>[Moodle 2.5+] install the Oauth2 theme extending bootstrap.</li>
-</ol><p>or</p>
+<li>Add the following code to your login page :</li>
+</ol><p><code>&lt;?php 
+require_once($CFG-&gt;dirroot . '/auth/googleoauth2/lib.php'); 
+auth_googleoauth2_display_buttons(); 
+?&gt;</code></p>
 
-<ol>
-<li>[All versions] Add the following code to your login page (For most of you copy it at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.):</li>
-</ol><p>``&lt;?php require_once($CFG-&gt;dirroot . '/auth/googleoauth2/lib.php'); auth_googleoauth2_display_buttons(); ?&gt;</p>
+<p>Most of you will need to copy the code at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.</p>
 
 <h3>
 <a name="support-for-business-and-organization" class="anchor" href="#support-for-business-and-organization"><span class="octicon octicon-link"></span></a>Support for business and organization</h3>
