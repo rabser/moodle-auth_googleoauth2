@@ -17,7 +17,6 @@ Most of you will need to copy the code at the bottom of login/index_form.html. S
 ### Support for business and organization
 You can contact me at jerome@mouneyrac.com.
 
-Credits
--------
+### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
 * [CSS social buttons](http://zocial.smcllns.com/)
