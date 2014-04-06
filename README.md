@@ -14,8 +14,8 @@ auth_googleoauth2_display_buttons();
 
 Most of you will need to copy the code at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.
 
-### Support for business and organization
-You can contact me at jerome@mouneyrac.com.
+### Support and maintenance
+More information on the [official web site](http://mouneyrac.github.io/moodle-auth_googleoauth2/).
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
