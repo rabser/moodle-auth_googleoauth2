@@ -147,16 +147,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
             //request by curl an access token and refresh token
             require_once($CFG->libdir . '/filelib.php');
+            $curl = new curl();
             if ($authprovider == 'messenger') { //Windows Live returns an "Object moved" error with curl->post() encoding
-                $curl = new curl();
                 $postreturnvalues = $curl->get('https://oauth.live.com/token?client_id=' . urlencode($params['client_id']) . '&redirect_uri=' . urlencode($params['redirect_uri'] ). '&client_secret=' . urlencode($params['client_secret']) . '&code=' .urlencode( $params['code']) . '&grant_type=authorization_code');
-
-           } else if ($authprovider == 'linkedin') {
-                $curl = new curl();
+            } else if ($authprovider == 'linkedin') {
                 $postreturnvalues = $curl->get($requestaccesstokenurl . '?client_id=' . urlencode($params['client_id']) . '&redirect_uri=' . urlencode($params['redirect_uri'] ). '&client_secret=' . urlencode($params['client_secret']) . '&code=' .urlencode( $params['code']) . '&grant_type=authorization_code');
-
-           } else {
-                $curl = new curl();
+            } else {
                 $postreturnvalues = $curl->post($requestaccesstokenurl, $params);
             }
 
@@ -221,8 +217,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $postreturnvalues = $curl->get('https://api.github.com/user', $params);
                         $githubuser = json_decode($postreturnvalues);
                         $useremails = json_decode($curl->get('https://api.github.com/user/emails', $params));
-                        $useremail = $useremails[0];
-                        $verified = 1; // The field will be available in the final version of the API v3.
+                        $useremail = '';
+                        $verified = 0;
+                        // get first valid email
+                        foreach ($useremails as $email) {
+                            if ($email->verified) {
+                                $useremail = $email->email;
+                                $verified = (int) $email->verified;
+                                break;
+                            }
+                        }
                         break;
 
                     case 'linkedin':
