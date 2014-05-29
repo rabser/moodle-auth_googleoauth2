@@ -190,10 +190,10 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params = array();
                         $params['access_token'] = $accesstoken;
                         $params['alt'] = 'json';
-                        $postreturnvalues = $curl->get('https://www.googleapis.com/userinfo/email', $params);
+                        $postreturnvalues = $curl->get('https://www.googleapis.com/oauth2/v3/userinfo', $params);
                         $postreturnvalues = json_decode($postreturnvalues);
-                        $useremail = $postreturnvalues->data->email;
-                        $verified = $postreturnvalues->data->isVerified;
+                        $useremail = $postreturnvalues->email;
+                        $verified = $postreturnvalues->email_verified;
                         break;
 
                     case 'facebook':
