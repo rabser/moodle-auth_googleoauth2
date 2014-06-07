@@ -68,6 +68,9 @@ $string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
 
 $string['auth_googlesettings'] = 'Settings';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
+$string['oauth2displaybuttons'] = 'Display buttons on login page';
+$string['oauth2displaybuttonshelp'] = 'Display the Google/Facebook/... logo buttons on the top of the login page. If you want to position the buttons yourself in your login page, you can keep this option disabled and add the following code:
+{$a}';
 $string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address" link that Google or Facebook should have sent you during your subscribtion to their service.';
 $string['moreproviderlink'] = 'Sign-in with another service.';
 $string['signinwithanaccount'] = 'Log in with:';
