@@ -1,33 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Oauth2 authentication for Moodle by mouneyrac</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Oauth2 authentication for Moodle : Google, Facebook, Linkedin, Github and  Windows Live" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Oauth2 authentication for Moodle</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Oauth2 authentication for Moodle</h1>
-        <p>Google, Facebook, Linkedin, Github and  Windows Live</p>
 
-        <p class="view"><a href="https://github.com/mouneyrac/moodle-auth_googleoauth2">View the Project on GitHub <small>mouneyrac/moodle-auth_googleoauth2</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mouneyrac/moodle-auth_googleoauth2">View on GitHub</a>
 
+          <h1 id="project_title">Oauth2 authentication for Moodle</h1>
+          <h2 id="project_tagline">Google, Facebook, Linkedin, Github and  Windows Live</h2>
 
-        <ul>
-          <li><a href="https://github.com/mouneyrac/moodle-auth_googleoauth2/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/mouneyrac/moodle-auth_googleoauth2/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/mouneyrac/moodle-auth_googleoauth2">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mouneyrac/moodle-auth_googleoauth2/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mouneyrac/moodle-auth_googleoauth2/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <p>This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created. </p>
 
 <h3>
@@ -37,15 +40,7 @@
 <li>add the plugin into /auth/googleoauth2/</li>
 <li>in the Moodle administration, enable the plugin (Admin block &gt; Plugins &gt; Authentication)</li>
 <li>in the plugin settings, follow the displayed instructions.</li>
-<li>Add the following code to your login page :</li>
-</ol><p><code>&lt;?php 
-require_once($CFG-&gt;dirroot . '/auth/googleoauth2/lib.php'); 
-auth_googleoauth2_display_buttons(); 
-?&gt;</code></p>
-
-<p>Most of you will need to copy the code at the bottom of login/index_form.html. Some custom themes have their own login page. In this case you should find the login layout page indicated in the theme config.php file. Often the file location is something like /theme/YOURTHEME/layout/login.php.</p>
-
-<h3>
+</ol><h3>
 <a name="you-need-personal-support" class="anchor" href="#you-need-personal-support"><span class="octicon octicon-link"></span></a>You need personal support</h3>
 
 <p>You can contact me at <a href="mailto:jerome@mouneyrac.com">jerome@mouneyrac.com</a>.</p>
@@ -58,12 +53,17 @@ auth_googleoauth2_display_buttons();
 <li>the many <a href="https://github.com/mouneyrac/moodle-auth_googleoauth2/graphs/contributors">contributors</a>.</li>
 </ul>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/mouneyrac">mouneyrac</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Oauth2 authentication for Moodle maintained by <a href="https://github.com/mouneyrac">mouneyrac</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
