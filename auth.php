@@ -408,6 +408,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         unset($SESSION->wantsurl);
                     }
                     redirect($urltogo);
+                } else {
+                    // authenticate_user_login() failure, probably user is created with another auth plugin
+                    throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
                 }
             } else {
                 throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
