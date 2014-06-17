@@ -76,6 +76,10 @@ $string['communityeditionmsg'] = '<center>Are you concerned about missing a secu
 <a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition</b></a><br/>
 <i>Jerome Mouneyrac - Oauth2 auth plugin author</i></center>';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
+$string['couldnotauthenticateuserlogin'] = 'Authentication method error.<br/>
+Please try to login again with your username and password.<br/>
+<a href="{$a->loginpage}">Try again</a>.<br/>
+<a href="{$a->forgotpass}">Forgot your password</a>?';
 $string['oauth2displaybuttons'] = 'Display buttons on login page';
 $string['oauth2displaybuttonshelp'] = 'Display the Google/Facebook/... logo buttons on the top of the login page. If you want to position the buttons yourself in your login page, you can keep this option disabled and add the following code:
 {$a}';

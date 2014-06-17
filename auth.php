@@ -409,8 +409,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     }
                     redirect($urltogo);
                 } else {
-                    // authenticate_user_login() failure, probably user is created with another auth plugin
-                    throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
+                    // authenticate_user_login() failure, probably user email is used by another auth plugin
+                    $a = new stdClass();
+                    $a->loginpage = !empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php';
+                    $a->loginpage = "$CFG->wwwroot$a->loginpage";
+                    $a->forgotpass = "$CFG->wwwroot/login/forgot_password.php";
+                    throw new moodle_exception('couldnotauthenticateuserlogin', 'auth_googleoauth2', '', $a);
                 }
             } else {
                 throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
