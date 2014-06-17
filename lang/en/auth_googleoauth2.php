@@ -78,6 +78,7 @@ $string['communityeditionmsg'] = '<center>Are you concerned about missing a secu
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['couldnotauthenticateuserlogin'] = 'Authentication method error.<br/>
 Please try to login again with your username and password.<br/>
+<br/>
 <a href="{$a->loginpage}">Try again</a>.<br/>
 <a href="{$a->forgotpass}">Forgot your password</a>?';
 $string['oauth2displaybuttons'] = 'Display buttons on login page';
