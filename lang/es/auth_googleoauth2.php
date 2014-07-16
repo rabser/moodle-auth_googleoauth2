@@ -38,40 +38,40 @@ $string['auth_githubclientsecret'] = 'Ver arriba.';
 $string['auth_githubclientsecret_key'] = 'Github secreto cliente';
 $string['auth_googleclientid'] = 'Tu ID cliente/Secreto puede ser generado en tu <a href="https://code.google.com/apis/console">consola de Google API</a>:
 <br/>
-Google console API > API Acceso > Crear otro ID cliente...
+Google consola API > Acceso API > Crear otro ID cliente...
 <br/>
-Redirect URLs: {$a->redirecturls}
+URLs de redireccionamiento: {$a->redirecturls}
 <br/>
-Javascript origins: {$a->jsorigins}';
-$string['auth_googleclientid_key'] = 'Google Client ID';
-$string['auth_googleclientsecret'] = 'See above.';
-$string['auth_googleclientsecret_key'] = 'Google Client secret';
-$string['auth_googleipinfodbkey'] = 'IPinfoDB is a service that let you find out what is the country and city of the visitor. This setting is optional. You can subscribe to <a href="http://www.ipinfodb.com/register.php">IPinfoDB</a> to get a free key.<br/>
+Orígenes de Javascript: {$a->jsorigins}';
+$string['auth_googleclientid_key'] = 'Cliente ID de Google';
+$string['auth_googleclientsecret'] = 'Ver arriba.';
+$string['auth_googleclientsecret_key'] = 'Secreto cliente de Google';
+$string['auth_googleipinfodbkey'] = 'IPinfoDB es un servicio que te permite averiguar el país y ciudad del visitante. Este ajuste es opcional. Puedes subscribir a <a href="http://www.ipinfodb.com/register.php">IPinfoDB</a> para conseguir una clave.<br/>
 Website: {$a->website}';
-$string['auth_googleipinfodbkey_key'] = 'IPinfoDB Key';
-$string['auth_googleuserprefix'] = 'The created user\'s username will start with this prefix. On a basic Moodle site you don\'t need to change it.';
-$string['auth_googleuserprefix_key'] = 'Username prefix';
-$string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external service: Google/Facebook/Windows Live. The first time the user connect with an external service, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
+$string['auth_googleipinfodbkey_key'] = 'Clave IPinfoDB';
+$string['auth_googleuserprefix'] = 'El nombre de usuario creado empezará con este prefijo. En un sitio Moodle sencillo, no hace falta cambiarlo.';
+$string['auth_googleuserprefix_key'] = 'Prefijo del nombre de usuario';
+$string['auth_googleoauth2description'] = 'Permite que el usuario pueda conectar al sitio web con un servicio externo: Google/Facebook/Windows Live. La primera vez que un usuario conecta con un servicio externo, se crea una cuenta nueva. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
 <br/><br/>
-<i>Warning about Windows Live: Microsoft doesn\'t tell the plugin if the user\'s email address has been verified. More info in the <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
-$string['auth_linkedinclientid'] = 'Your API/Secret keys can be generated in your <a href="https://www.linkedin.com/secure/developer">Linkedin register application page</a>:
-<br/>Website URL: {$a->siteurl}
-<br/>OAuth 1.0 Accept Redirect URL: {$a->callbackurl}';
-$string['auth_linkedinclientid_key'] = 'Linkedin API Key';
-$string['auth_linkedinclientsecret'] = 'See above.';
-$string['auth_linkedinclientsecret_key'] = 'Linkedin Secret key';
-$string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://account.live.com/developers/applications">Windows Live apps page</a>:
+<i>Aviso acerca de Windows Live: Microsoft no informa sobre la extensión si la dirección de correo ha sido verificado. Más información en el <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
+$string['auth_linkedinclientid'] = 'Tus claves secretas/API pueden ser generados en tu <a href="https://www.linkedin.com/secure/developer">página de registro de Linkedin</a>:
+<br/>URL de página web: {$a->siteurl}
+<br/>OAuth 1.0 Acceptar URL de redirección: {$a->callbackurl}';
+$string['auth_linkedinclientid_key'] = 'Clave API de Linkedin';
+$string['auth_linkedinclientsecret'] = 'Ver arriba.';
+$string['auth_linkedinclientsecret_key'] = 'Clave secreto de Linkedin';
+$string['auth_messengerclientid'] = 'Tu ID cliente/secreto puede ser generado en tu <a href="https://account.live.com/developers/applications">página de Windows Live</a>:
 <br/>Redirect domain: {$a->domain}';
-$string['auth_messengerclientid_key'] = 'Messenger Client ID';
-$string['auth_messengerclientsecret'] = 'See above.';
-$string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
+$string['auth_messengerclientid_key'] = 'ID Cliente Messenger';
+$string['auth_messengerclientsecret'] = 'Ver arriba.';
+$string['auth_messengerclientsecret_key'] = 'Secreto cliente Messenger';
 
-$string['auth_googlesettings'] = 'Settings';
+$string['auth_googlesettings'] = 'Configuración';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['oauth2displaybuttons'] = 'Display buttons on login page';
-$string['oauth2displaybuttonshelp'] = 'Display the Google/Facebook/... logo buttons on the top of the login page. If you want to position the buttons yourself in your login page, you can keep this option disabled and add the following code:
+$string['oauth2displaybuttonshelp'] = 'Mostrar los botones con el logo de Google, Facebook, etc. en la parte superior de la página de inicio de sesión. Si quieres posicionar los botones tu mismo en la página de inicio de sesión, deshabilitar esta opción y añade el siguiente código:
 {$a}';
-$string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address" link that Google or Facebook should have sent you during your subscribtion to their service.';
+$string['emailaddressmustbeverified'] = 'Tu dirección de correo electrónico no ha sido verificado por el método de autentificación que has seleccionado. Puede ser que te hayas olvidado de hacer click en el enlace "verificar dirección de correo" que Google o Facebook debía haberte mandado durante la subscripción a su servicio.';
 $string['auth_sign-in_with'] = 'Iniciar sesión con';
 $string['moreproviderlink'] = 'Iniciar sesión con otro servicio.';
 $string['signinwithanaccount'] = 'Iniciar sesión con:';
