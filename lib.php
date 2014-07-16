@@ -92,7 +92,7 @@ function auth_googleoauth2_render_buttons() {
 	$html .= '<div class="singinprovider" style="' . $providerdisplaystyle .'">
             <a class="zocial googleplus" href="https://accounts.google.com/o/oauth2/auth?client_id='.
 	            get_config('auth/googleoauth2', 'googleclientid') .'&redirect_uri='.$CFG->wwwroot .'/auth/googleoauth2/google_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=profile email&response_type=code">
-                Sign-in with Google
+                '.get_string('auth_sign-in_with','auth_googleoauth2').' Google
             </a>
         </div>';
 	
@@ -130,14 +130,15 @@ function auth_googleoauth2_render_buttons() {
         </div>
     </div>';
 	
-	if (!empty($authprovider) and !$allauthproviders) {
-		$html .= '<br /><br />
-            <div class="moreproviderlink">
+	if (!empty($authprovider) and (count($allauthproviders))>1) {
+		$html .= '<br /><br /> 
+           <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true' .'" onclick="changecss(\'singinprovider\',\'display\',\'inline-block\');">
                     '. get_string('moreproviderlink', 'auth_googleoauth2').'
                 </a>
             </div>';
 	}
+
 	$html .= "</center>";	
 	return $html;
 }
