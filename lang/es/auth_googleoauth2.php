@@ -51,7 +51,7 @@ Website: {$a->website}';
 $string['auth_googleipinfodbkey_key'] = 'Clave IPinfoDB';
 $string['auth_googleuserprefix'] = 'El nombre de usuario creado empezará con este prefijo. En un sitio Moodle sencillo, no hace falta cambiarlo.';
 $string['auth_googleuserprefix_key'] = 'Prefijo del nombre de usuario';
-$string['auth_googleoauth2description'] = 'Permite que el usuario pueda conectar al sitio web con un servicio externo: Google/Facebook/Windows Live. La primera vez que un usuario conecta con un servicio externo, se crea una cuenta nueva. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
+$string['auth_googleoauth2description'] = 'Permite que el usuario pueda conectar al sitio web con un servicio externo: Google/Facebook/Windows Live. La primera vez que un usuario conecta con un servicio externo, se crea una cuenta nueva. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Evitar la creación de cuentas al identificarse</a> <b>debe</b> estar deshabilitado.
 <br/><br/>
 <i>Aviso acerca de Windows Live: Microsoft no informa sobre la extensión si la dirección de correo ha sido verificado. Más información en el <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
 $string['auth_linkedinclientid'] = 'Tus claves secretas/API pueden ser generados en tu <a href="https://www.linkedin.com/secure/developer">página de registro de Linkedin</a>:
