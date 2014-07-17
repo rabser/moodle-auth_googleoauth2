@@ -38,11 +38,13 @@ $string['auth_githubclientsecret'] = 'See above.';
 $string['auth_githubclientsecret_key'] = 'Github client secret';
 $string['auth_googleclientid'] = 'Your client ID/Secret can be generated in the <a href="https://code.google.com/apis/console">Google console API</a>:
 <br/>
-Google console API > API Access > Create another client ID...
+Project > APIS & AUTH > Credentials > Create new Client ID...
 <br/>
 Redirect URLs: {$a->redirecturls}
 <br/>
-Javascript origins: {$a->jsorigins}';
+Javascript origins: {$a->jsorigins}
+<br/>
+You also need to <strong>enable "Google+ API"</strong>: Project > APIS & AUTH > APIs';
 $string['auth_googleclientid_key'] = 'Google Client ID';
 $string['auth_googleclientsecret'] = 'See above.';
 $string['auth_googleclientsecret_key'] = 'Google Client secret';

@@ -186,10 +186,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params = array();
                         $params['access_token'] = $accesstoken;
                         $params['alt'] = 'json';
-                        $postreturnvalues = $curl->get('https://www.googleapis.com/oauth2/v3/userinfo', $params);
+                        $postreturnvalues = $curl->get('https://www.googleapis.com/plus/v1/people/me', $params);
                         $postreturnvalues = json_decode($postreturnvalues);
-                        $useremail = $postreturnvalues->email;
-                        $verified = $postreturnvalues->email_verified;
+                        foreach($postreturnvalues->emails as $googleemail) {
+                            if($googleemail->type == "account") {
+                                $useremail = $googleemail->value;
+                            }
+                        }
+                        $useremail = $postreturnvalues->emails[0]->value;
+                        // All emails are verified: https://developers.google.com/+/api/latest/people.
+                        $verified = 1;
                         break;
 
                     case 'facebook':
@@ -291,15 +297,14 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             $params = array();
                             $params['access_token'] = $accesstoken;
                             $params['alt'] = 'json';
-                            $userinfo = $curl->get('https://www.googleapis.com/oauth2/v1/userinfo', $params);
-                            $userinfo = json_decode($userinfo); //email, id, name, verified_email, given_name, family_name, link, gender, locale
-
+                            $userinfo = $curl->get('https://www.googleapis.com/plus/v1/people/me', $params);
+                            $userinfo = json_decode($userinfo);
                             $newuser->auth = 'googleoauth2';
-                            if (!empty($userinfo->given_name)) {
-                                $newuser->firstname = $userinfo->given_name;
+                            if (!empty($userinfo->name->givenName)) {
+                                $newuser->firstname = $userinfo->name->givenName;
                             }
-                            if (!empty($userinfo->family_name)) {
-                                $newuser->lastname = $userinfo->family_name;
+                            if (!empty($userinfo->name->familyName)) {
+                                $newuser->lastname = $userinfo->name->familyName;
                             }
                             if (!empty($userinfo->locale)) {
                                 //$newuser->lang = $userinfo->locale;
