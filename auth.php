@@ -367,8 +367,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                 //authenticate the user
                 //TODO: delete this log later
+                require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
                 $userid = empty($user)?'new user':$user->id;
-                add_to_log(SITEID, 'auth_googleoauth2', '', '', $username . '/' . $useremail . '/' . $userid);
+                oauth_add_to_log(SITEID, 'auth_googleoauth2', '', '', $username . '/' . $useremail . '/' . $userid);
                 $user = authenticate_user_login($username, null);
                 if ($user) {
 
@@ -914,5 +915,4 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             return true;
         }
     }
-
 }
