@@ -57,7 +57,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         //username must exist and have the right authentication method
         if (!empty($user) && ($user->auth == 'googleoauth2')) {
             $code = optional_param('code', false, PARAM_TEXT);
-            if($code === false){
+            if(empty($code)){
                 return false;
             }
             return true;
