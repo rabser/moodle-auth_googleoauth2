@@ -53,9 +53,7 @@ Website: {$a->website}';
 $string['auth_googleipinfodbkey_key'] = 'IPinfoDB Key';
 $string['auth_googleuserprefix'] = 'The created user\'s username will start with this prefix. On a basic Moodle site you don\'t need to change it.';
 $string['auth_googleuserprefix_key'] = 'Username prefix';
-$string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external service: Google/Facebook/Windows Live. The first time the user connect with an external service, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
-<br/><br/>
-<i>Warning about Windows Live: Microsoft doesn\'t tell the plugin if the user\'s email address has been verified. More info in the <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
+$string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external authentication provider: Google/Facebook/Windows Live. The first time the user connect with an authentication provider, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.';
 $string['auth_linkedinclientid'] = 'Your API/Secret keys can be generated in your <a href="https://www.linkedin.com/secure/developer">Linkedin register application page</a>:
 <br/>Website URL: {$a->siteurl}
 <br/>OAuth 1.0 Accept Redirect URL: {$a->callbackurl}';
@@ -69,6 +67,13 @@ $string['auth_messengerclientsecret'] = 'See above.';
 $string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
 
 $string['auth_googlesettings'] = 'Settings';
+$string['businesseditionmsg'] = '<center>You are using the <a href="http://jerome.mouneyrac.com/plugins">Business edition</a> of the Oauth2 authentication plugin.<br/>
+<b>Thank you for your support!</b>
+</center>';
+$string['communityeditionmsg'] = '<center>Are you concerned about missing a security or mandatory update?<br/>
+Are you happy with my work?<br/>
+<a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition.</b></a><br/>
+<i>Jerome Mouneyrac - Oauth2 auth plugin author</i></center>';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['oauth2displaybuttons'] = 'Display buttons on login page';
 $string['oauth2displaybuttonshelp'] = 'Display the Google/Facebook/... logo buttons on the top of the login page. If you want to position the buttons yourself in your login page, you can keep this option disabled and add the following code:
