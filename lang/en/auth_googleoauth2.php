@@ -25,8 +25,10 @@
 
 $string['pluginname'] = 'Oauth2';
 $string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>:
+<br/>Add a new app > Website > Enter your site name as app name > Create new facebook app ID > Enter the Site URL - no need to enter Mobile URL > On the confirmation page, look for the "Skip to Developer Dashboard" link > on the app dashboard you should find the id/secret > Settings > Advanced > enter the Valid OAuth redirect URIs
 <br/>Site URL: {$a->siteurl}
-<br/>Site domain: {$a->sitedomain}';
+<br/>Site domain: {$a->sitedomain}
+<br/>Valid OAuth redirect URIs: {$a->callbackurl}';
 $string['auth_facebookclientid_key'] = 'Facebook App ID';
 $string['auth_facebookclientsecret'] = 'See above.';
 $string['auth_facebookclientsecret_key'] = 'Facebook App secret';
@@ -38,13 +40,13 @@ $string['auth_githubclientsecret'] = 'See above.';
 $string['auth_githubclientsecret_key'] = 'Github client secret';
 $string['auth_googleclientid'] = 'Your client ID/Secret can be generated in the <a href="https://code.google.com/apis/console">Google console API</a>:
 <br/>
-Project > APIS & AUTH > Credentials > Create new Client ID...
+Project > APIS & AUTH > Credentials > Create new Client ID > Web application
 <br/>
-Redirect URLs: {$a->redirecturls}
+Authorized Javascript origins: {$a->jsorigins}
 <br/>
-Javascript origins: {$a->jsorigins}
+Authorized Redirect URI: {$a->redirecturls}
 <br/>
-You also need to <strong>enable "Google+ API"</strong>: Project > APIS & AUTH > APIs';
+You also need to <strong>enable the "Google+ API"</strong> in Project > APIS & AUTH > APIs';
 $string['auth_googleclientid_key'] = 'Google Client ID';
 $string['auth_googleclientsecret'] = 'See above.';
 $string['auth_googleclientsecret_key'] = 'Google Client secret';
@@ -71,8 +73,7 @@ $string['businesseditionmsg'] = '<center>You are using the <a href="http://jerom
 <b>Thank you for your support!</b>
 </center>';
 $string['communityeditionmsg'] = '<center>Are you concerned about missing a security or mandatory update?<br/>
-Are you happy with my work?<br/>
-<a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition.</b></a><br/>
+<a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition</b></a><br/>
 <i>Jerome Mouneyrac - Oauth2 auth plugin author</i></center>';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['oauth2displaybuttons'] = 'Display buttons on login page';
