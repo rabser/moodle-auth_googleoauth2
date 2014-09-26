@@ -67,6 +67,10 @@ function auth_googleoauth2_render_buttons() {
 	global $CFG;
 	$html ='';
 	
+    if (!is_enabled_auth('googleoauth2')) {
+        return $html;
+    }
+
 	$html .= '
     <script language="javascript">
         linkElement = document.createElement("link");
