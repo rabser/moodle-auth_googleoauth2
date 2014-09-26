@@ -276,18 +276,17 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
 
                     //get following incremented username
+                    $googleuserprefix = core_text::strtolower(get_config('auth/googleoauth2', 'googleuserprefix'));
                     $lastusernumber = get_config('auth/googleoauth2', 'lastusernumber');
-                    $lastusernumber = empty($lastusernumber)?1:$lastusernumber++;
+                    $lastusernumber = empty($lastusernumber)? 1 : $lastusernumber++;
                     //check the user doesn't exist
-                    $nextuser = $DB->get_record('user',
-                            array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
-                    while (!empty($nextuser)) {
-                        $lastusernumber = $lastusernumber +1;
-                        $nextuser = $DB->get_record('user',
-                            array('username' => get_config('auth/googleoauth2', 'googleuserprefix').$lastusernumber));
+                    $nextuser = $DB->record_exists('user', array('username' => $googleuserprefix.$lastusernumber));
+                    while ($nextuser) {
+                        $lastusernumber++;
+                        $nextuser = $DB->record_exists('user', array('username' => $googleuserprefix.$lastusernumber));
                     }
                     set_config('lastusernumber', $lastusernumber, 'auth/googleoauth2');
-                    $username = get_config('auth/googleoauth2', 'googleuserprefix') . $lastusernumber;
+                    $username = $googleuserprefix . $lastusernumber;
 
                     //retrieve more information from the provider
                     $newuser = new stdClass();
@@ -912,7 +911,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         set_config('linkedinclientid', $config->linkedinclientid, 'auth/googleoauth2');
         set_config('linkedinclientsecret', $config->linkedinclientsecret, 'auth/googleoauth2');
         set_config('googleipinfodbkey', $config->googleipinfodbkey, 'auth/googleoauth2');
-        set_config('googleuserprefix', $config->googleuserprefix, 'auth/googleoauth2');
+		set_config('googleuserprefix', core_text::strtolower($config->googleuserprefix), 'auth/googleoauth2');
         set_config('oauth2displaybuttons', $config->oauth2displaybuttons, 'auth/googleoauth2');
 
         return true;
