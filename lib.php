@@ -87,6 +87,8 @@ function auth_googleoauth2_render_buttons() {
 	
 	$html .= "<center>";
 	$html .= "<div style=\"width:'1%'\">";
+    $a = new stdClass();
+    $a->providername = 'Google';
     $providerscount = 0;
     $providerisenabled = get_config('auth/googleoauth2', 'googleclientid');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
@@ -95,47 +97,51 @@ function auth_googleoauth2_render_buttons() {
 	$html .= '<div class="singinprovider" style="' . $providerdisplaystyle .'">
             <a class="zocial googleplus" href="https://accounts.google.com/o/oauth2/auth?client_id='.
 	            get_config('auth/googleoauth2', 'googleclientid') .'&redirect_uri='.$CFG->wwwroot .'/auth/googleoauth2/google_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=profile email&response_type=code">
-                '.get_string('auth_sign-in_with','auth_googleoauth2').' Google
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
             </a>
         </div>';
 
+    $a->providername = 'Facebook';
     $providerisenabled = get_config('auth/googleoauth2', 'facebookclientid');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
 	$displayprovider = ((empty($authprovider) || $authprovider == 'facebook' || $allauthproviders) && $providerisenabled);
 	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
 	$html .= '<div class="singinprovider" style="'. $providerdisplaystyle .'">
             <a class="zocial facebook" href="https://www.facebook.com/dialog/oauth?client_id='. get_config('auth/googleoauth2', 'facebookclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/facebook_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=email&response_type=code">
-                '.get_string('auth_sign-in_with','auth_googleoauth2').' Facebook
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
             </a>
         </div>';
 
+    $a->providername = 'Github';
     $providerisenabled = get_config('auth/googleoauth2', 'githubclientid');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
 	$displayprovider = ((empty($authprovider) || $authprovider == 'github' || $allauthproviders) && $providerisenabled);
 	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
 	$html .= '<div class="singinprovider" style="'. $providerdisplaystyle .'">
             <a class="zocial github" href="https://github.com/login/oauth/authorize?client_id='. get_config('auth/googleoauth2', 'githubclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/github_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=user:email&response_type=code">
-                '.get_string('auth_sign-in_with','auth_googleoauth2').' Github
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
             </a>
         </div>';
 
+    $a->providername = 'Linkedin';
     $providerisenabled = get_config('auth/googleoauth2', 'linkedinclientid');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
 	$displayprovider = ((empty($authprovider) || $authprovider == 'linkedin' || $allauthproviders) && $providerisenabled);
 	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
 	$html .= '<div class="singinprovider" style="'. $providerdisplaystyle .'">
             <a class="zocial linkedin" href="https://www.linkedin.com/uas/oauth2/authorization?client_id='. get_config('auth/googleoauth2', 'linkedinclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/linkedin_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=r_basicprofile%20r_emailaddress&response_type=code">
-                '.get_string('auth_sign-in_with','auth_googleoauth2').' Linkedin
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
             </a>
         </div>';
 
+    $a->providername = 'Windows Live';
     $providerisenabled = get_config('auth/googleoauth2', 'messengerclientid');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
 	$displayprovider = ((empty($authprovider) || $authprovider == 'messenger' || $allauthproviders) && $providerisenabled);
 	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
 	$html .= '<div class="singinprovider" style="'. $providerdisplaystyle .'">
             <a class="zocial windows" href="https://oauth.live.com/authorize?client_id='. get_config('auth/googleoauth2', 'messengerclientid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/messenger_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=wl.basic wl.emails wl.signin&response_type=code">
-                '.get_string('auth_sign-in_with','auth_googleoauth2').' Windows Live
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
             </a>
         </div>
     </div>';
