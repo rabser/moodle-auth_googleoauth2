@@ -75,6 +75,7 @@ $string['businesseditionmsg'] = '<center>You are using the <a href="http://jerom
 $string['communityeditionmsg'] = '<center>Are you concerned about missing a security or mandatory update?<br/>
 <a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition</b></a><br/>
 <i>Jerome Mouneyrac - Oauth2 auth plugin author</i></center>';
+$string['couldnotauthenticate'] = 'The authentication failed - Please try to sign-in again.';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['couldnotauthenticateuserlogin'] = 'Authentication method error.<br/>
 Please try to login again with your username and password.<br/>

@@ -410,10 +410,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     redirect($urltogo);
                 } else {
                     // authenticate_user_login() failure, probably email registered by another auth plugin
-                    $a = new stdClass();
-                    $a->loginpage = (string) new moodle_url(empty($CFG->alternateloginurl) ? '/login/index.php' : $CFG->alternateloginurl);
-                    $a->forgotpass = (string) new moodle_url('/login/forgot_password.php');
-                    throw new moodle_exception('couldnotauthenticateuserlogin', 'auth_googleoauth2', '', $a);
+                    // Do a check to confirm this hypothesis.
+                    $userexist = $DB->get_record('user', array('email' => $useremail));
+                    if (!empty($userexist) and $userexist->auth != 'googleoauth2') {
+                        $a = new stdClass();
+                        $a->loginpage = (string) new moodle_url(empty($CFG->alternateloginurl) ? '/login/index.php' : $CFG->alternateloginurl);
+                        $a->forgotpass = (string) new moodle_url('/login/forgot_password.php');
+                        throw new moodle_exception('couldnotauthenticateuserlogin', 'auth_googleoauth2', '', $a);
+                    } else {
+                        throw new moodle_exception('couldnotauthenticate', 'auth_googleoauth2');
+                    }
                 }
             } else {
                 throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
