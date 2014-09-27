@@ -585,7 +585,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</td><td>';
 
         print_string('auth_facebookclientid', 'auth_googleoauth2',
-            (object) array('siteurl' => $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php',
+            (object) array('siteurl' => $CFG->httpswwwroot,
+                'callbackurl' => $CFG->httpswwwroot . '/auth/googleoauth2/facebook_redirect.php',
                 'sitedomain' => $parse['host'])) ;
 
         echo '</td></tr>';
