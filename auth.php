@@ -422,7 +422,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     }
                 }
             } else {
-                throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2');
+                throw new moodle_exception('couldnotgetgoogleaccesstoken', 'auth_googleoauth2',
+                    '', null, print_r($postreturnvalues, true));
             }
         } else {
             // If you are having issue with the display buttons option, add the button code directly in the theme login page.
