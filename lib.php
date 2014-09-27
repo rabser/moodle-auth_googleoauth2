@@ -90,7 +90,7 @@ function auth_googleoauth2_render_buttons() {
     $a = new stdClass();
     $a->providername = 'Google';
     $providerscount = 0;
-    $providerisenabled = get_config('auth/googleoauth2', 'googleclientid');
+    $providerisenabled = get_config('auth/googleoauth2', 'googleclientid') && get_config('auth/googleoauth2', 'googleclientsecret');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
 	$displayprovider = ((empty($authprovider) || $authprovider == 'google' || $allauthproviders) && $providerisenabled);
 	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
