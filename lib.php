@@ -71,7 +71,7 @@ function auth_googleoauth2_render_buttons() {
     <script language="javascript">
         linkElement = document.createElement("link");
         linkElement.rel = "stylesheet";
-        linkElement.href = "' . $CFG->wwwroot . '/auth/googleoauth2/csssocialbuttons/css/zocial.css";
+        linkElement.href = "' . $CFG->httpswwwroot . '/auth/googleoauth2/csssocialbuttons/css/zocial.css";
         document.head.appendChild(linkElement);
     </script>
     ';
