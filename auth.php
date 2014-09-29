@@ -222,12 +222,16 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params['access_token'] = $accesstoken;
                         $postreturnvalues = $curl->get('https://api.github.com/user', $params);
                         $githubuser = json_decode($postreturnvalues);
+                        // Use the final version of the API v3.
+                        // Recommendation on https://developer.github.com/v3/media/
+                        // See https://developer.github.com/v3/versions/#v3
+                        $curl->setHeader('Accept: application/vnd.github.v3+json');
                         $useremails = json_decode($curl->get('https://api.github.com/user/emails', $params));
                         $useremail = '';
                         $verified = 0;
                         // get first valid email
                         foreach ($useremails as $email) {
-                            if ($email->verified) {
+                            if ($email->verified && $email->email == clean_param($email->email, PARAM_EMAIL)) {
                                 $useremail = $email->email;
                                 $verified = (int) $email->verified;
                                 break;
@@ -341,6 +345,14 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                         default:
                             break;
+                    }
+
+                    // Some providers allow empty firstname and lastname.
+                    if (empty($newuser->firstname)) {
+                        $newuser->firstname = get_string('unknownfirstname', 'auth_googleoauth2');
+                    }
+                    if (empty($newuser->lastname)) {
+                        $newuser->lastname = get_string('unknownlastname', 'auth_googleoauth2');
                     }
 
                     //retrieve country and city if the provider failed to give it
