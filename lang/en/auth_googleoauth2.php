@@ -25,8 +25,10 @@
 
 $string['pluginname'] = 'Oauth2';
 $string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>:
+<br/>Add a new app > Website > Enter your site name as app name > Create new facebook app ID > Enter the Site URL - no need to enter Mobile URL > On the confirmation page, look for the "Skip to Developer Dashboard" link > on the app dashboard you should find the id/secret > Settings > Advanced > enter the Valid OAuth redirect URIs
 <br/>Site URL: {$a->siteurl}
-<br/>Site domain: {$a->sitedomain}';
+<br/>Site domain: {$a->sitedomain}
+<br/>Valid OAuth redirect URIs: {$a->callbackurl}';
 $string['auth_facebookclientid_key'] = 'Facebook App ID';
 $string['auth_facebookclientsecret'] = 'See above.';
 $string['auth_facebookclientsecret_key'] = 'Facebook App secret';
@@ -38,13 +40,13 @@ $string['auth_githubclientsecret'] = 'See above.';
 $string['auth_githubclientsecret_key'] = 'Github client secret';
 $string['auth_googleclientid'] = 'Your client ID/Secret can be generated in the <a href="https://code.google.com/apis/console">Google console API</a>:
 <br/>
-Project > APIS & AUTH > Credentials > Create new Client ID...
+Project > APIS & AUTH > Credentials > Create new Client ID > Web application
 <br/>
-Redirect URLs: {$a->redirecturls}
+Authorized Javascript origins: {$a->jsorigins}
 <br/>
-Javascript origins: {$a->jsorigins}
+Authorized Redirect URI: {$a->redirecturls}
 <br/>
-You also need to <strong>enable "Google+ API"</strong>: Project > APIS & AUTH > APIs';
+You also need to <strong>enable the "Google+ API"</strong> in Project > APIS & AUTH > APIs';
 $string['auth_googleclientid_key'] = 'Google Client ID';
 $string['auth_googleclientsecret'] = 'See above.';
 $string['auth_googleclientsecret_key'] = 'Google Client secret';
@@ -53,9 +55,7 @@ Website: {$a->website}';
 $string['auth_googleipinfodbkey_key'] = 'IPinfoDB Key';
 $string['auth_googleuserprefix'] = 'The created user\'s username will start with this prefix. On a basic Moodle site you don\'t need to change it.';
 $string['auth_googleuserprefix_key'] = 'Username prefix';
-$string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external service: Google/Facebook/Windows Live. The first time the user connect with an external service, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.
-<br/><br/>
-<i>Warning about Windows Live: Microsoft doesn\'t tell the plugin if the user\'s email address has been verified. More info in the <a href="https://github.com/mouneyrac/auth_googleoauth2/wiki/FAQ">FAQ</a>.</i>';
+$string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external authentication provider: Google/Facebook/Windows Live. The first time the user connect with an authentication provider, a new account is created. <a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.';
 $string['auth_linkedinclientid'] = 'Your API/Secret keys can be generated in your <a href="https://www.linkedin.com/secure/developer">Linkedin register application page</a>:
 <br/>Website URL: {$a->siteurl}
 <br/>OAuth 1.0 Accept Redirect URL: {$a->callbackurl}';
@@ -69,8 +69,26 @@ $string['auth_messengerclientsecret'] = 'See above.';
 $string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
 
 $string['auth_googlesettings'] = 'Settings';
+$string['businesseditionmsg'] = '<center>You are using the <a href="http://jerome.mouneyrac.com/plugins">Business edition</a> of the Oauth2 authentication plugin.<br/>
+<b>Thank you for your support!</b>
+</center>';
+$string['communityeditionmsg'] = '<center>Are you concerned about missing a security or mandatory update?<br/>
+<a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition</b></a><br/>
+<i>Jerome Mouneyrac - Oauth2 auth plugin author</i></center>';
+$string['couldnotauthenticate'] = 'The authentication failed - Please try to sign-in again.';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
+$string['couldnotauthenticateuserlogin'] = 'Authentication method error.<br/>
+Please try to login again with your username and password.<br/>
+<br/>
+<a href="{$a->loginpage}">Try again</a>.<br/>
+<a href="{$a->forgotpass}">Forgot your password</a>?';
+$string['oauth2displaybuttons'] = 'Display buttons on login page';
+$string['oauth2displaybuttonshelp'] = 'Display the Google/Facebook/... logo buttons on the top of the login page. If you want to position the buttons yourself in your login page, you can keep this option disabled and add the following code:
+{$a}';
 $string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address" link that Google or Facebook should have sent you during your subscribtion to their service.';
+$string['auth_sign-in_with'] = 'Sign-in with {$a->providername}';
 $string['moreproviderlink'] = 'Sign-in with another service.';
 $string['signinwithanaccount'] = 'Log in with:';
 $string['noaccountyet'] = 'You do not have permission to use the site yet. Please contact your administrator and ask them to activate your account.';
+$string['unknownfirstname'] = 'Unknown Firstname';
+$string['unknownlastname'] = 'Unknown Lastname';

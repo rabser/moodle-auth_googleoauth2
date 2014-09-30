@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2013091701;
+$plugin->version  = 2014060700; //this is the matching version of master with code for 2.5 - you can update to the same master version.
 $plugin->requires = 2011070100;   // Requires Moodle 2.1 or later
-$plugin->release = '1.4 (Build: 2013091701)';
+$plugin->release = '1.5 (Build: 2013110100) STABLE_25';
 $plugin->maturity = MATURITY_STABLE;             // this version's maturity level
