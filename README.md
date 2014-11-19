@@ -6,8 +6,8 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 2. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
 3. in the plugin settings, follow the displayed instructions.
 
-### Support and maintenance
-More information on the [official web site](http://mouneyrac.github.io/moodle-auth_googleoauth2/).
+### Continueous integration
+[![Build Status](https://api.shippable.com/projects/544895eb44927f89db3da898/badge?branchName=master)](https://app.shippable.com/projects/544895eb44927f89db3da898/builds/latest)
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
