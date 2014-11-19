@@ -5,33 +5,25 @@ language: php
 php:
   - "5.4"
 env:
- - DB=mysqli MOODLE_VERSION=master
- - DB=pgsql MOODLE_VERSION=master
+  global:
+   - DB=pgsql MOODLE_VERSION=MOODLE_26_STABLE
+   - secure: HP/JADdZWbDs8XN5H3g46jNcbu5HLNXVgPcDutd/nr0F/pQe/iUpmXmL7g4T37M51pSa3/80wq+PItwaaBJNJ1m7RnzyODlsTdvDlu9pyQaHAIdVpx5EzPfw3BbRtZjrzNKGf0blq1bVHvDBWBtLyds6UWo3YT0p8KO2A5yiy7KO2qRfCnPxwsWye0VDOm0v7sAhXifL7j7bQ4rpdeool6Zvfwi06ENpH9uQf5zTWD6bvCRBQIoOedUqXWNj1aM5+v7ZJeNxuNKSFWh/jaovTqwf1/tpcl2yise2UiH1mKe9R4DlMlsmqiqAWxzBerYiL9YK6xrAexBKb473MEd8mg==
 before_script:
  - git clone git://github.com/moodle/moodle ../moodle && cd ../moodle
  - git checkout $MOODLE_VERSION
  - sudo apt-get update > /dev/null
  - composer self-update
- - composer install --dev --prefer-dist
  - mv ../moodle-auth_googleoauth2 auth/googleoauth2
- - git clone git://github.com/mouneyrac/moodle-theme_easy theme/oauth2easy
- - pear channel-discover pear.phpunit.de
- - pear channel-discover pear.symfony.com
- - pear install pear.phpunit.de/DbUnit
- - phpenv rehash
  - cp config-dist.php config.php
- - sh -c "sed -i -e s/'password'/''/ -e s/example.com/localhost/ -e s%/home/example%$HOME% -e 's%\(\$CFG.*phpu\)%\n\1%' config.php"
- - sh -c "sed -i -e s/'password'/''/ -e s/example.com/localhost/ -e s%/home/example%$HOME% -e 's%\(\$CFG.*bht\)%\n\1%' config.php"
- - sh -c "if [ '$DB' = 'mysqli' ]; then mysql -e 'create database moodle default character set UTF8 collate UTF8_bin;'; fi"
- - sh -c "if [ '$DB' = 'mysqli' ]; then sed -i -e s/\'pgsql\'/\'mysqli\'/ -e s/\'username\'/\'root\'/ config.php; fi"
+ - sh -c "sed -i -e s/'password'/''/ -e s/example.com/localhost/ -e s%192.168.1.250%localhost% -e s%/home/example%$HOME% -e 's%\(\$CFG.*bht\)%\n\1%' -e 's%\(\$CFG.*behat_wwwroot.*http://127\)%\n\1%' config.php"
+ - sh -c "sed -i -e s/'http:\/\/127.0.0.1\/moodle'/'http:\/\/localhost:8000'/ config.php"
  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database moodle;' -U postgres; fi"
  - sh -c "if [ '$DB' = 'pgsql' ]; then sed -i s/\'username\'/\'postgres\'/ config.php; fi"
  - mkdir -m777 $HOME/moodledata
- - php admin/tool/phpunit/cli/init.php
  - "(php -S localhost:8000 &) 2> /dev/null > /dev/null"
- - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
- - "(java -jar selenium-server-standalone-2.31.0.jar &) 2> /dev/null > /dev/null"
+ - "wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar"
+ - "java -jar selenium-server-standalone-2.43.1.jar &"
+ - echo "{\"config\":{\"github-oauth\":{\"github.com\":\"$GITHUBTOKEN\"}}}" > ~/.composer/config.json
  - php admin/tool/behat/cli/init.php
 script:
- - if [ $MOODLE_VERSION = 'master' ]; then vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2; fi
- - phpunit auth_googleoauth2_lib_testcase auth/googleoauth2/tests/lib_test.php
+ - vendor/bin/behat --config /home/shippable/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2

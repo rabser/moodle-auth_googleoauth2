@@ -7,23 +7,18 @@ Feature: Sign in with a Google account
   @javascript
   Scenario: Sign in with a Google account
     When I follow "Log in"
-    When I fill in "username" with "admin"
-    And I fill in "password" with "admin"
+    When I set the field "username" to "admin"
+    And I set the field "password" to "admin"
     And I press "loginbtn"
     When I expand "Site administration" node
     When I expand "Plugins" node
     When I expand "Authentication" node
     When I follow "Manage authentication"
-    When I click on "enable" "link" in the "Oauth2" table row
-    When I click on "Settings" "link" in the "Oauth2" table row
-    And I fill in "googleclientid" with "1234567890"
-    And I fill in "googleclientsecret" with "1234567890"
+    When I click on "enable" "link" in the "Oauth2" "table_row"
+    When I click on "Oauth2" "link"
+    And I set the field "googleclientid" to "1234567890"
+    And I set the field "googleclientsecret" to "1234567890"
     And I press "Save changes"
-    When I expand "Appearance" node
-    When I expand "Themes" node
-    When I follow "Theme selector"
-    When I click on "//*[@id=\"admindeviceselector\"]/tbody/tr[1]/td[3]/div/form/div/input[1]" "xpath_element"
-    When I click on "//*[@id=\"adminthemeselector\"]/tbody/tr[16]/td[2]/div/form/div/input[1]" "xpath_element"
     When I follow "Log out"
     Then I should see "Home"
     When I follow "Log in"
