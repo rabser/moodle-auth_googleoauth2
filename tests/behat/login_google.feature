@@ -6,7 +6,7 @@ Feature: Sign in with a Google account
  
   @javascript
   Scenario: Sign in with a Google account
-    When I follow "Log in"
+    When I follow "Login"
     When I fill in "username" with "admin"
     And I fill in "password" with "admin"
     And I press "loginbtn"
@@ -19,14 +19,9 @@ Feature: Sign in with a Google account
     And I fill in "googleclientid" with "1234567890"
     And I fill in "googleclientsecret" with "1234567890"
     And I press "Save changes"
-    When I expand "Appearance" node
-    When I expand "Themes" node
-    When I follow "Theme selector"
-    When I click on "//*[@id=\"admindeviceselector\"]/tbody/tr[1]/td[3]/div/form/div/input[1]" "xpath_element"
-    When I click on "//*[@id=\"adminthemeselector\"]/tbody/tr[16]/td[2]/div/form/div/input[1]" "xpath_element"
-    When I follow "Log out"
+    When I follow "Logout"
     Then I should see "Home"
-    When I follow "Log in"
+    When I follow "Login"
     Then I should see "Sign-in with Google"
     #Then I follow "Sign-in with Google"
     #When I fill in "Email" with "1234567890"

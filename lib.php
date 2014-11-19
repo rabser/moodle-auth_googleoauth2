@@ -138,7 +138,7 @@ function auth_googleoauth2_render_buttons() {
         </div>
     </div>';
 
-	if (!empty($authprovider) and $providerscount>1) {
+	if (!$allauthproviders and !empty($authprovider) and $providerscount>1) {
 		$html .= '<br /><br /> 
            <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true' .'" onclick="changecss(\'singinprovider\',\'display\',\'inline-block\');">
