@@ -7,7 +7,7 @@ php:
 env:
   global:
    - DB=pgsql MOODLE_VERSION=MOODLE_26_STABLE
-   - secure: HP/JADdZWbDs8XN5H3g46jNcbu5HLNXVgPcDutd/nr0F/pQe/iUpmXmL7g4T37M51pSa3/80wq+PItwaaBJNJ1m7RnzyODlsTdvDlu9pyQaHAIdVpx5EzPfw3BbRtZjrzNKGf0blq1bVHvDBWBtLyds6UWo3YT0p8KO2A5yiy7KO2qRfCnPxwsWye0VDOm0v7sAhXifL7j7bQ4rpdeool6Zvfwi06ENpH9uQf5zTWD6bvCRBQIoOedUqXWNj1aM5+v7ZJeNxuNKSFWh/jaovTqwf1/tpcl2yise2UiH1mKe9R4DlMlsmqiqAWxzBerYiL9YK6xrAexBKb473MEd8mg==
+   - secure: jOrUxTe76d5a+986dinHlXdixRn5iu+KdE7P9FSokV1dppflD7JBql1kWO4Zb2hYkPe9Zqc0UR/6Yb8mZd8a+Aj9FnGWZM0mZxAQzASL+8f7PV19JyGsi5wG/MqY0ZoVSnkQ2jmCOz8nG78BIM/wJIcqWL+COELIUQwZ8S78EwypY2M15CsuVGkToUI7lboo7ricmECACn+u7vTUJjrrvZoFyRsHc5K+d+vgW8KPgEw0dt/rtuUv/CCndUwYJXZDqPmCwLrz9CtWl+6MvGhYlWb9WWwmXKKN/sOs21YszDb1C7NFH+V5VcexnkooohIRN+CmTO+pYdpj6X33L1eHng==
 before_script:
  - git clone git://github.com/moodle/moodle ../moodle && cd ../moodle
  - git checkout $MOODLE_VERSION
