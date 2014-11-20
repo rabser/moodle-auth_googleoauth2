@@ -7,7 +7,7 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 3. in the plugin settings, follow the displayed instructions.
 
 ### Continueous integration
-[![Build Status](https://api.shippable.com/projects/544895eb44927f89db3da898/badge?branchName=STABLE_26)](https://app.shippable.com/projects/544895eb44927f89db3da898/builds/latest)
+[![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=STABLE_26)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
