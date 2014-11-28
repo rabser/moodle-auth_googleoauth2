@@ -508,12 +508,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             $config->oauth2displaybuttons = 1;
         }
 
-        if (file_exists($CFG->dirroot . '/auth/googleoauth2/COMMUNITYEDITION.md')) {
-            print_string('communityeditionmsg', 'auth_googleoauth2');
-        } else {
-            print_string('businesseditionmsg', 'auth_googleoauth2');
-        }
-
         echo '<table cellspacing="0" cellpadding="5" border="0">
             <tr>
                <td colspan="3">
