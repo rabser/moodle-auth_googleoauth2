@@ -69,12 +69,6 @@ $string['auth_messengerclientsecret'] = 'See above.';
 $string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
 
 $string['auth_googlesettings'] = 'Settings';
-$string['businesseditionmsg'] = '<center>You are using the <a href="http://jerome.mouneyrac.com/plugins">Business edition</a> of the Oauth2 authentication plugin.<br/>
-<b>Thank you for your support!</b>
-</center>';
-$string['communityeditionmsg'] = '<center>Are you concerned about missing a security or mandatory update?<br/>
-<a href="http://jerome.mouneyrac.com/plugins"><b>Check the business edition</b></a><br/>
-<i>Jerome Mouneyrac - Oauth2 auth plugin author</i></center>';
 $string['couldnotauthenticate'] = 'The authentication failed - Please try to sign-in again.';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['couldnotauthenticateuserlogin'] = 'Authentication method error.<br/>
