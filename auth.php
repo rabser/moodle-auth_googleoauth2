@@ -140,6 +140,19 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $params['client_secret'] = get_config('auth/googleoauth2', 'linkedinclientsecret');
                     $requestaccesstokenurl = 'https://www.linkedin.com/uas/oauth2/accessToken';
                     break;
+                case 'battlenet':
+                    $client_id = get_config('auth/googleoauth2', 'battlenetclientid');
+                    $client_secret = get_config('auth/googleoauth2', 'battlenetclientsecret');
+                    $requestaccesstokenurl = 'https://'.$client_id.':'.$client_secret.'@eu.battle.net/oauth/token';
+                    $params['grant_type'] = 'authorization_code';
+                    // Forcing https (Battlenet fail if you don't use https)
+                    $siteurl = $CFG->httpswwwroot;
+                    if (strpos($siteurl, 'https://') === false) {
+                        $siteurl = str_replace('http://', 'https://', $siteurl);
+                    }
+                    $params['redirect_uri'] = $siteurl . '/auth/googleoauth2/battlenet_redirect.php';
+                    $params['code'] = $authorizationcode;
+                    break;
                 default:
                     throw new moodle_exception('unknown_oauth2_provider');
                     break;
@@ -159,6 +172,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             switch ($authprovider) {
                 case 'google':
                 case 'linkedin':
+                case 'battlenet':
                     $postreturnvalues = json_decode($postreturnvalues);
                     $accesstoken = $postreturnvalues->access_token;
                     //$refreshtoken = $postreturnvalues->refresh_token;
@@ -249,6 +263,19 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $verified = 1;
                         break;
 
+                    case 'battlenet':
+                        $params = array();
+                        $params['format'] = 'json';
+                        $params['access_token'] = $accesstoken;
+                        $postreturnvalues = $curl->get('https://eu.api.battle.net/sc2/profile/user', $params);
+                        $battlenetuser = json_decode($postreturnvalues);
+                        // Create a fake user email specific to battlenet (TODO - need a table specific to battlenet as as soon the user change he email he will recrate a new user on login)
+                        $useremail = $battlenetuser->characters[0]->id . '@fakebattle.net';
+                        $verified = 1;
+                        break;
+
+                        break;
+
                     default:
                         break;
                 }
@@ -313,6 +340,11 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                                 //$newuser->lang = $userinfo->locale;
                                 //TODO: convert the locale into correct Moodle language code
                             }
+                            break;
+
+                        case 'battlenet':
+                            $newuser->firstname = $battlenetuser->characters[0]->displayName;
+                            $newuser->lastname = '[EUROPE]';
                             break;
 
                         case 'facebook':
@@ -473,6 +505,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         }
         if (!isset($config->googleclientsecret)) {
             $config->googleclientsecret = '';
+        }
+        if (!isset($config->battlenetclientid)) {
+            $config->battlenetclientid = '';
+        }
+        if (!isset($config->battlenetclientsecret)) {
+            $config->battlenetclientsecret = '';
         }
         if (!isset ($config->facebookclientid)) {
             $config->facebookclientid = '';
@@ -770,6 +808,57 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         echo '</td></tr>';
 
 
+        // Battlenet client id
+
+        echo '<tr>
+                <td align="right"><label for="battlenetclientid">';
+
+        print_string('auth_battlenetclientid_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'battlenetclientid', 'name' => 'battlenetclientid',
+                'class' => 'battlenetclientid', 'value' => $config->battlenetclientid));
+
+        if (isset($err["battlenetclientid"])) {
+            echo $OUTPUT->error_text($err["battlenetclientid"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_battlenetclientid', 'auth_googleoauth2',
+            (object) array('callbackurl' => $CFG->wwwroot . '/auth/googleoauth2/battlenet_redirect.php',
+                'siteurl' => $CFG->wwwroot)) ;
+
+        echo '</td></tr>';
+
+        // Battlenet client secret
+
+        echo '<tr>
+                <td align="right"><label for="battlenetclientsecret">';
+
+        print_string('auth_battlenetclientsecret_key', 'auth_googleoauth2');
+
+        echo '</label></td><td>';
+
+
+        echo html_writer::empty_tag('input',
+            array('type' => 'text', 'id' => 'battlenetclientsecret', 'name' => 'battlenetclientsecret',
+                'class' => 'battlenetclientsecret', 'value' => $config->battlenetclientsecret));
+
+        if (isset($err["battlenetclientsecret"])) {
+            echo $OUTPUT->error_text($err["battlenetclientsecret"]);
+        }
+
+        echo '</td><td>';
+
+        print_string('auth_battlenetclientsecret', 'auth_googleoauth2') ;
+
+        echo '</td></tr>';
+
+
         // IPinfoDB
 
         echo '<tr>
@@ -873,6 +962,12 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         if (!isset ($config->googleclientsecret)) {
             $config->googleclientsecret = '';
         }
+        if (!isset ($config->battlenetclientid)) {
+            $config->battlenetclientid = '';
+        }
+        if (!isset ($config->battlenetclientsecret)) {
+            $config->battlenetclientsecret = '';
+        }
         if (!isset ($config->facebookclientid)) {
             $config->facebookclientid = '';
         }
@@ -910,6 +1005,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         // save settings
         set_config('googleclientid', $config->googleclientid, 'auth/googleoauth2');
         set_config('googleclientsecret', $config->googleclientsecret, 'auth/googleoauth2');
+        set_config('battlenetclientid', $config->battlenetclientid, 'auth/googleoauth2');
+        set_config('battlenetclientsecret', $config->battlenetclientsecret, 'auth/googleoauth2');
         set_config('facebookclientid', $config->facebookclientid, 'auth/googleoauth2');
         set_config('facebookclientsecret', $config->facebookclientsecret, 'auth/googleoauth2');
         set_config('messengerclientid', $config->messengerclientid, 'auth/googleoauth2');

@@ -24,6 +24,13 @@
  */
 
 $string['pluginname'] = 'Oauth2';
+$string['auth_battlenetclientid'] = 'Your Client ID/Secret can be generated in the <a href="https://dev.battle.net/apps/mykeys">Battle.net API site</a>. Enter the following settings when creating an application:
+<br/>Web site: {$a->siteurl}
+<br/>Register callback url: {$a->callbackurl}
+<br/>Franchises: Starcraft II';
+$string['auth_battlenetclientid_key'] = 'Battle.net key';
+$string['auth_battlenetclientsecret'] = 'See above.';
+$string['auth_battlenetclientsecret_key'] = 'Battle.net secret';
 $string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>:
 <br/>Add a new app > Website > Enter your site name as app name > Create new facebook app ID > Enter the Site URL - no need to enter Mobile URL > On the confirmation page, look for the "Skip to Developer Dashboard" link > on the app dashboard you should find the id/secret > Settings > Advanced > enter the Valid OAuth redirect URIs
 <br/>Site URL: {$a->siteurl}
