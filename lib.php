@@ -168,6 +168,20 @@ function auth_googleoauth2_render_buttons() {
         </div>
     </div>';
 
+    $a->providername = 'VK';
+    $providerisenabled = get_config('auth/googleoauth2', 'vkclientid');
+    $providerscount = $providerisenabled?$providerscount+1:$providerscount;
+	$displayprovider = ((empty($authprovider) || $authprovider == 'vk' || $allauthproviders) && $providerisenabled);
+	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
+	$html .= '<div class="singinprovider" style="'. $providerdisplaystyle .'">
+            <a class="zocial vk" href="https://oauth.vk.com/authorize?client_id='. get_config('auth/googleoauth2', 'vkappid') .'&redirect_uri='. $CFG->wwwroot .'/auth/googleoauth2/vk_redirect.php&state='.auth_googleoauth2_get_state_token().'&scope=offline&response_type=code&v=5.9">
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
+            </a>
+        </div>
+    </div>';
+
+
+
 	if (!$allauthproviders and !empty($authprovider) and $providerscount>1) {
 		$html .= '<br /><br /> 
            <div class="moreproviderlink">

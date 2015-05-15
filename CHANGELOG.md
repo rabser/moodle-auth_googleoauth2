@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+Release 1.5 (Build: 2015051500)
+------------------------------
+* add support for vk.com
+* add support for Battle.net
+
 Release 1.5 (Build: 2014120000)
 -------------------------------
 * compatible behat test with 2.7+

@@ -1,7 +1,6 @@
 This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created. 
 
 ### Installation:
-
 1. add the plugin into /auth/googleoauth2/
 2. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
 3. in the plugin settings, follow the displayed instructions.
