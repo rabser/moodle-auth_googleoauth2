@@ -26,7 +26,7 @@
 $string['pluginname'] = 'Oauth2';
 $string['auth_battlenetclientid'] = 'Your Client ID/Secret can be generated in the <a href="https://dev.battle.net/apps/mykeys">Battle.net API site</a>. Enter the following settings when creating an application:
 <br/>Web site: {$a->siteurl}
-<br/>Register callback url: {$a->callbackurl}
+<br/>Register callback url: {$a->callbackurl} [it MUST BE a HTTPS url otherwise Battle.net will refuse  to log you in]
 <br/>Franchises: Starcraft II';
 $string['auth_battlenetclientid_key'] = 'Battle.net key';
 $string['auth_battlenetclientsecret'] = 'See above.';
