@@ -174,7 +174,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 case 'linkedin':
                 case 'battlenet':
                     $postreturnvalues = json_decode($postreturnvalues);
-error_log(print_r($postreturnvalues, true));
                     $accesstoken = $postreturnvalues->access_token;
                     //$refreshtoken = $postreturnvalues->refresh_token;
                     //$expiresin = $postreturnvalues->expires_in;
@@ -273,7 +272,6 @@ error_log(print_r($postreturnvalues, true));
                         $postreturnvalues = $curl->get('https://eu.api.battle.net/sc2/profile/user', $params);
                         $battlenetuser = json_decode($postreturnvalues);
                         // Create a fake user email specific to battlenet (TODO - need a table specific to battlenet as as soon the user change he email he will recrate a new user on login)
-                        error_log(print_r($battlenetuser, true));
                         $useremail = $battlenetuser->characters[0]->id . '@fakebattle.net';
                         $provideruserid = $battlenetuser->characters[0]->id;
                         $verified = 1;
