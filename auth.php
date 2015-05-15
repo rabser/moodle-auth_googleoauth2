@@ -295,7 +295,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $params['v'] = '5.9';
                         $api_raw_responce = $curl->get('https://api.vk.com/method/users.get',$params);
                         $vk_user = json_decode($curl->get('https://api.vk.com/method/users.get',$params))->response["0"];
-                        if ($vk_user->id != "") {
+                        if ($vk_user->id) {
                            $useremail = 'id'.$vk_user->id.'@vkmessenger.com';
                         };
                         $verified = 1;			
