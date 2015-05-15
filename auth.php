@@ -460,7 +460,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                     // Let's save/update the access token for this user.
                     $existingaccesstoken = $DB->get_record('auth_googleoauth2_user_idps', 
-                        array('userid' => $userid));
+                        array('userid' => $user->id));
                     if (empty($existingaccesstoken)) {
                         $accesstokenrow = new stdClass();
                         $accesstokenrow->userid = $user->id;

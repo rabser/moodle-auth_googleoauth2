@@ -72,8 +72,8 @@ $string['auth_linkedinclientsecret_key'] = 'Linkedin Secret key';
 $string['auth_vkappid_key'] = 'VK app id';
 $string['auth_vkappsecret_key'] = 'VK app secret';
 $string['auth_vkappid'] = 'Your app id and secret keys can be generated in <a href="https://vk.com/editapp?act=create">VK developer page</a>.<br/>
-Site URL: {$a->siteurl}<br/>
-Callback URL: {$a->callbackurl}';
+Base domain: {$a->siteurl} (without http://)<br/>
+Site address: {$a->callbackurl}';
 $string['auth_vkappsecret'] = 'See above';
 
 $string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://account.live.com/developers/applications">Windows Live apps page</a>:

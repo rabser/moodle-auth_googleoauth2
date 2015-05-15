@@ -169,7 +169,7 @@ function auth_googleoauth2_render_buttons() {
     </div>';
 
     $a->providername = 'VK';
-    $providerisenabled = get_config('auth/googleoauth2', 'vkclientid');
+    $providerisenabled = get_config('auth/googleoauth2', 'vkappid');
     $providerscount = $providerisenabled?$providerscount+1:$providerscount;
 	$displayprovider = ((empty($authprovider) || $authprovider == 'vk' || $allauthproviders) && $providerisenabled);
 	$providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
