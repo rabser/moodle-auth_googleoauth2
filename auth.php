@@ -195,6 +195,8 @@ error_log(print_r($postreturnvalues, true));
             //with access token request by curl the email address
             if (!empty($accesstoken)) {
 
+                $provideruserid = '';
+
                 //get the username matching the email
                 switch ($authprovider) {
                     case 'google':
@@ -273,6 +275,7 @@ error_log(print_r($postreturnvalues, true));
                         // Create a fake user email specific to battlenet (TODO - need a table specific to battlenet as as soon the user change he email he will recrate a new user on login)
                         error_log(print_r($battlenetuser, true));
                         $useremail = $battlenetuser->characters[0]->id . '@fakebattle.net';
+                        $provideruserid = $battlenetuser->characters[0]->id;
                         $verified = 1;
                         break;
 
@@ -432,6 +435,21 @@ error_log(print_r($postreturnvalues, true));
                     }
 
                     complete_user_login($user);
+
+                    // Let's save/update the access token for this user.
+                    $existingaccesstoken = $DB->get_record('auth_googleoauth2_user_idps', 
+                        array('userid' => $userid));
+                    if (empty($existingaccesstoken)) {
+                        $accesstokenrow = new stdClass();
+                        $accesstokenrow->userid = $user->id;
+                        $accesstokenrow->provideruserid = $provideruserid;
+                        $accesstokenrow->provider = $authprovider;
+                        $accesstokenrow->accesstoken = $accesstoken;
+                        $DB->insert_record('auth_googleoauth2_user_idps', $accesstokenrow);
+                    } else {
+                        $existingaccesstoken->accesstoken = $accesstoken;
+                        $DB->update_record('auth_googleoauth2_user_idps', $existingaccesstoken);
+                    }
 
                     // Create event for authenticated user.
                     $event = \auth_googleoauth2\event\user_loggedin::create(
