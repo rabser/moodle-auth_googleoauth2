@@ -1,0 +1,13 @@
+{
+    "repositories": [
+      {
+        "type": "vcs",
+        "url": "https://github.com/mouneyrac/oauth2-dropbox"
+      }
+    ],
+    "require": {
+        "league/oauth2-client": "^0.11.0",
+        "depotwarehouse/oauth2-bnet": "^3.0",
+        "pixelfear/oauth2-dropbox": "dev-bugfix"
+    }
+}

@@ -31,6 +31,12 @@ $string['auth_battlenetclientid'] = 'Your Client ID/Secret can be generated in t
 $string['auth_battlenetclientid_key'] = 'Battle.net key';
 $string['auth_battlenetclientsecret'] = 'See above.';
 $string['auth_battlenetclientsecret_key'] = 'Battle.net secret';
+$string['auth_dropboxclientid'] = 'Your app Key/Secret are generated in the <a href="https://www.dropbox.com/developers/apps">Dropbox app console</a>. Enter the following settings when creating an application:
+<br/>App website: {$a->siteurl}
+<br/>Redirect URIs: {$a->callbackurl}';
+$string['auth_dropboxclientid_key'] = 'Dropbox App key';
+$string['auth_dropboxclientsecret'] = 'See above.';
+$string['auth_dropboxclientsecret_key'] = 'Dropbox App secret';
 $string['auth_facebookclientid'] = 'Your App ID/Secret can be generated in your <a href="https://developers.facebook.com/apps/">Facebook developer page</a>:
 <br/>Add a new app > Website > Enter your site name as app name > Create new facebook app ID > Enter the Site URL - no need to enter Mobile URL > On the confirmation page, look for the "Skip to Developer Dashboard" link > on the app dashboard you should find the id/secret > Settings > Advanced > enter the Valid OAuth redirect URIs
 <br/>Site URL: {$a->siteurl}
@@ -69,12 +75,12 @@ $string['auth_linkedinclientid'] = 'Your API/Secret keys can be generated in you
 $string['auth_linkedinclientid_key'] = 'Linkedin API Key';
 $string['auth_linkedinclientsecret'] = 'See above.';
 $string['auth_linkedinclientsecret_key'] = 'Linkedin Secret key';
-$string['auth_vkappid_key'] = 'VK app id';
-$string['auth_vkappsecret_key'] = 'VK app secret';
-$string['auth_vkappid'] = 'Your app id and secret keys can be generated in <a href="https://vk.com/editapp?act=create">VK developer page</a>.<br/>
+$string['auth_vkclientid_key'] = 'VK app id';
+$string['auth_vkclientsecret_key'] = 'VK app secret';
+$string['auth_vkclientid'] = 'Your app id and secret keys can be generated in <a href="https://vk.com/editapp?act=create">VK developer page</a>.<br/>
 Base domain: {$a->siteurl} (without http://)<br/>
 Site address: {$a->callbackurl}';
-$string['auth_vkappsecret'] = 'See above';
+$string['auth_vkclientsecret'] = 'See above';
 
 $string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in your <a href="https://account.live.com/developers/applications">Windows Live apps page</a>:
 <br/>Redirect domain: {$a->domain}';

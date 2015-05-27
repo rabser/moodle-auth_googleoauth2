@@ -5,6 +5,10 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 2. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
 3. in the plugin settings, follow the displayed instructions.
 
+### Add your own provider
+1. add your third party provider for Oauth2 client as explain in https://github.com/thephpleague/oauth2-client
+2. create /classes/provider/newprovidername.php and newprovidername_redirect.php. Then add the lang strings in /lang/en/auth_googleoauth2.php.
+
 ### Continueous integration
 [![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=master)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
 
