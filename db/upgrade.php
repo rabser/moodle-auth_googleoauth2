@@ -77,5 +77,43 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015051502, 'auth', 'googleoauth2');
     }
 
+    if ($oldversion < 2015051503) {
+
+        // Changing type of field accesstoken on table auth_googleoauth2_user_idps to text.
+        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        $field = new xmldb_field('accesstoken', XMLDB_TYPE_TEXT, null, null, null, null, null, 'provider');
+
+        // Launch change of type for field accesstoken.
+        $dbman->change_field_type($table, $field);
+
+        // Googleoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015051503, 'auth', 'googleoauth2');
+    }
+
+    if ($oldversion < 2015051504) {
+
+        // Define field refreshtoken to be added to auth_googleoauth2_user_idps.
+        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        $field = new xmldb_field('refreshtoken', XMLDB_TYPE_TEXT, null, null, null, null, null, 'accesstoken');
+
+        // Conditionally launch add field refreshtoken.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field expires to be added to auth_googleoauth2_user_idps.
+        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        $field = new xmldb_field('expires', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'refreshtoken');
+
+        // Conditionally launch add field expires.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Googleoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015051504, 'auth', 'googleoauth2');
+    }
+
+
     return true;
 }

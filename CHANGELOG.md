@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+Release 1.5.1 (Build: 2015051502)
+---------------------------------
+* quite some code rewrite to use the popular PHPLeague Oauth2 client. It is now easy to add a new provider if they have been created for this client.
+* add support for Dropbox.com
+
 Release 1.5 (Build: 2015051500)
 ------------------------------
 * add support for vk.com

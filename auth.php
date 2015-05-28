@@ -129,6 +129,32 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             // Battlenet as no email notion - TODO: need to check the idp table for matching user and request user to add his email. It will be similar logic for twitter.
                             $useremail = $userDetails->id . '@fakebattle.net';
                             break;
+                        case 'github':
+                            $useremails = $provider->getUserEmails($token);
+                            error_log(print_r($authprovider . ' user emails', true));
+                            error_log(print_r($useremails, true));
+                            // Going to try to find someone with a similar email using googleoauth2 auth.
+                            $fallbackuseremail = '';
+                            foreach($useremails as $githubuseremail) {
+                                if ($githubuseremail->verified) {
+                                    if ($DB->record_exists('user', array('auth' => 'googleoauth2', 'email' => $githubuseremail->email))) {
+                                        $useremail = $githubuseremail->email;
+                                    }
+                                    $fallbackuseremail = $githubuseremail->email;
+                                }
+                            }
+                            // If we didn't find anyone then we take a verified email address.
+                            if (empty($useremail)) {
+                                $useremail = $fallbackuseremail;
+                            }
+                            error_log(print_r($useremail, true));
+                            break;
+                        case 'vk':
+                            // vk doesn't return the email address?
+                            if ($userDetails->uid) {
+                                $useremail = 'id'.$userDetails->uid.'@vkmessenger.com';
+                            };
+                            break;
                         default:
                             $useremail = $userDetails->email;
                             break;
@@ -163,6 +189,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 //create the user if it doesn't exist
                 if (empty($user)) {
 
+                    error_log(print_r('Creating a new user!', true));
+
                     // deny login if setting "Prevent account creation when authenticating" is on
                     if($CFG->authpreventaccountcreation) throw new moodle_exception("noaccountyet", "auth_googleoauth2");
 
@@ -188,7 +216,14 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         case 'battlenet':
                             // Battlenet as no firstname/lastname notion.
                             $newuser->firstname =  $userDetails->display_name;
-                            $newuser->lastname =  '['.$userDetails->clan_name.']';
+                            $newuser->lastname =  '['.$userDetails->clan_tag.']';
+                            break;
+                        case 'github':
+                        case 'dropbox':
+                            //As Github/Dropbox doesn't provide firstname/lastname, we'll split the name at the first whitespace.
+                            $githubusername = explode(' ', $userDetails->name, 2);
+                            $newuser->firstname =  $githubusername[0];
+                            $newuser->lastname =  $githubusername[1];
                             break;
                         default:
                             $newuser->firstname =  $userDetails->firstName;
@@ -255,9 +290,19 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     if (empty($existingaccesstoken)) {
                         $accesstokenrow = new stdClass();
                         $accesstokenrow->userid = $user->id;
-                        $accesstokenrow->provideruserid = $provideruserid;
+                        switch ($authprovider) {
+                            case 'battlenet':
+                                $accesstokenrow->provideruserid = $userDetails->id;
+                                break;
+                            default:
+                                $accesstokenrow->provideruserid = $userDetails->uid;
+                                break;
+                        }
+
                         $accesstokenrow->provider = $authprovider;
                         $accesstokenrow->accesstoken = $accesstoken;
+                        $accesstokenrow->refreshtoken = $refreshtoken;
+                        $accesstokenrow->expires = $tokenexpires;
                         $DB->insert_record('auth_googleoauth2_user_idps', $accesstokenrow);
                     } else {
                         $existingaccesstoken->accesstoken = $accesstoken;

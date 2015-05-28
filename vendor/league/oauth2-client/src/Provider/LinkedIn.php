@@ -49,7 +49,7 @@ class LinkedIn extends AbstractProvider
             'location' => $location,
             'description' => $description,
             'imageurl' => $pictureUrl,
-            'urls' => $response->publicProfileUrl,
+            'urls' => isset($response->publicProfileUrl)?$response->publicProfileUrl:'',
         ]);
 
         return $user;

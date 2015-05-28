@@ -7,7 +7,9 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 
 ### Add your own provider
 1. add your third party provider for Oauth2 client as explain in https://github.com/thephpleague/oauth2-client
-2. create /classes/provider/newprovidername.php and newprovidername_redirect.php. Then add the lang strings in /lang/en/auth_googleoauth2.php.
+2. create /classes/provider/newprovidername.php and newprovidername_redirect.php. Then add the lang strings in /lang/en/auth_googleoauth2.php 
+and add the provider name to lib.php:provider_list (if you have time you can change the function logic to automatically load the classes from the provider folder 
+and then send me a pull request, thanks :)) 
 
 ### Continueous integration
 [![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=master)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
