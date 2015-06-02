@@ -309,6 +309,27 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         $DB->update_record('auth_googleoauth2_user_idps', $existingaccesstoken);
                     }
 
+                    // Check if the user picture is the default and retrieve the provider picture.
+                    if (empty($user->picture)) {
+                        switch ($authprovider) {
+                            case 'battlenet':
+                                error_log(print_r('Downloading profile picture', true));
+                                require_once($CFG->libdir . '/filelib.php');
+                                require_once($CFG->libdir . '/gdlib.php');
+                                $imagefilename = $CFG->tempdir . '/googleoauth2-portrait-' . $user->id;
+                                $imagecontents = download_file_content($userDetails->portrait_url);
+                                file_put_contents($imagefilename, $imagecontents);
+                                if ($newrev = process_new_icon(context_user::instance($user->id), 'user', 'icon', 0, $imagefilename)) {
+                                    $DB->set_field('user', 'picture', $newrev, array('id' => $user->id));
+                                }
+                                unlink($imagefilename);
+                                break;
+                            default:
+                                // TODO
+                                break;
+                        }
+                    }
+
                     // Create event for authenticated user.
                     $event = \auth_googleoauth2\event\user_loggedin::create(
                         array('context'=>context_system::instance(),

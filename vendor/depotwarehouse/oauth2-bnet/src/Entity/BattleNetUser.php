@@ -12,6 +12,7 @@ class BattleNetUser
     public $clan_name;
     public $clan_tag;
     public $profile_url;
+    public $portrait_url;
 
     public $race;
     public $league;
@@ -32,7 +33,10 @@ class BattleNetUser
         $this->display_name = $attributes['displayName'];
         $this->clan_name = (isset($attributes['clanName'])) ? $attributes['clanName'] : null;
         $this->clan_tag = (isset($attributes['clanTag'])) ? $attributes['clanTag'] : null;
-        $this->profile_url = "http://us.battle.net/sc2/en{$attributes['profilePath']}";
+        $this->profile_url = "http://eu.battle.net/sc2/en{$attributes['profilePath']}";
+        $this->portrait_url = substr($attributes['portrait']->url, 0, strpos($attributes['portrait']->url, '-'))
+            . '-' . $attributes['portrait']->offset . ".jpg";
+
 
         if (isset($attributes['career'])) {
             $career = (is_object($attributes['career'])) ? (array)$attributes['career'] : $attributes['career'];
