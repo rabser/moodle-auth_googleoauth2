@@ -72,7 +72,7 @@ $string['oauth2displaybuttons'] = 'Display buttons on login page';
 $string['oauth2displaybuttonshelp'] = 'Mostrar los botones con el logo de Google, Facebook, etc. en la parte superior de la página de inicio de sesión. Si quieres posicionar los botones tu mismo en la página de inicio de sesión, deshabilitar esta opción y añade el siguiente código:
 {$a}';
 $string['emailaddressmustbeverified'] = 'Tu dirección de correo electrónico no ha sido verificado por el método de autentificación que has seleccionado. Puede ser que te hayas olvidado de hacer click en el enlace "verificar dirección de correo" que Google o Facebook debía haberte mandado durante la subscripción a su servicio.';
-$string['auth_sign-in_with'] = 'Iniciar sesión con';
+$string['auth_sign-in_with'] = 'Iniciar sesión con {$a->providername}';
 $string['moreproviderlink'] = 'Iniciar sesión con otro servicio.';
 $string['signinwithanaccount'] = 'Iniciar sesión con:';
 $string['noaccountyet'] = 'Todavía no tienes permiso para utilizar este sitio. Contacte con tu administrador y pidele que active tu cuenta.';
