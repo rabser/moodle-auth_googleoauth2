@@ -26,6 +26,17 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once $CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php';
 
+function googleoauth2_html_button($authUrl, $providerdisplaystyle, $provider) {
+        $a = new stdClass();
+        $a->providername = $provider->readablename;
+        return '
+        <div class="singinprovider" style="' . $providerdisplaystyle .'">
+            <a class="ssk ssk-text ssk-' . $provider->sskstyle .'" href="'.$authUrl.'"> 
+                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
+            </a>
+        </div>';
+}
+
 /**
  * Return list of supported provider.
  *
@@ -117,7 +128,7 @@ function auth_googleoauth2_render_buttons() {
     <script language="javascript">
         linkElement = document.createElement("link");
         linkElement.rel = "stylesheet";
-        linkElement.href = "' . $CFG->httpswwwroot . '/auth/googleoauth2/csssocialbuttons/css/zocial.css";
+        linkElement.href = "' . $CFG->httpswwwroot . '/auth/googleoauth2/socialsharekit/dist/css/social-share-kit.css";
         document.head.appendChild(linkElement);
     </script>
     ';
