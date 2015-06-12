@@ -15,6 +15,10 @@ and then send me a pull request, thanks :))
 In order to use to store the access token you must set the config with:
 set_config('saveaccesstoken', 1, 'auth/googleoauth2');
 
+### Composer
+I deliver the vendor content in the repository. It makes easy to download the zip file from Github and upload it in Moodle.org. 
+Moodle.org is not able to create a package from Github (with vendor libs) yet.
+
 ### Continueous integration
 [![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=master)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
 
