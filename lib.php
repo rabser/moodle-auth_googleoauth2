@@ -56,13 +56,10 @@ function googleoauth2_provider_redirect($providername) {
         throw new moodle_exception($providername . '_failure');
     }
 
-    error_log(print_r($providername, true));
-    error_log(print_r($_SESSION['oauth2state_' . $providername], true));
     $state = optional_param('state', null, PARAM_TEXT);
     // Clean the state from a weird #_=_ added to the end by facebook.
     $state = str_replace('#_=_' ,'' ,$state);
 
-    error_log(print_r($state, true));
     // Ensure that this is no request forgery going on, and that the user
     // sending us this connect request is the user that was supposed to.
     if (empty($state) || ($_SESSION['oauth2state_' . $providername] !== $state)) {
@@ -93,8 +90,6 @@ function auth_googleoauth2_get_state_token() {
 }
 
 function set_state_token($providername, $providerstate) {
-    error_log(print_r('set_state_token', true));
-    error_log(print_r($providerstate, true));
     $_SESSION['oauth2state_' . $providername] = $providerstate;
 }
 

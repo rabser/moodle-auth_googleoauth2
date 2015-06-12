@@ -107,7 +107,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             $token = $provider->getAccessToken('authorization_code', [
                 'code' => $authorizationcode
             ]);
-            error_log(print_r($token, true));
+
             $accesstoken = $token->accessToken;
             $refreshtoken = $token->refreshToken;
             $tokenexpires = $token->expires;
@@ -121,9 +121,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     // We got an access token, let's now get the user's details
                     $userDetails = $provider->getUserDetails($token);
                     // Use these details to create a new profile
-                    error_log(print_r($authprovider . ' user details', true));
-                    error_log(print_r($userDetails, true));
-
                     switch ($authprovider) {
                         case 'battlenet':
                             // Battlenet as no email notion - TODO: need to check the idp table for matching user and request user to add his email. It will be similar logic for twitter.
@@ -131,8 +128,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             break;
                         case 'github':
                             $useremails = $provider->getUserEmails($token);
-                            error_log(print_r($authprovider . ' user emails', true));
-                            error_log(print_r($useremails, true));
                             // Going to try to find someone with a similar email using googleoauth2 auth.
                             $fallbackuseremail = '';
                             foreach($useremails as $githubuseremail) {
@@ -147,7 +142,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                             if (empty($useremail)) {
                                 $useremail = $fallbackuseremail;
                             }
-                            error_log(print_r($useremail, true));
                             break;
                         case 'vk':
                             // vk doesn't return the email address?
@@ -188,9 +182,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                 //create the user if it doesn't exist
                 if (empty($user)) {
-
-                    error_log(print_r('Creating a new user!', true));
-
                     // deny login if setting "Prevent account creation when authenticating" is on
                     if($CFG->authpreventaccountcreation) throw new moodle_exception("noaccountyet", "auth_googleoauth2");
 
@@ -313,7 +304,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     if (empty($user->picture)) {
                         switch ($authprovider) {
                             case 'battlenet':
-                                error_log(print_r('Downloading profile picture', true));
                                 require_once($CFG->libdir . '/filelib.php');
                                 require_once($CFG->libdir . '/gdlib.php');
                                 $imagefilename = $CFG->tempdir . '/googleoauth2-portrait-' . $user->id;
