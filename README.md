@@ -11,6 +11,10 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 and add the provider name to lib.php:provider_list (if you have time you can change the function logic to automatically load the classes from the provider folder 
 and then send me a pull request, thanks :)) 
 
+### Use the table access token
+In order to use to store the access token you must set the config with:
+set_config('saveaccesstoken', 1, 'auth/googleoauth2');
+
 ### Continueous integration
 [![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=master)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
 

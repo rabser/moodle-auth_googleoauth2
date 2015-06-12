@@ -276,28 +276,33 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     complete_user_login($user);
 
                     // Let's save/update the access token for this user.
-                    $existingaccesstoken = $DB->get_record('auth_googleoauth2_user_idps', 
-                        array('userid' => $user->id, 'provider' => $authprovider));
-                    if (empty($existingaccesstoken)) {
-                        $accesstokenrow = new stdClass();
-                        $accesstokenrow->userid = $user->id;
-                        switch ($authprovider) {
-                            case 'battlenet':
-                                $accesstokenrow->provideruserid = $userDetails->id;
-                                break;
-                            default:
-                                $accesstokenrow->provideruserid = $userDetails->uid;
-                                break;
-                        }
+                    $cansaveaccesstoken = get_config('auth/googleoauth2', 'saveaccesstoken');
+                    if (!empty($cansaveaccesstoken)) {
+                        $existingaccesstoken = $DB->get_record('auth_googleoauth2_user_idps',
+                            array('userid' => $user->id, 'provider' => $authprovider));
+                        if (empty($existingaccesstoken)) {
+                            $accesstokenrow = new stdClass();
+                            $accesstokenrow->userid = $user->id;
+                            switch ($authprovider) {
+                                case 'battlenet':
+                                    $accesstokenrow->provideruserid = $userDetails->id;
+                                    break;
+                                default:
+                                    $accesstokenrow->provideruserid = $userDetails->uid;
+                                    break;
+                            }
 
-                        $accesstokenrow->provider = $authprovider;
-                        $accesstokenrow->accesstoken = $accesstoken;
-                        $accesstokenrow->refreshtoken = $refreshtoken;
-                        $accesstokenrow->expires = $tokenexpires;
-                        $DB->insert_record('auth_googleoauth2_user_idps', $accesstokenrow);
-                    } else {
-                        $existingaccesstoken->accesstoken = $accesstoken;
-                        $DB->update_record('auth_googleoauth2_user_idps', $existingaccesstoken);
+                            $accesstokenrow->provider = $authprovider;
+                            $accesstokenrow->accesstoken = $accesstoken;
+                            $accesstokenrow->refreshtoken = $refreshtoken;
+                            $accesstokenrow->expires = $tokenexpires;
+
+                            $DB->insert_record('auth_googleoauth2_user_idps', $accesstokenrow);
+
+                        } else {
+                            $existingaccesstoken->accesstoken = $accesstoken;
+                            $DB->update_record('auth_googleoauth2_user_idps', $existingaccesstoken);
+                        }
                     }
 
                     // Check if the user picture is the default and retrieve the provider picture.
@@ -315,7 +320,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                                 unlink($imagefilename);
                                 break;
                             default:
-                                // TODO
+                                // TODO retrieve other provider profile pictures.
                                 break;
                         }
                     }
