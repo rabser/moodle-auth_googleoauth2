@@ -5,7 +5,7 @@ require_once $CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php';
 class provideroauth2vk extends League\OAuth2\Client\Provider\Vkontakte {
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
-    public $zocialstyle = 'vk';
+    public $sskstyle = 'vk';
     public $name = 'vk'; // it must be the same as the XXXXX in the class name provideroauth2XXXXX.
     public $readablename = 'Vkontakte';
     public $scopes = array('offline');
@@ -48,12 +48,6 @@ class provideroauth2vk extends League\OAuth2\Client\Provider\Vkontakte {
      * @throws coding_exception
      */
     public function html_button($authUrl, $providerdisplaystyle) {
-        $a = new stdClass();
-        $a->providername = $this->readablename;
-        return '<div class="singinprovider" style="' . $providerdisplaystyle .'">
-            <a class="zocial ' . $this->zocialstyle .'" href="'.$authUrl.'">
-                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
-            </a>
-        </div>';
+        return googleoauth2_html_button($authUrl, $providerdisplaystyle, $this);
     }
 }

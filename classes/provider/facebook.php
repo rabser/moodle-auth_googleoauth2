@@ -5,7 +5,7 @@ require_once $CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php';
 class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
-    public $zocialstyle = 'facebook';
+    public $sskstyle = 'facebook';
     public $name = 'facebook'; // it must be the same as the XXXXX in the class name provideroauth2XXXXX.
     public $readablename = 'Facebook';
     public $scopes = array('email');
@@ -48,12 +48,6 @@ class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
      * @throws coding_exception
      */
     public function html_button($authUrl, $providerdisplaystyle) {
-        $a = new stdClass();
-        $a->providername = $this->readablename;
-        return '<div class="singinprovider" style="' . $providerdisplaystyle .'">
-            <a class="zocial ' . $this->zocialstyle .'" href="'.$authUrl.'">
-                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
-            </a>
-        </div>';
+        return googleoauth2_html_button($authUrl, $providerdisplaystyle, $this);
     }
 }
