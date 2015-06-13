@@ -1,6 +1,12 @@
 Changelog
 ==========
 
+Release 2.0
+-----------
+* lots of code changes
+* new button css
+* buttons now displayed under the login form inputs for all themes (Thanks to the Oauth2 Elcentra plugin for Moodle)
+
 Release 1.5.1 (Build: 2015051502)
 ---------------------------------
 * quite some code rewrite to use the popular PHPLeague Oauth2 client. It is now easy to add a new provider if they have been created for this client.
