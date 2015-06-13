@@ -138,8 +138,7 @@ function auth_googleoauth2_render_buttons() {
 	} else {
 		$authprovider = $_COOKIE[$cookiename];
 	}
-	
-	$html .= "<center>";
+
 	$html .= "<div>";
     $a = new stdClass();
     $providerscount = 0;
@@ -176,6 +175,5 @@ function auth_googleoauth2_render_buttons() {
             </div>';
 	}
 
-	$html .= "</center>";	
 	return $html;
 }
