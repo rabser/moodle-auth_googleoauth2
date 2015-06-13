@@ -373,7 +373,15 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 and empty($_POST['password'])) {
                 // Display the button on the login page.
                 require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
-                auth_googleoauth2_display_buttons();
+
+                // Insert the html code below the login field.
+                // Code/Solution from Elcentra plugin: https://moodle.org/plugins/view/auth_elcentra
+                global $PAGE, $CFG;
+                $PAGE->requires->jquery();
+                $content = str_replace(array("\n", "\r"), array("\\\n", "\\\r",), auth_googleoauth2_display_buttons(false));
+                $PAGE->requires->js_init_code('oauth2cssurl = "' . $CFG->httpswwwroot . '/auth/googleoauth2/socialsharekit/dist/css/social-share-kit.css"');
+                $PAGE->requires->js_init_code("buttonsCodeOauth2 = '$content';");
+                $PAGE->requires->js(new moodle_url($CFG->wwwroot . "/auth/googleoauth2/script.js"));
             }
         }
     }

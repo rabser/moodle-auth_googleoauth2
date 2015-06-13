@@ -107,8 +107,13 @@ function set_state_token($providername, $providerstate) {
 /**
  * For backwards compatibility only: this echoes the html created in auth_googleoauth2_render_buttons
  */
-function auth_googleoauth2_display_buttons() {
-    echo auth_googleoauth2_render_buttons();
+function auth_googleoauth2_display_buttons($echo = true) {
+    $html = auth_googleoauth2_render_buttons();
+    if ($echo) {
+        echo $html;
+    } else {
+        return $html;
+    }
 }
 
 /**
@@ -124,14 +129,6 @@ function auth_googleoauth2_render_buttons() {
         return $html;
     }
 
-	$html .= '
-    <script language="javascript">
-        linkElement = document.createElement("link");
-        linkElement.rel = "stylesheet";
-        linkElement.href = "' . $CFG->httpswwwroot . '/auth/googleoauth2/socialsharekit/dist/css/social-share-kit.css";
-        document.head.appendChild(linkElement);
-    </script>
-    ';
 	
 	//get previous auth provider
 	$allauthproviders = optional_param('allauthproviders', false, PARAM_BOOL);
@@ -143,7 +140,7 @@ function auth_googleoauth2_render_buttons() {
 	}
 	
 	$html .= "<center>";
-	$html .= "<div style=\"width:'1%'\">";
+	$html .= "<div>";
     $a = new stdClass();
     $providerscount = 0;
 
