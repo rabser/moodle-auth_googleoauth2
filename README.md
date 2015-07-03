@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mouneyrac/moodle-auth_googleoauth2.png?label=ready&title=Ready)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2)
 This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created. 
 
 ### Installation:
