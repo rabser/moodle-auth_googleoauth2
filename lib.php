@@ -129,14 +129,12 @@ function auth_googleoauth2_render_buttons() {
         return $html;
     }
 
-	
 	//get previous auth provider
 	$allauthproviders = optional_param('allauthproviders', false, PARAM_BOOL);
 	$cookiename = 'MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie;
-	if (empty($_COOKIE[$cookiename])) {
-		$authprovider = '';
-	} else {
-		$authprovider = $_COOKIE[$cookiename];
+    $authprovider = '';
+	if (!empty($_COOKIE[$cookiename])) {
+        $authprovider = $_COOKIE[$cookiename];
 	}
 
 	$html .= "<div>";
