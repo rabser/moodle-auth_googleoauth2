@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/mouneyrac/moodle-auth_googleoauth2.png?label=ready&title=Ready)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2)
+
 This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created. 
 
 ### Installation:
@@ -20,8 +20,9 @@ set_config('saveaccesstoken', 1, 'auth/googleoauth2');
 I deliver the entire vendor content in the repository (so don't run composer). It makes it for me easy to download the zip file from Github and then to upload it straight away in Moodle.org. 
 Moodle.org is not able to create a package from Github (with vendor libs) yet.
 
-### Continueous integration
+### Continueous integration, tracker...
 [![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=master)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
+[![Stories in Ready](https://badge.waffle.io/mouneyrac/moodle-auth_googleoauth2.png?label=ready&title=Ready)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2)
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
