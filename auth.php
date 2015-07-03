@@ -115,8 +115,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             //with access token request by curl the email address
             if (!empty($accesstoken)) {
 
-                $provideruserid = '';
-
                 try {
                     // We got an access token, let's now get the user's details
                     $userDetails = $provider->getUserDetails($token);

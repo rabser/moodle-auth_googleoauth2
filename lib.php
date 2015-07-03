@@ -140,7 +140,6 @@ function auth_googleoauth2_render_buttons() {
 	}
 
 	$html .= "<div>";
-    $a = new stdClass();
     $providerscount = 0;
 
     // TODO get the list from the provider folder instead to hard code it here.
