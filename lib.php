@@ -111,9 +111,9 @@ function auth_googleoauth2_display_buttons($echo = true) {
     $html = auth_googleoauth2_render_buttons();
     if ($echo) {
         echo $html;
-    } else {
-        return $html;
     }
+    return $html;
+
 }
 
 /**
@@ -167,7 +167,7 @@ function auth_googleoauth2_render_buttons() {
         $html .= '<br /><br />
            <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php')
-                     . '?allauthproviders=true' .'" onclick="changecss(\'singinprovider\',\'display\',\'inline-block\');">
+                     . '?allauthproviders=true' .'" onclick="changecss(\\\'singinprovider\\\',\\\'display\\\',\\\'inline-block\\\');">
                     '. get_string('moreproviderlink', 'auth_googleoauth2').'
                 </a>
             </div>';
