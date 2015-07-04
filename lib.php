@@ -24,15 +24,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once $CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php';
+require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
-function googleoauth2_html_button($authUrl, $providerdisplaystyle, $provider) {
+function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
         $a = new stdClass();
         $a->providername = $provider->readablename;
         return '
         <div class="singinprovider" style="' . $providerdisplaystyle .'">
-            <a class="ssk ssk-text ssk-' . $provider->sskstyle .'" href="'.$authUrl.'"> 
-                '.get_string('auth_sign-in_with','auth_googleoauth2', $a).'
+            <a class="ssk ssk-text ssk-' . $provider->sskstyle .'" href="'.$authurl.'">
+                '.get_string('auth_sign-in_with', 'auth_googleoauth2', $a).'
             </a>
         </div>';
 }
@@ -61,7 +61,7 @@ function oauth_add_to_log($courseid, $module, $action, $url='', $info='', $cm=0,
 function googleoauth2_provider_redirect($providername) {
     global $CFG;
 
-    $code = optional_param('code', '', PARAM_TEXT); //Google can return an error
+    $code = optional_param('code', '', PARAM_TEXT); // Google can return an error.
 
     if (empty($code)) {
         throw new moodle_exception($providername . '_failure');
@@ -69,10 +69,10 @@ function googleoauth2_provider_redirect($providername) {
 
     $state = optional_param('state', null, PARAM_TEXT);
     // Clean the state from a weird #_=_ added to the end by facebook.
-    $state = str_replace('#_=_' ,'' ,$state);
+    $state = str_replace('#_=_' , '', $state);
 
-    // Ensure that this is no request forgery going on, and that the user
-    // sending us this connect request is the user that was supposed to.
+    // Ensure that this is no request forgery going on.
+    // And that the user sending us this connect request is the user that was supposed to.
     if (empty($state) || ($_SESSION['oauth2state_' . $providername] !== $state)) {
         throw new moodle_exception('Invalid state parameter');
     }
@@ -122,55 +122,56 @@ function auth_googleoauth2_display_buttons($echo = true) {
  * @return string: returns the html for buttons and some JavaScript 
  */
 function auth_googleoauth2_render_buttons() {
-	global $CFG;
-	$html ='';
-	
+    global $CFG;
+    $html = '';
+
     if (!is_enabled_auth('googleoauth2')) {
         return $html;
     }
 
-	//get previous auth provider
-	$allauthproviders = optional_param('allauthproviders', false, PARAM_BOOL);
-	$cookiename = 'MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie;
+    // Get previous auth provider.
+    $allauthproviders = optional_param('allauthproviders', false, PARAM_BOOL);
+    $cookiename = 'MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie;
     $authprovider = '';
-	if (!empty($_COOKIE[$cookiename])) {
+    if (!empty($_COOKIE[$cookiename])) {
         $authprovider = $_COOKIE[$cookiename];
-	}
+    }
 
-	$html .= "<div>";
+    $html .= "<div>";
     $providerscount = 0;
 
     // TODO get the list from the provider folder instead to hard code it here.
     $providers = provider_list();
 
-    foreach($providers as $providername) {
+    foreach ($providers as $providername) {
 
         require_once($CFG->dirroot . '/auth/googleoauth2/classes/provider/'.$providername.'.php');
 
         // Load the provider plugin.
         $providerclassname = 'provideroauth2' . $providername;
         $provider = new $providerclassname();
-        $authUrl = $provider->getAuthorizationUrl();
+        $authurl = $provider->getAuthorizationUrl();
         set_state_token($providername, $provider->state);
 
         // Check if we should display the button.
         $providerisenabled = $provider->isenabled();
-        $providerscount = $providerisenabled?$providerscount+1:$providerscount;
+        $providerscount = $providerisenabled ? $providerscount + 1 : $providerscount;
         $displayprovider = ((empty($authprovider) || $authprovider == $providername || $allauthproviders) && $providerisenabled);
-        $providerdisplaystyle = $displayprovider?'display:inline-block;padding:10px;':'display:none;';
+        $providerdisplaystyle = $displayprovider ? 'display:inline-block;padding:10px;' : 'display:none;';
 
         // The button html code.
-        $html .= $provider->html_button($authUrl, $providerdisplaystyle);
+        $html .= $provider->html_button($authurl, $providerdisplaystyle);
     }
 
-    if (!$allauthproviders and !empty($authprovider) and $providerscount>1) {
-		$html .= '<br /><br /> 
+    if (!$allauthproviders and !empty($authprovider) and $providerscount > 1) {
+        $html .= '<br /><br />
            <div class="moreproviderlink">
-                <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php') . '?allauthproviders=true' .'" onclick="changecss(\'singinprovider\',\'display\',\'inline-block\');">
+                <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php')
+                     . '?allauthproviders=true' .'" onclick="changecss(\'singinprovider\',\'display\',\'inline-block\');">
                     '. get_string('moreproviderlink', 'auth_googleoauth2').'
                 </a>
             </div>';
-	}
+    }
 
-	return $html;
+    return $html;
 }

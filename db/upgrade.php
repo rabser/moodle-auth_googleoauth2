@@ -29,7 +29,7 @@
 function xmldb_auth_googleoauth2_upgrade($oldversion) {
     global $DB;
 
-    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+    $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     if ($oldversion < 2014060700) {
         set_config('oauth2displaybuttons', 0, 'auth/googleoauth2');
@@ -37,7 +37,7 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
     }
 
     if ($oldversion < 2014120102) {
-        
+
         // Define table auth_googleoauth2_user_idps to be created.
         $table = new xmldb_table('auth_googleoauth2_user_idps');
 
@@ -62,7 +62,7 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
 
     if ($oldversion < 2015051502) {
 
-        // fix the vk plugin configs.
+        // Fix the vk plugin configs.
         $vkappid = get_config('auth/googleoauth2', 'vkappid');
         if (!empty($vkappid)) {
             set_config('vkclientid', $vkappid, 'auth/googleoauth2');
@@ -113,7 +113,6 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
         // Googleoauth2 savepoint reached.
         upgrade_plugin_savepoint(true, 2015051504, 'auth', 'googleoauth2');
     }
-
 
     return true;
 }

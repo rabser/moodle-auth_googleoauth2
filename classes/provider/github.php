@@ -1,12 +1,26 @@
 <?php
+// This file is part of Oauth2 authentication plugin for Moodle.
+//
+// Oauth2 authentication plugin for Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Oauth2 authentication plugin for Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Oauth2 authentication plugin for Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once $CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php';
+require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
 class provideroauth2github extends League\OAuth2\Client\Provider\Github {
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
     public $sskstyle = 'github';
-    public $name = 'github'; // it must be the same as the XXXXX in the class name provideroauth2XXXXX.
+    public $name = 'github'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
     public $readablename = 'Github';
     public $scopes = array('user:email');
 
@@ -42,12 +56,12 @@ class provideroauth2github extends League\OAuth2\Client\Provider\Github {
     /**
      * The html button.
      *
-     * @param $authUrl
+     * @param $authurl
      * @param $providerdisplaystyle
      * @return string
      * @throws coding_exception
      */
-    public function html_button($authUrl, $providerdisplaystyle) {
-        return googleoauth2_html_button($authUrl, $providerdisplaystyle, $this);
+    public function html_button($authurl, $providerdisplaystyle) {
+        return googleoauth2_html_button($authurl, $providerdisplaystyle, $this);
     }
 }
