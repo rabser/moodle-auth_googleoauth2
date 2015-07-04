@@ -16,7 +16,7 @@ $(document).ready(
                 $(formObj).each(function (i, formItem) {
                     var username = $(formItem).find("input[name='username']").val();
                     var password = $(formItem).find("input[name='password']").val();
-                    if(username!=="guest" || password!=="guest") {
+                    if(username !== "guest" || password !== "guest") {
                         $(formItem).append(buttonsCodeOauth2);
                     }
                 });
