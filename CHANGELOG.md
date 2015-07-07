@@ -6,7 +6,6 @@ Release 2.1 (wip)
 * add licence file
 * Add help text about dropbox and battle.net only working on https site
 * Update admin detail to setup github, windows, linkedin
-* #130 - Remove legacy log from master branch
 * #135 - Translation of the exceptions
 * #131 - Links to providers are unneccessarily output into HTML
 * #129 - Use $PAGE->requires->css to load the css

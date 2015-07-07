@@ -187,7 +187,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                 // If email not existing in user database then create a new username (userX).
                 if (empty($useremail) or $useremail != clean_param($useremail, PARAM_EMAIL)) {
-                    throw new moodle_exception('couldnotgetuseremail');
+                    throw new moodle_exception('couldnotgetuseremail', 'auth_googleoauth2');
                     // TODO: display a link for people to retry.
                 }
                 // Get the user.

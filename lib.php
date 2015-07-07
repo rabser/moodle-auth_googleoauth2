@@ -64,7 +64,7 @@ function googleoauth2_provider_redirect($providername) {
     $code = optional_param('code', '', PARAM_TEXT); // Google can return an error.
 
     if (empty($code)) {
-        throw new moodle_exception($providername . '_failure');
+        throw new moodle_exception($providername . '_failure', 'auth_googleoauth2');
     }
 
     $state = optional_param('state', null, PARAM_TEXT);
@@ -74,7 +74,7 @@ function googleoauth2_provider_redirect($providername) {
     // Ensure that this is no request forgery going on.
     // And that the user sending us this connect request is the user that was supposed to.
     if (empty($state) || ($_SESSION['oauth2state_' . $providername] !== $state)) {
-        throw new moodle_exception('Invalid state parameter');
+        throw new moodle_exception('invalidstateparam', 'auth_googleoauth2');
     }
 
     $loginurl = '/login/index.php';
