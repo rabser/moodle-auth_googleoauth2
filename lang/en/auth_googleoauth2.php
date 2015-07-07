@@ -73,7 +73,7 @@ $string['auth_googleuserprefix'] = 'The created user\'s username will start with
 $string['auth_googleuserprefix_key'] = 'Username prefix';
 $string['auth_googleoauth2description'] = 'Allow a user to connect to the site with an external authentication provider: Google/Facebook/Windows Live.
 The first time the user connect with an authentication provider, a new account is created.
-<a href="'.$CFG->wwwroot.'/admin/search.php?query=authpreventaccountcreation">Prevent account creation when authenticating</a> <b>must</b> be unset.';
+Prevent account creation (authpreventaccountcreation admin setting) when authenticating <b>must</b> be unset.';
 $string['auth_linkedinclientid'] = 'Your API/Secret keys can be generated in your <a href="https://www.linkedin.com/secure/developer">Linkedin register application page</a>:
 <br/>Website URL: {$a->siteurl}
 <br/>OAuth 2.0 Accept Redirect URL: {$a->callbackurl}';
