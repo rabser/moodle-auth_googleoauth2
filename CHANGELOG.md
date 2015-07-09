@@ -4,6 +4,7 @@ Changelog
 Release 2.1 (wip)
 -----------------
 * add licence file
+* Remove SocialShareKit [LICENCE ISSUE]
 * Add help text about dropbox and battle.net only working on https site
 * Update admin detail to setup github, windows, linkedin
 * #135 - Translation of the exceptions

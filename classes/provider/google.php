@@ -19,7 +19,7 @@ require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 class provideroauth2google extends League\OAuth2\Client\Provider\Google {
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
-    public $sskstyle = 'google-plus';
+    public $sskstyle = 'google';
     public $name = 'google'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
     public $readablename = 'Google';
     public $scopes = array('profile', 'email');

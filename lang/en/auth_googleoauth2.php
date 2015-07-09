@@ -105,6 +105,7 @@ If you want to position the buttons yourself in your login page, you can keep th
 $string['emailaddressmustbeverified'] = 'Your email address is not verified by the authentication method you selected. You likely have forgotten to click on a "verify email address"
 link that Google or Facebook should have sent you during your subscribtion to their service.';
 $string['auth_sign-in_with'] = 'Sign-in with {$a->providername}';
+$string['login'] = 'LOGIN';
 $string['moreproviderlink'] = 'Sign-in with another service.';
 $string['signinwithanaccount'] = 'Log in with:';
 $string['noaccountyet'] = 'You do not have permission to use the site yet. Please contact your administrator and ask them to activate your account.';

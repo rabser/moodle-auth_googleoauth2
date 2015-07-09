@@ -19,7 +19,7 @@ require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 class provideroauth2messenger extends League\OAuth2\Client\Provider\Microsoft {
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
-    public $sskstyle = 'windows';
+    public $sskstyle = 'microsoft';
     public $name = 'messenger'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
     public $readablename = 'Microsoft';
     public $scopes = array('wl.basic', 'wl.emails', 'wl.signin');
