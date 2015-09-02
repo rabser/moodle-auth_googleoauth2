@@ -36,5 +36,5 @@ Moodle.org is not able to create a package from Github (with vendor libs) yet.
 * [Symfony EventDispatcher](http://symfony.com/)
 
 ### +1 the plugin
-To like the plugin, go to the [Moodle.org repositoroty plugin page](https://moodle.org/plugins/view/auth_googleoauth2), login and click on 'Add to my Favorites'. Find other ways to contribute on the [github plugin page](http://mouneyrac.github.io/moodle-auth_googleoauth2/).
+To like the plugin, go to the [Moodle.org repository plugin page](https://moodle.org/plugins/view/auth_googleoauth2), login and click on 'Add to my Favorites'. Find other ways to contribute on the [github plugin page](http://mouneyrac.github.io/moodle-auth_googleoauth2/).
 
