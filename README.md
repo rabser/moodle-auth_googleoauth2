@@ -28,7 +28,6 @@ Moodle.org is not able to create a package from Github (with vendor libs) yet.
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
-* [Social Share Kit](http://socialsharekit.com/)
 * [The PHP League oauth2 client](https://github.com/thephpleague/oauth2-client)
 * [Pixelfear dropbox support](https://github.com/pixelfear/oauth2-dropbox)
 * [Depotwarehouse battle.net support](https://github.com/tpavlek/oauth2-bnet)
