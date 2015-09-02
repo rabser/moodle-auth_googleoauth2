@@ -3,11 +3,6 @@ $(document).ready(
 
         // CODE HIGHLY INSPIRED FROM ELCENTRA OAUTH2 PLUGIN: https://moodle.org/plugins/view/auth_elcentra
 
-        var linkElement2 = document.createElement("link");
-        linkElement2.rel = "stylesheet";
-        linkElement2.href = oauth2cssurl2;
-        document.head.appendChild(linkElement2);
-
         if ($("#auth_custom_location").length > 0) {
             $("#auth_custom_location").append(buttonsCodeOauth2);
         } else {

@@ -396,8 +396,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 global $PAGE, $CFG;
                 $PAGE->requires->jquery();
                 $content = str_replace(array("\n", "\r"), array("\\\n", "\\\r"), auth_googleoauth2_display_buttons(false));
-                $PAGE->requires->js_init_code('oauth2cssurl2 = "' . $CFG->httpswwwroot .
-                    '/auth/googleoauth2/style.css"');
+                $PAGE->requires->css('/auth/googleoauth2/style.css');
                 $PAGE->requires->js_init_code("buttonsCodeOauth2 = '$content';");
                 $PAGE->requires->js(new moodle_url($CFG->wwwroot . "/auth/googleoauth2/script.js"));
             }
