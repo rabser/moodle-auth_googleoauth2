@@ -26,7 +26,7 @@ Moodle.org is not able to create a package from Github (with vendor libs) yet.
 [![Codacy Badge](https://www.codacy.com/project/badge/84928dc4c553414786735ba745e57c93)](https://www.codacy.com/app/jerome/moodle-auth_googleoauth2)
 [![bountysource](https://api.bountysource.com/badge/team?team_id=49212&style=raised)](https://www.bountysource.com/teams/oauth2-authentication-plugin-for-moodle/backers)
 
-[! [Throughput Graph](https://graphs.waffle.io/mouneyrac/moodle-auth_googleoauth2/throughput.svg)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2/metrics)
+[![Throughput Graph](https://graphs.waffle.io/mouneyrac/moodle-auth_googleoauth2/throughput.svg)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2/metrics)
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
