@@ -24,7 +24,7 @@
 
 $string['pluginname'] = 'Oauth2';
 $string['auth_battlenetclientid'] = 'Your Client ID/Secret can be generated in the <a href="https://dev.battle.net/apps/mykeys" target="_blank">Battle.net API site</a>.
-Enter the following settings when creating an application:
+Enter the following settings when creating an application (note that Battle.net only supports https url, so your Moodle site must support https):
 <br/>Web site: {$a->siteurl}
 <br/>Register callback url: {$a->callbackurl} [it MUST BE a HTTPS url otherwise Battle.net will refuse  to log you in]
 <br/>Franchises: Starcraft II';
@@ -32,7 +32,7 @@ $string['auth_battlenetclientid_key'] = 'Battle.net key';
 $string['auth_battlenetclientsecret'] = '';
 $string['auth_battlenetclientsecret_key'] = 'Battle.net secret';
 $string['auth_dropboxclientid'] = 'Your app Key/Secret are generated in the <a href="https://www.dropbox.com/developers/apps" target="_blank">Dropbox app console</a>.
-Enter the following settings when creating an application:
+Enter the following settings when creating an application (note that Dropbox only supports https url, so your Moodle site must support https):
 <br/>App website: {$a->siteurl}
 <br/>Redirect URIs: {$a->callbackurl}';
 $string['auth_dropboxclientid_key'] = 'Dropbox App key';
