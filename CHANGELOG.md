@@ -1,15 +1,15 @@
 Changelog
 ==========
 
-Release 2.1 (wip)
------------------
-* add licence file
-* Remove SocialShareKit [LICENCE ISSUE]
-* Add help text about dropbox and battle.net only working on https site
-* Update admin detail to setup github, windows, linkedin
-* #135 - Translation of the exceptions
-* #131 - Links to providers are unneccessarily output into HTML
-* #129 - Use $PAGE->requires->css to load the css
+Release 2.1
+-----------
+* #143 add licence file
+* #144 Remove SocialShareKit [LICENCE ISSUE]
+* #124 Better looking buttons
+* #125 Add help text about dropbox and battle.net only working on https site
+* #135 Translation of the exceptions
+* #129 Use $PAGE->requires->css to load the css
+* #146 better error message when Google+ API is disabled
 
 Release 2.0
 -----------
