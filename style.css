@@ -1,7 +1,5 @@
-* {
-    font-family: 'Open Sans', sans-serif;
-}
 .button-fill {
+    font-family: 'Open Sans', sans-serif;
     text-align: center;
     background: #ccc;
     display: inline-block;
