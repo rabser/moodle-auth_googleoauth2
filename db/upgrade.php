@@ -114,5 +114,43 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015051504, 'auth', 'googleoauth2');
     }
 
+      if ($oldversion < 2015090202) {
+
+        // Define table auth_googleoauth2_logins to be created.
+        $table = new xmldb_table('auth_googleoauth2_logins');
+
+        // Adding fields to table auth_googleoauth2_logins.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('time', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('auth', XMLDB_TYPE_CHAR, '250', null, null, null, null);
+
+        // Adding keys to table auth_googleoauth2_logins.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        // Conditionally launch create table for auth_googleoauth2_logins.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Googleoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015090202, 'auth', 'googleoauth2');
+    }
+
+        if ($oldversion < 2015090203) {
+
+        // Define field subtype to be added to auth_googleoauth2_logins.
+        $table = new xmldb_table('auth_googleoauth2_logins');
+        $field = new xmldb_field('subtype', XMLDB_TYPE_CHAR, '250', null, null, null, null, 'auth');
+
+        // Conditionally launch add field subtype.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Googleoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015090203, 'auth', 'googleoauth2');
+    }
+
     return true;
 }
