@@ -425,6 +425,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
         echo '<div class="alert alert-success"  role="alert">' . get_string('supportmaintenance', 'auth_googleoauth2') . '</div>';
 
+
+        // TODO: replace this table html ugliness by some nice bootstrap html code.
         echo '<table cellspacing="0" cellpadding="5" border="0">
             <tr>
                <td colspan="3">
@@ -452,7 +454,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             echo '</h2>
                </td>
             </tr>
-            <tr>
+            <tr  style="vertical-align: top;">
                 <td align="right"><label for="'.$clientidname.'">';
 
             print_string('auth_'.$clientidname.'_key', 'auth_googleoauth2');
@@ -480,7 +482,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
             // Client secret.
 
-            echo '<tr>
+            echo '<tr  style="vertical-align: top;">
                 <td align="right"><label for="'.$clientsecretname.'">';
 
             print_string('auth_'.$clientsecretname.'_key', 'auth_googleoauth2');
@@ -499,7 +501,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
             print_string('auth_'.$clientsecretname, 'auth_googleoauth2');
 
-            echo '</td></tr>';
+            echo '</td></tr>
+            <tr style="min-height: 20px"><td>&nbsp;</td></tr>';
         }
 
         if (!isset($config->googleipinfodbkey)) {
