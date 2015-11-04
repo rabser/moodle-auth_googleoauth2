@@ -423,9 +423,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
     public function config_form($config, $err, $userfields) {
         global $OUTPUT, $CFG;
 
-        echo '<div class="alert alert-success"  role="alert">
-              To support the maintenance of this plugin, favourite it in the <a target="_blank" href="https://moodle.org/plugins/view/auth_googleoauth2">Moodle.org plugin page</a>. Thanks!
-              </div>';
+        echo '<div class="alert alert-success"  role="alert">' . get_string('supportmaintenance', 'auth_googleoauth2') . '</div>';
 
         echo '<table cellspacing="0" cellpadding="5" border="0">
             <tr>

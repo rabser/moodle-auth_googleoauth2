@@ -112,6 +112,7 @@ $string['signinwithanaccount'] = 'Log in with:';
 $string['noaccountyet'] = 'You do not have permission to use the site yet. Please contact your administrator and ask them to activate your account.';
 $string['othermoodle'] = 'Other Moodle auth';
 $string['stattitle'] = 'Login statistics for the last {$a->periodindays} days (starting from the plugin installation/upgrade time)';
+$string['supportmaintenance'] = 'To support the maintenance of this plugin, favourite it in the <a target="_blank" href="https://moodle.org/plugins/view/auth_googleoauth2">Moodle.org plugin page</a>. Thanks!';
 $string['unknownfirstname'] = 'Unknown Firstname';
 $string['unknownlastname'] = 'Unknown Lastname';
 
