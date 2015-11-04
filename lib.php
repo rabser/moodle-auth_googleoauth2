@@ -118,7 +118,7 @@ function auth_googleoauth2_display_buttons($echo = true) {
 /**
  * The very ugly code to render the html buttons.
  * TODO remove ugly html like center-tag and inline styles, implement a moodle renderer
- * @return string: returns the html for buttons and some JavaScript 
+ * @return string: returns the html for buttons and some JavaScript
  */
 function auth_googleoauth2_render_buttons() {
     global $CFG;
@@ -171,6 +171,8 @@ function auth_googleoauth2_render_buttons() {
                 </a>
             </div>';
     }
+
+     $html .= "</div>";
 
     return $html;
 }
