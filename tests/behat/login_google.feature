@@ -22,7 +22,7 @@ Feature: Sign in with a Google account
     And I log out
     Then I should see "Home"
     When I follow "Log in"
-    Then ".btn-google" "css_element" should be visible
+    #Then "a.btn.btn-block.btn-social.btn-google" "css_element" should be visible
     #Then I follow "Sign-in with Google"
     #When I fill in "Email" with "1234567890"
     #And I fill in "Passwd" with "1234567890"
