@@ -1,4 +1,4 @@
-$(document).ready(
+$(window).load(
     function () {
 
         // CODE HIGHLY INSPIRED FROM ELCENTRA OAUTH2 PLUGIN: https://moodle.org/plugins/view/auth_elcentra
