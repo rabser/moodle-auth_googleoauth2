@@ -1,3 +1,4 @@
+sudo: false
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -7,11 +8,9 @@ php:
 env:
   global:
    - DB=pgsql MOODLE_VERSION=MOODLE_27_STABLE
-   - secure: jOrUxTe76d5a+986dinHlXdixRn5iu+KdE7P9FSokV1dppflD7JBql1kWO4Zb2hYkPe9Zqc0UR/6Yb8mZd8a+Aj9FnGWZM0mZxAQzASL+8f7PV19JyGsi5wG/MqY0ZoVSnkQ2jmCOz8nG78BIM/wJIcqWL+COELIUQwZ8S78EwypY2M15CsuVGkToUI7lboo7ricmECACn+u7vTUJjrrvZoFyRsHc5K+d+vgW8KPgEw0dt/rtuUv/CCndUwYJXZDqPmCwLrz9CtWl+6MvGhYlWb9WWwmXKKN/sOs21YszDb1C7NFH+V5VcexnkooohIRN+CmTO+pYdpj6X33L1eHng==
 before_script:
  - git clone git://github.com/moodle/moodle ../moodle && cd ../moodle
  - git checkout $MOODLE_VERSION
- - sudo apt-get update > /dev/null
  - composer self-update
  - mv ../moodle-auth_googleoauth2 auth/googleoauth2
  - cp config-dist.php config.php
