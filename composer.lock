@@ -5,19 +5,20 @@
         "This file is @generated automatically"
     ],
     "hash": "7a8adaa4877c346c188d481a686a4d16",
+    "content-hash": "bbf88aa32f4fd79e603d4e8ef9689d1e",
     "packages": [
         {
             "name": "depotwarehouse/oauth2-bnet",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tpavlek/oauth2-bnet.git",
-                "reference": "b9e04e9496240955b73da390ee71e9fac1215628"
+                "reference": "e958bc7765b953b4068d5c6313aae684ecb87e61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tpavlek/oauth2-bnet/zipball/b9e04e9496240955b73da390ee71e9fac1215628",
-                "reference": "b9e04e9496240955b73da390ee71e9fac1215628",
+                "url": "https://api.github.com/repos/tpavlek/oauth2-bnet/zipball/e958bc7765b953b4068d5c6313aae684ecb87e61",
+                "reference": "e958bc7765b953b4068d5c6313aae684ecb87e61",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +48,7 @@
                 }
             ],
             "description": "A Battle.net provider for league/oauth2-client",
-            "time": "2015-05-20 18:32:02"
+            "time": "2015-05-28 15:50:37"
         },
         {
             "name": "guzzle/guzzle",
@@ -146,25 +147,25 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.0.0",
+            "version": "v5.1.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "78f1dba092d5fcb6d3a19537662abe31c4d128fd"
+                "reference": "e2b71fdbeeb3438748dca5f497e205888788a883"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/78f1dba092d5fcb6d3a19537662abe31c4d128fd",
-                "reference": "78f1dba092d5fcb6d3a19537662abe31c4d128fd",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/e2b71fdbeeb3438748dca5f497e205888788a883",
+                "reference": "e2b71fdbeeb3438748dca5f497e205888788a883",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=5.5.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "5.1-dev"
                 }
             },
             "autoload": {
@@ -183,7 +184,8 @@
                 }
             ],
             "description": "The Illuminate Contracts package.",
-            "time": "2015-01-30 16:27:08"
+            "homepage": "http://laravel.com",
+            "time": "2015-09-24 11:16:48"
         },
         {
             "name": "league/oauth2-client",
@@ -305,28 +307,26 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.6.8",
-            "target-dir": "Symfony/Component/EventDispatcher",
+            "version": "v2.7.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "672593bc4b0043a0acf91903bb75a1c82d8f2e02"
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "87a5db5ea887763fa3a31a5471b512ff1596d9b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/672593bc4b0043a0acf91903bb75a1c82d8f2e02",
-                "reference": "672593bc4b0043a0acf91903bb75a1c82d8f2e02",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/87a5db5ea887763fa3a31a5471b512ff1596d9b8",
+                "reference": "87a5db5ea887763fa3a31a5471b512ff1596d9b8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.9"
             },
             "require-dev": {
                 "psr/log": "~1.0",
                 "symfony/config": "~2.0,>=2.0.5",
                 "symfony/dependency-injection": "~2.6",
                 "symfony/expression-language": "~2.6",
-                "symfony/phpunit-bridge": "~2.7",
                 "symfony/stopwatch": "~2.3"
             },
             "suggest": {
@@ -336,11 +336,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "Symfony\\Component\\EventDispatcher\\": ""
                 }
             },
@@ -360,7 +360,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2015-05-02 15:18:45"
+            "time": "2015-10-11 09:39:48"
         }
     ],
     "packages-dev": [],

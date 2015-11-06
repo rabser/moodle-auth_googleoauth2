@@ -23,6 +23,8 @@ class BattleNetUser
     public $highest_league;
     public $career_total_games;
 
+    public $portrait_url;
+
 
     public function __construct(array $attributes)
     {
@@ -33,6 +35,12 @@ class BattleNetUser
         $this->clan_name = (isset($attributes['clanName'])) ? $attributes['clanName'] : null;
         $this->clan_tag = (isset($attributes['clanTag'])) ? $attributes['clanTag'] : null;
         $this->profile_url = "http://us.battle.net/sc2/en{$attributes['profilePath']}";
+
+        // Portrait URL links to a sheet of portraits, so we construct the proper one.
+        if (isset($attributes['portrait'])) {
+            $this->portrait_url = substr($attributes['portrait']->url, 0, strpos($attributes['portrait']->url, '-'))
+                . '-' . $attributes['portrait']->offset . ".jpg";
+        }
 
         if (isset($attributes['career'])) {
             $career = (is_object($attributes['career'])) ? (array)$attributes['career'] : $attributes['career'];
