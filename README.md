@@ -32,7 +32,7 @@ If you do any change related to composer, here is what need to be done:
 PS: if you need to know more about composer, you can read [Composer Namespaces in 5 Minutes](https://jtreminio.com/2012/10/composer-namespaces-in-5-minutes/)
 
 ### Continueous integration, tracker...
-[![Build Status](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2.svg?branch=master)](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2.svg?branch=master)
+[![Build Status](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2.svg?branch=master)](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2)
 [![Stories in Ready](https://badge.waffle.io/mouneyrac/moodle-auth_googleoauth2.png?label=ready&title=Ready)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2)
 [![Codacy Badge](https://www.codacy.com/project/badge/84928dc4c553414786735ba745e57c93)](https://www.codacy.com/app/jerome/moodle-auth_googleoauth2)
 [![bountysource](https://api.bountysource.com/badge/team?team_id=49212&style=raised)](https://www.bountysource.com/teams/oauth2-authentication-plugin-for-moodle/backers)
