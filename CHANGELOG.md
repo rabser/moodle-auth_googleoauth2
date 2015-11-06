@@ -1,6 +1,27 @@
 Changelog
 ==========
 
+Release 2.2
+-----------
+* #177 Create new button similar to socialsharekit but open source
+* #176 Missing closing div in auth_googleoauth2_render_buttons()
+* #173 The label in the log in buttons should be "Log in" instead of "LOGIN"
+* #172 I could not connect to facebook
+* #171 Got problem after installing plug-in in moodle2.9.1
+* #169 Create some statistics
+* #168 test upgrade from the version before phpleague to the last phpleague version with Google+ (can student still connect)
+* #167 User not logged in after authenticating...
+* #164 Buttons are not showing (except for midori browser) ¿?
+* #162 create link to contributors, stargazers... on the jekyll site
+* #161 fix codacy issues to get A rating
+* #160 update Moodle.org plugin screenshots
+* #159 mention how to contribute to the plugin in the plugin settings page
+* #154 switch from shippable to travis
+* #152 Manual display of button showing link but not image
+* #151 Merge behat fix pull request
+* #149 Correction de test behat.
+* #147 Failed Login 'auth_googleoauth2\event\user_loggedin'
+
 Release 2.1
 -----------
 * #143 add licence file
@@ -35,10 +56,10 @@ Release 1.5 (Build: 2014120000)
 
 v1.5 (18/7/14)
 --------------
-* code updated to support the new Google Oauth2 API as the one used by the plugin is been deprecated in two months.  
+* code updated to support the new Google Oauth2 API as the one used by the plugin is been deprecated in two months.
 See: https://developers.google.com/+/api/auth-migration#timetable
 
-*ACTION REQUIRED* you need to enable the Google+ API in the Google developer console:  
+*ACTION REQUIRED* you need to enable the Google+ API in the Google developer console:
 Project > API & AUTH > APIs
 
 v1.5
