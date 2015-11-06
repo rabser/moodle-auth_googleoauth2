@@ -35,7 +35,7 @@ function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
         } else if ($fontawesome == 'battlenet') {
             $fontawesome = 'trophy';
         }
-        return '<a href="' . $authurl . '" class="btn btn-block btn-social btn-' . $provider->sskstyle . '">'
+        return '<a href="' . $authurl . '" class="btn btn-block btn-social btn-' . $provider->sskstyle . '" style="' . $providerdisplaystyle . '" >'
                  . get_string('auth_sign-in_with', 'auth_googleoauth2', array('providername' => $provider->readablename))
                  . '<span class="fa fa-' . $fontawesome . '"></span></a>';
 }
@@ -157,10 +157,12 @@ function auth_googleoauth2_render_buttons() {
         set_state_token($providername, $provider->state);
 
         // Check if we should display the button.
-        $providerisenabled = $provider->isenabled();
-        $providerscount = $providerisenabled ? $providerscount + 1 : $providerscount;
-        $displayprovider = ((empty($authprovider) || $authprovider == $providername || $allauthproviders) && $providerisenabled);
-        $providerdisplaystyle = $displayprovider ? 'display:inline-block;padding:10px;' : 'display:none;';
+        $displayprovider = $provider->isenabled();
+        $providerscount = $displayprovider ? $providerscount + 1 : $providerscount;
+        if ($displayprovider) {
+            $displayprovider = (empty($authprovider) || ($authprovider == $providername) || $allauthproviders);
+        }
+        $providerdisplaystyle = $displayprovider ? 'display:inline-block;' : 'display:none;';
 
         // The button html code.
         $html .= $provider->html_button($authurl, $providerdisplaystyle);
