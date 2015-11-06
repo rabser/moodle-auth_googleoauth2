@@ -3,12 +3,9 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 
 ### Installation:
 1. add the plugin into /auth/googleoauth2/
-2. Install composer.phar: curl -sS https://getcomposer.org/installer | php
-3. Install the 'vendor' folder: php composer.phar install
-4. apply the changes listed in VENDOR CHANGES.md
-5. run the Moodle upgrade
-6. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
-7. in the plugin settings, follow the displayed instructions.
+2. run the Moodle upgrade
+3. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
+4. in the plugin settings, follow the displayed instructions.
 or just install the plugin from [Moodle.org repository plugin page](https://moodle.org/plugins/view/auth_googleoauth2)
 
 ### Implement your own provider (for devs)
@@ -18,12 +15,21 @@ and add the provider name to lib.php:provider_list (if you have time you can cha
 and then send me a pull request, thanks :))
 
 ### Use the table access token (for devs)
-In order to use to store the access token you must set the config with:
+In order to store the user access tokens, you must set the config with:
 set_config('saveaccesstoken', 1, 'auth/googleoauth2');
 
+Then you can use them in your own plugin. The Oauth2 plugin also trigger an event on login.
+You can retrieve the access token from it too.
+
 ### Composer (for devs)
-I deliver the entire vendor content in the repository (so don't run composer). It makes it for me easy to download the zip file from Github and then to upload it straight away in Moodle.org.
-Moodle.org is not able to create a package from Github (with vendor libs) yet.
+The plugin includes the 'vendor' folder (so don't need to run composer).
+
+If you do any change related to composer, here is what need to be done:
+1. Install composer.phar: curl -sS https://getcomposer.org/installer | php
+2. Install the 'vendor' folder: php composer.phar install
+3. apply the changes listed in VENDOR CHANGES.md
+
+PS: if you need to know more about composer, you can read [Composer Namespaces in 5 Minutes](https://jtreminio.com/2012/10/composer-namespaces-in-5-minutes/)
 
 ### Continueous integration, tracker...
 [![Build Status](https://api.shippable.com/projects/546da22ad46935d5fbbe1761/badge?branchName=master)](https://app.shippable.com/projects/546da22ad46935d5fbbe1761/builds/latest)
