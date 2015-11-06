@@ -3,7 +3,7 @@ Feature: Sign in with a Google account
   In order to login to the site
   As a user
   I sign in with my Google account
- 
+
   @javascript
   Scenario: Sign in with a Google account
     When I follow "Log in"
@@ -22,8 +22,8 @@ Feature: Sign in with a Google account
     And I log out
     Then I should see "Home"
     When I follow "Log in"
-    Then I should see "Sign-in with Google"
-    #Then I follow "Sign-in with Google"
+    Then I should see "GOOGLE"
+    #Then I follow "GOOGLE"
     #When I fill in "Email" with "1234567890"
     #And I fill in "Passwd" with "1234567890"
     #And I press "Sign in"
