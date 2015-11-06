@@ -106,9 +106,8 @@ $string['emailaddressmustbeverified'] = 'Your email address is not verified by t
 link that Google or Facebook should have sent you during your subscribtion to their service.';
 $string['auth_sign-in_with'] = 'Sign-in with {$a->providername}';
 $string['faileduserdetails'] = 'The site succeed to connect to the selected provider but failed to retrieve your user details. If you are using Google, check that your site administrator has enabled the Google+ API in the Google developer console. It is the most common reason for this error.';
-$string['login'] = 'Log in';
 $string['moreproviderlink'] = 'Sign-in with another service.';
-$string['signinwithanaccount'] = 'Log in with:';
+$string['signinwithanaccount'] = 'Log in with {$a}';
 $string['noaccountyet'] = 'You do not have permission to use the site yet. Please contact your administrator and ask them to activate your account.';
 $string['othermoodle'] = 'Other Moodle auth';
 $string['stattitle'] = 'Login statistics for the last {$a->periodindays} days (starting from the plugin installation/upgrade time)';

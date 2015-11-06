@@ -19,7 +19,7 @@ $(window).load(
         }
 
         // CODE FOR THE BUTTONS ANIMATION
-        $(".button-fill").hover(function () {
+        $(".social-button").hover(function () {
             $(this).children(".button-inside").addClass('full');
         }, function() {
             $(this).children(".button-inside").removeClass('full');
