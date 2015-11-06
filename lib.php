@@ -27,13 +27,18 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
 function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
-        return '<a class="singinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
-                  <div class="button-fill ' . $provider->sskstyle . '">
-                    <div class="button-text">' . $provider->readablename . '</div>
-                    <div class="button-inside">
-                      <div class="inside-text">' . get_string('login', 'auth_googleoauth2') . '</div>
-                    </div>
-                  </div></a>';
+
+        // small hack for microsoft icon.
+        $fontawesome = $provider->sskstyle;
+        if ($fontawesome == 'microsoft') {
+            $fontawesome = 'windows';
+        } else if ($fontawesome == 'battlenet') {
+            $fontawesome = 'trophy';
+        }
+        return ' <a href="' . $authurl . '" class="btn btn-block btn-social btn-' . $provider->sskstyle . '">
+                      <span class="fa fa-' . $fontawesome . '"></span>
+                      ' . get_string('auth_sign-in_with', 'auth_googleoauth2', array('providername' => $provider->readablename)) . '
+                    </a> ';
 }
 
 /**
