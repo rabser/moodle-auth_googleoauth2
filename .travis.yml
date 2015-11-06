@@ -7,7 +7,7 @@ php:
   - "5.4"
 env:
   global:
-   - DB=pgsql MOODLE_VERSION=MOODLE_27_STABLE
+   - DB=pgsql MOODLE_VERSION=master
 before_script:
  - git clone git://github.com/moodle/moodle ../moodle && cd ../moodle
  - git checkout $MOODLE_VERSION
