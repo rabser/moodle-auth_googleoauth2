@@ -35,10 +35,9 @@ function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
         } else if ($fontawesome == 'battlenet') {
             $fontawesome = 'trophy';
         }
-        return ' <a href="' . $authurl . '" class="btn btn-block btn-social btn-' . $provider->sskstyle . '">
-                      <span class="fa fa-' . $fontawesome . '"></span>
-                      ' . get_string('auth_sign-in_with', 'auth_googleoauth2', array('providername' => $provider->readablename)) . '
-                    </a> ';
+        return '<a href="' . $authurl . '" class="btn btn-block btn-social btn-' . $provider->sskstyle . '">'
+                 . get_string('auth_sign-in_with', 'auth_googleoauth2', array('providername' => $provider->readablename))
+                 . '<span class="fa fa-' . $fontawesome . '"></span></a>';
 }
 
 /**
