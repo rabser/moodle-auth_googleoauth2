@@ -25,4 +25,5 @@ before_script:
  - echo "{\"config\":{\"github-oauth\":{\"github.com\":\"$GITHUBTOKEN\"}}}" > ~/.composer/config.json
  - php admin/tool/behat/cli/init.php
 script:
- - vendor/bin/behat --config /home/shippable/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2
+ - if [ $MOODLE_VERSION = 'master' ]; then vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2; fi
+ - phpunit auth_googleoauth2_lib_testcase auth/googleoauth2/tests/lib_test.php
