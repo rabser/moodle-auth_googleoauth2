@@ -23,6 +23,10 @@ before_script:
  - "wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar"
  - "java -jar selenium-server-standalone-2.43.1.jar &"
  - echo "{\"config\":{\"github-oauth\":{\"github.com\":\"$GITHUBTOKEN\"}}}" > ~/.composer/config.json
+ - cd auth/googleoauth2
+ - curl -sS https://getcomposer.org/installer | php
+ - php composer.phar install
+ - cd ../..
  - php admin/tool/behat/cli/init.php
 script:
  - vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2
