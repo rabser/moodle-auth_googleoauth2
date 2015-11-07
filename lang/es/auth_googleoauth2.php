@@ -65,7 +65,6 @@ $string['auth_messengerclientid'] = 'Tu ID cliente/secreto puede ser generado en
 $string['auth_messengerclientid_key'] = 'ID Cliente Messenger';
 $string['auth_messengerclientsecret'] = 'Ver arriba.';
 $string['auth_messengerclientsecret_key'] = 'Secreto cliente Messenger';
-
 $string['auth_googlesettings'] = 'Configuración';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
 $string['oauth2displaybuttons'] = 'Display buttons on login page';
@@ -74,5 +73,5 @@ $string['oauth2displaybuttonshelp'] = 'Mostrar los botones con el logo de Google
 $string['emailaddressmustbeverified'] = 'Tu dirección de correo electrónico no ha sido verificado por el método de autentificación que has seleccionado. Puede ser que te hayas olvidado de hacer click en el enlace "verificar dirección de correo" que Google o Facebook debía haberte mandado durante la subscripción a su servicio.';
 $string['auth_sign-in_with'] = 'Iniciar sesión con {$a->providername}';
 $string['moreproviderlink'] = 'Iniciar sesión con otro servicio.';
-$string['signinwithanaccount'] = 'Iniciar sesión con:';
+$string['signinwithanaccount'] = 'Iniciar sesión con {$a}';
 $string['noaccountyet'] = 'Todavía no tienes permiso para utilizar este sitio. Contacte con tu administrador y pidele que active tu cuenta.';

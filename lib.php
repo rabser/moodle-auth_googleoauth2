@@ -27,17 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
 function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
-
-        // small hack for microsoft icon.
-        $fontawesome = $provider->sskstyle;
-        if ($fontawesome == 'microsoft') {
-            $fontawesome = 'windows';
-        } else if ($fontawesome == 'battlenet') {
-            $fontawesome = 'trophy';
-        }
-        return '<a href="' . $authurl . '" class="btn btn-block btn-social btn-' . $provider->sskstyle . '" style="' . $providerdisplaystyle . '" >'
-                 . get_string('auth_sign-in_with', 'auth_googleoauth2', array('providername' => $provider->readablename))
-                 . '<span class="fa fa-' . $fontawesome . '"></span></a>';
+        return '<a class="singinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
+                  <div class="social-button ' . $provider->sskstyle . '">' .
+                    get_string('signinwithanaccount', 'auth_googleoauth2', $provider->readablename) . 
+                 '</div>
+                </a>';
 }
 
 /**
@@ -157,12 +151,10 @@ function auth_googleoauth2_render_buttons() {
         set_state_token($providername, $provider->state);
 
         // Check if we should display the button.
-        $displayprovider = $provider->isenabled();
-        $providerscount = $displayprovider ? $providerscount + 1 : $providerscount;
-        if ($displayprovider) {
-            $displayprovider = (empty($authprovider) || ($authprovider == $providername) || $allauthproviders);
-        }
-        $providerdisplaystyle = $displayprovider ? 'display:inline-block;' : 'display:none;';
+        $providerisenabled = $provider->isenabled();
+        $providerscount = $providerisenabled ? $providerscount + 1 : $providerscount;
+        $displayprovider = ((empty($authprovider) || $authprovider == $providername || $allauthproviders) && $providerisenabled);
+        $providerdisplaystyle = $displayprovider ? 'display:inline-block;padding:10px;' : 'display:none;';
 
         // The button html code.
         $html .= $provider->html_button($authurl, $providerdisplaystyle);
