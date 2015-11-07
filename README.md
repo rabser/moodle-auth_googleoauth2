@@ -1,6 +1,9 @@
 
 This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created.
 
+### Requirements
+PHP 5.5
+
 ### Installation:
 1. add the plugin into /auth/googleoauth2/
 2. Install composer.phar: curl -sS https://getcomposer.org/installer | php

@@ -4,7 +4,7 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 language: php
 php:
-  - "5.4"
+  - "5.5"
 env:
   global:
    - DB=pgsql MOODLE_VERSION=master
