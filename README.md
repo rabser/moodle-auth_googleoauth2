@@ -3,9 +3,12 @@ This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windo
 
 ### Installation:
 1. add the plugin into /auth/googleoauth2/
-2. run the Moodle upgrade
-3. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
-4. in the plugin settings, follow the displayed instructions.
+2. Install composer.phar: curl -sS https://getcomposer.org/installer | php
+3. Install the 'vendor' folder: php composer.phar install
+4. apply the changes listed in VENDOR CHANGES.md
+5. run the Moodle upgrade
+6. in the Moodle administration, enable the plugin (Admin block > Plugins > Authentication)
+7. in the plugin settings, follow the displayed instructions.
 or just install the plugin from [Moodle.org repository plugin page](https://moodle.org/plugins/view/auth_googleoauth2)
 
 ### Implement your own provider (for devs)
@@ -22,14 +25,8 @@ Then you can use them in your own plugin. The Oauth2 plugin also trigger an even
 You can retrieve the access token from it too.
 
 ### Composer (for devs)
-The plugin includes the 'vendor' folder (so don't need to run composer).
-
-If you do any change related to composer, here is what need to be done:
-1. Install composer.phar: curl -sS https://getcomposer.org/installer | php
-2. Install the 'vendor' folder: php composer.phar install
-3. apply the changes listed in VENDOR CHANGES.md
-
-PS: if you need to know more about composer, you can read [Composer Namespaces in 5 Minutes](https://jtreminio.com/2012/10/composer-namespaces-in-5-minutes/)
+The plugin does not include the 'vendor' folder as explained by [composer best practice](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
+If you need to know more about composer, you can read [Composer Namespaces in 5 Minutes](https://jtreminio.com/2012/10/composer-namespaces-in-5-minutes/)
 
 ### Continueous integration, tracker...
 [![Build Status](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2.svg?branch=master)](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2)
