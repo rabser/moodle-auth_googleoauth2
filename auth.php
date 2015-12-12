@@ -134,6 +134,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 try {
                     // We got an access token, let's now get the user's details.
                     $userdetails = $provider->getUserDetails($token);
+
+                    error_log(print_r($userdetails, true));
+
                     // Use these details to create a new profile.
                     switch ($authprovider) {
                         case 'battlenet':
@@ -325,22 +328,20 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
 
                     // Check if the user picture is the default and retrieve the provider picture.
                     if (empty($user->picture)) {
+                        $profilepicurl = '';
                         switch ($authprovider) {
                             case 'battlenet':
-                                require_once($CFG->libdir . '/filelib.php');
-                                require_once($CFG->libdir . '/gdlib.php');
-                                $imagefilename = $CFG->tempdir . '/googleoauth2-portrait-' . $user->id;
-                                $imagecontents = download_file_content($userdetails->portrait_url);
-                                file_put_contents($imagefilename, $imagecontents);
-                                if ($newrev = process_new_icon(context_user::instance($user->id),
-                                    'user', 'icon', 0, $imagefilename)) {
-                                    $DB->set_field('user', 'picture', $newrev, array('id' => $user->id));
-                                }
-                                unlink($imagefilename);
+                                $profilepicurl = $userdetails->portrait_url;
+                                break;
+                            case 'google':
+                                $profilepicurl = str_replace('?sz=50', '?sz=300', $userdetails->imageUrl);
                                 break;
                             default:
                                 // TODO retrieve other provider profile pictures.
                                 break;
+                        }
+                        if (!empty($profilepicurl)) {
+                            $this->set_profile_picture($user, $profilepicurl);
                         }
                     }
 
@@ -408,6 +409,24 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 $PAGE->requires->js(new moodle_url($CFG->wwwroot . "/auth/googleoauth2/script.js"));
             }
         }
+    }
+
+    /**
+     * Retrieve the profile picture and save it in moodle.
+     */
+    private function set_profile_picture($user, $profilepicurl) {
+        global $CFG, $DB;
+
+        require_once($CFG->libdir . '/filelib.php');
+        require_once($CFG->libdir . '/gdlib.php');
+        $imagefilename = $CFG->tempdir . '/googleoauth2-portrait-' . $user->id;
+        $imagecontents = download_file_content($profilepicurl);
+        file_put_contents($imagefilename, $imagecontents);
+        if ($newrev = process_new_icon(context_user::instance($user->id),
+            'user', 'icon', 0, $imagefilename)) {
+            $DB->set_field('user', 'picture', $newrev, array('id' => $user->id));
+        }
+        unlink($imagefilename);
     }
 
 
