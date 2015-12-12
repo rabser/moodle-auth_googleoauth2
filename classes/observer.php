@@ -36,9 +36,6 @@ class auth_googleoauth2_observer {
      */
     public static function userloggedin(\core\event\user_loggedin $event) {
         global $DB, $CFG;
-        error_log(print_r($event, true));
-        // $eventdata = $event->get_record_snapshot('user_loggedin', $event->objectid);
-        error_log(print_r($event->userid, true));
 
         $user = $DB->get_record('user', array('id' => $event->userid));
 
