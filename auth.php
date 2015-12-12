@@ -135,8 +135,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     // We got an access token, let's now get the user's details.
                     $userdetails = $provider->getUserDetails($token);
 
-                    error_log(print_r($userdetails, true));
-
                     // Use these details to create a new profile.
                     switch ($authprovider) {
                         case 'battlenet':
@@ -337,7 +335,9 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                                 $profilepicurl = str_replace('?sz=50', '?sz=300', $userdetails->imageUrl);
                                 break;
                             default:
-                                // TODO retrieve other provider profile pictures.
+                                if (!empty($userdetails->imageUrl)) {
+                                    $profilepicurl = $userdetails->imageUrl;
+                                }
                                 break;
                         }
                         if (!empty($profilepicurl)) {
