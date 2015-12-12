@@ -129,6 +129,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
             // With access token request by curl the email address.
             if (!empty($accesstoken)) {
 
+                $useremail = '';
+
                 try {
                     // We got an access token, let's now get the user's details.
                     $userdetails = $provider->getUserDetails($token);
@@ -186,7 +188,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 }
 
                 // If email not existing in user database then create a new username (userX).
-                if (empty($useremail) or $useremail != clean_param($useremail, PARAM_EMAIL)) {
+                if (empty($useremail) || $useremail != clean_param($useremail, PARAM_EMAIL)) {
                     throw new moodle_exception('couldnotgetuseremail', 'auth_googleoauth2');
                     // TODO: display a link for people to retry.
                 }
@@ -247,7 +249,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     }
 
                     // Retrieve country and city if the provider failed to give it.
-                    if (!isset($newuser->country) or !isset($newuser->city)) {
+                    if (!isset($newuser->country) || !isset($newuser->city)) {
                         $googleipinfodbkey = get_config('auth/googleoauth2', 'googleipinfodbkey');
                         if (!empty($googleipinfodbkey)) {
                             require_once($CFG->libdir . '/filelib.php');
@@ -353,7 +355,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     if (user_not_fully_set_up($USER)) {
                         $urltogo = $CFG->wwwroot.'/user/edit.php';
                         // We don't delete $SESSION->wantsurl yet, so we get there later.
-                    } else if (isset($SESSION->wantsurl) and (strpos($SESSION->wantsurl, $CFG->wwwroot) === 0)) {
+                    } else if (isset($SESSION->wantsurl) && (strpos($SESSION->wantsurl, $CFG->wwwroot) === 0)) {
                         $urltogo = $SESSION->wantsurl;    // Because it's an address in this site.
                         unset($SESSION->wantsurl);
                     } else {
@@ -371,7 +373,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     // Authenticate_user_login() failure, probably email registered by another auth plugin.
                     // Do a check to confirm this hypothesis.
                     $userexist = $DB->get_record('user', array('email' => $useremail));
-                    if (!empty($userexist) and $userexist->auth != 'googleoauth2') {
+                    if (!empty($userexist) && $userexist->auth != 'googleoauth2') {
                         $a = new stdClass();
                         $a->loginpage = (string) new moodle_url(empty($CFG->alternateloginurl) ?
                             '/login/index.php' : $CFG->alternateloginurl);
@@ -391,8 +393,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 // We can add more param check for others provider but at the end,
                 // the best way may be to not use the oauth2displaybuttons option and
                 // add the button code directly in the theme login page.
-                and empty($_POST['username'])
-                and empty($_POST['password'])) {
+                && empty($_POST['username'])
+                && empty($_POST['password'])) {
                 // Display the button on the login page.
                 require_once($CFG->dirroot . '/auth/googleoauth2/lib.php');
 
@@ -417,8 +419,6 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
      *
      * TODO: as print_auth_lock_options() core function displays an old-fashion HTML table, I didn't bother writing
      * some proper Moodle code. This code is similar to other auth plugins (04/09/11)
-     *
-     * @param array $page An object containing all the data for this page.
      */
     public function config_form($config, $err, $userfields) {
         global $OUTPUT, $CFG;

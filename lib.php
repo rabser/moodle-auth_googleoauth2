@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
         return '<a class="singinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
                   <div class="social-button ' . $provider->sskstyle . '">' .
-                    get_string('signinwithanaccount', 'auth_googleoauth2', $provider->readablename) . 
+                    get_string('signinwithanaccount', 'auth_googleoauth2', $provider->readablename) .
                  '</div>
                 </a>';
 }
@@ -116,7 +116,7 @@ function auth_googleoauth2_display_buttons($echo = true) {
 /**
  * The very ugly code to render the html buttons.
  * TODO remove ugly html like center-tag and inline styles, implement a moodle renderer
- * @return string: returns the html for buttons and some JavaScript
+ * @return string returns the html for buttons and some JavaScript
  */
 function auth_googleoauth2_render_buttons() {
     global $CFG;
@@ -160,7 +160,7 @@ function auth_googleoauth2_render_buttons() {
         $html .= $provider->html_button($authurl, $providerdisplaystyle);
     }
 
-    if (!$allauthproviders and !empty($authprovider) and $providerscount > 1) {
+    if (!$allauthproviders && !empty($authprovider) && $providerscount > 1) {
         $html .= '<br /><br />
            <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php')
