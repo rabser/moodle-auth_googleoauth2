@@ -91,6 +91,12 @@ $string['auth_messengerclientid'] = 'Your Client ID/Secret can be generated in y
 $string['auth_messengerclientid_key'] = 'Messenger Client ID';
 $string['auth_messengerclientsecret'] = '';
 $string['auth_messengerclientsecret_key'] = 'Messenger Client secret';
+$string['auth_microsoftclientid'] = 'Your Client ID/Secret can be generated at <a href="https://apps.dev.microsoft.com/" target="_blank">Microsoft Application Registration Portal</a>:
+<br />Redirect URI: {$a->callbackurl}';
+$string['auth_microsoftclientid_key'] = 'Microsoft v2 Application ID';
+$string['auth_microsoftclientsecret'] = '';
+$string['auth_microsoftclientsecret_key'] = 'Microsoft v2 Application secret';
+$string['microsoft_failure'] = 'Did not receive an authorization code from the Microsoft servers.';
 $string['auth_googlesettings'] = 'Settings';
 $string['couldnotauthenticate'] = 'The authentication failed - Please try to sign-in again.';
 $string['couldnotgetgoogleaccesstoken'] = 'The authentication provider sent us a communication error. Please try to sign-in again.';
