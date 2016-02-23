@@ -39,9 +39,6 @@ If you need to know more about composer, you can read [Composer Namespaces in 5 
 
 [![Throughput Graph](https://graphs.waffle.io/mouneyrac/moodle-auth_googleoauth2/throughput.svg)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2/metrics)
 
-### Need some help / a fix / a new feature / some improvement / pull request to be quickly integrated
-create an issue in the [tracker](https://github.com/mouneyrac/moodle-auth_googleoauth2/issues) if an issue doesn't already exist for what you need. Once the issue created, a link to Bounty Source will be added to the issue description. From there you will be able to indicate how much you would like to pay for the issue to be answered/solved/peer-reviewed/tested/integrated.
-
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
 * [The PHP League oauth2 client](https://github.com/thephpleague/oauth2-client)
