@@ -14,6 +14,8 @@ PHP 5.5
 7. in the plugin settings, follow the displayed instructions.
 or just install the plugin from [Moodle.org repository plugin page](https://moodle.org/plugins/view/auth_googleoauth2)
 
+If you have any issues you can follow the Git chapter of my free mini-course [how to install a Moodle plugin](http://bepaw-open-source-school.teachable.com/courses/how-to-install-a-plugin). It is using the Oauth2 plugin as example.
+
 ### Implement your own provider (for devs)
 1. add your third party provider for Oauth2 client as explain in https://github.com/thephpleague/oauth2-client
 2. create /classes/provider/newprovidername.php and newprovidername_redirect.php. Then add the lang strings in /lang/en/auth_googleoauth2.php
