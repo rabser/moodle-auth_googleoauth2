@@ -27,9 +27,12 @@
     text-align: center;
     content: "\f090";
 }
+.dir-rtl .social-button::before {
+    margin: -7px -7px -7px 10px;
+}
 .social-button {
     font-family: 'Open Sans', sans-serif;
-    text-align: center;
+    /* text-align: center; */ /* Redundant?, as it is overrided later on the following lines */
     background: #ccc;
     display: inline-block;
     text-align: left;
@@ -39,6 +42,9 @@
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 3px;
     transition: background-color 0.15s;
+}
+.dir-rtl .social-button {
+    text-align:right;
 }
 .social-button.google::before {
 	content: "\e901";
