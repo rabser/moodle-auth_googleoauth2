@@ -1,4 +1,10 @@
 
+**Warning for Facebook users:** I have been alerted that the current install of this plugin will stop working with Facebook API 2.2 the 27 March (it was already not working for the facebook API 2.8 and later). Unhappily I do not foresee any fix to this issue soon. However I will be happy to merge a pull request (of course the code must work for people already using the plugin and for people that are going to use it).
+
+**Warning for Moodle 3.3 and later:** starting from Moodle 3.3, Oauth2 should be implemented in core. I suppose it likely will be a system that requires creation of individual plugins for each authentication providers. I won't be supporting this plugin starting the release of Oauth2 implementation in Moodle, so starting 3.3 (https://docs.moodle.org/dev/Better_Office_Integrations_3.3#Core_API_for_managing_Authorized_OAuth_Applications) I recommend to use new plugins using this new Moodle core system. They are likely to quickly be implemented by someone else and publish in Moodle.org plugin repository. There will probably be a new Oauth2 categories in the Moodle plugin repository. wait and see...
+
+-
+
 This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created.
 
 ### Requirements
