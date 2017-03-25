@@ -39,13 +39,9 @@ You can retrieve the access token from it too.
 The plugin does not include the 'vendor' folder as explained by [composer best practice](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
 If you need to know more about composer, you can read [Composer Namespaces in 5 Minutes](https://jtreminio.com/2012/10/composer-namespaces-in-5-minutes/)
 
-### Continueous integration, tracker...
+### Continueous integration
 [![Build Status](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2.svg?branch=master)](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2)
-[![Stories in Ready](https://badge.waffle.io/mouneyrac/moodle-auth_googleoauth2.png?label=ready&title=Ready)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2)
 [![Codacy Badge](https://www.codacy.com/project/badge/84928dc4c553414786735ba745e57c93)](https://www.codacy.com/app/jerome/moodle-auth_googleoauth2)
-[![bountysource](https://api.bountysource.com/badge/team?team_id=49212&style=raised)](https://www.bountysource.com/teams/oauth2-authentication-plugin-for-moodle/backers)
-
-[![Throughput Graph](https://graphs.waffle.io/mouneyrac/moodle-auth_googleoauth2/throughput.svg)](https://waffle.io/mouneyrac/moodle-auth_googleoauth2/metrics)
 
 ### Credits
 * [Contributors](https://github.com/mouneyrac/auth_googleoauth2/graphs/contributors)
@@ -56,6 +52,4 @@ If you need to know more about composer, you can read [Composer Namespaces in 5 
 * [illuminate contracts](https://github.com/illuminate/contracts)
 * [Symfony EventDispatcher](http://symfony.com/)
 
-### +1 the plugin
-To like the plugin, go to the [Moodle.org repository plugin page](https://moodle.org/plugins/view/auth_googleoauth2), login and click on 'Add to my Favorites'. Find other ways to contribute on the [github plugin page](http://mouneyrac.github.io/moodle-auth_googleoauth2/).
 
