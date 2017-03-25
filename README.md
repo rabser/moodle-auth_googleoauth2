@@ -1,11 +1,11 @@
 
-**Warning for Facebook users:** I have been alerted that the current install of this plugin will stop working with Facebook API 2.2 the 27 March (it was already not working for the facebook API 2.8 and later). Unhappily I do not foresee any fix to this issue soon. However I will be happy to merge a pull request (of course the code must work for people already using the plugin and for people that are going to use it).
+**Warning for Facebook users:** I have been alerted that the current install of this plugin will stop working with Facebook API 2.2 the 27 March (it was already not working for the facebook API 2.8 and later). Unhappily I do not foresee any fix to this issue. However I will be happy to merge a pull request.
 
-**Warning for Moodle 3.3 and later:** starting from Moodle 3.3, Oauth2 should be implemented in core. I suppose it likely will be a system that requires creation of individual plugins for each authentication providers. I won't be supporting this plugin starting the release of Oauth2 implementation in Moodle, so starting 3.3 (https://docs.moodle.org/dev/Better_Office_Integrations_3.3#Core_API_for_managing_Authorized_OAuth_Applications) I recommend to use new plugins using this new Moodle core system. They are likely to quickly be implemented by someone else and publish in Moodle.org plugin repository. There will probably be a new Oauth2 categories in the Moodle plugin repository. wait and see...
+**No new versions are planned starting from Moodle 3.3:** starting from Moodle 3.3, Oauth2 should be implemented in Moodle core. It will require you to upgrade to Moodle 3.3 and switch to the Oauth2 core authentication (and probably do some migration), but it is a great news as authentication is a really sensible matter and having Oauth2 plugins in core will guarantee their maintenance. So starting from Moodle 3.3 I recommend to use the new Oauth2 core plugins ((https://docs.moodle.org/dev/Better_Office_Integrations_3.3#Core_API_for_managing_Authorized_OAuth_Applications) ). Missing core providers will likely be implemented by someone and publish in Moodle.org plugin repository. There will probably be a new Oauth2 categories in the Moodle plugin repository. wait and see...
 
 -
 
-This plugin adds the "Sign-in with Google / Facebook / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created.
+This plugin adds the "Sign-in with Google / Github / Linkedin / Windows Live" buttons on the login page. The first time the user login with a social account, a new Moodle account is created.
 
 ### Requirements
 PHP 5.5
