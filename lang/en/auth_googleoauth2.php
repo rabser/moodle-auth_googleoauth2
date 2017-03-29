@@ -44,9 +44,7 @@ On the confirmation page, look for the "Skip to Developer Dashboard" link > on t
 <br/>Site URL: {$a->siteurl}
 <br/>App domains: {$a->sitedomain}
 <br/>Valid OAuth redirect URIs: {$a->callbackurl}
-<br/><strong>WARNING: Facebook recently changed the API. It is not working for newly created API key. For example we know it is broken from Facebook API 2.8 
-and it is working up to Facebook API 2.2. We didn\'t test Facebook API 2.3, 2.4, 2.5, 2.6 and 2.7. To summarize if you don\'t have already an old Facebook API key,
-then it is guarantee that Facebook won\'t work in this login. Please look at plugin alternatives or wait for the next plugin big update (not planned yet).</strong>';
+<br/>';
 $string['auth_facebookclientid_key'] = 'Facebook App ID';
 $string['auth_facebookclientsecret'] = '';
 $string['auth_facebookclientsecret_key'] = 'Facebook App secret';
@@ -120,7 +118,8 @@ $string['signinwithanaccount'] = 'Log in with {$a}';
 $string['noaccountyet'] = 'You do not have permission to use the site yet. Please contact your administrator and ask them to activate your account.';
 $string['othermoodle'] = 'Other Moodle auth';
 $string['stattitle'] = 'Login statistics for the last {$a->periodindays} days (starting from the plugin installation/upgrade time)';
-$string['supportmaintenance'] = 'To support the maintenance of this plugin, login to the <a target="_blank" href="https://moodle.org/plugins/view/auth_googleoauth2">Moodle.org plugin page</a> and click \'Add to my favourites\'. Thanks!';
+$string['supportmaintenance'] = 'Starting from Moodle 3.3, Oauth2 will be supported in Moodle core. We highly encourage you to upgrade to Moodle 3.3 and use the Oauth2 core authentication plugin(s). This plugin is not used by the maintainer so when a critical bug arise you need to rely on the community to find a fix. A similar problem occuring on Moodle core is very likely to be resolved much faster by Moodle HQ.
+Please understand you are using a third party plugin to manage your users authentication. When problems occurs with an authentication plugin they are never minor.';
 $string['unknownfirstname'] = 'Unknown Firstname';
 $string['unknownlastname'] = 'Unknown Lastname';
 

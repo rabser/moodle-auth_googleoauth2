@@ -82,6 +82,7 @@ class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
             'gender',
             'locale',
             'link',
+            'verified'
         ]);
 
         return 'https://graph.facebook.com/'.$this->graphApiVersion.'/me?fields='.$fields.'&access_token='.$token;
