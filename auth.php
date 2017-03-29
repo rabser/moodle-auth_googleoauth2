@@ -116,6 +116,8 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     $requestaccesstokenurl = 'https://graph.facebook.com/oauth/access_token';
                     $params['redirect_uri'] = $CFG->wwwroot . '/auth/googleoauth2/facebook_redirect.php';
                     $params['code'] = $authorizationcode;
+                    $params['default_graph_version'] = 'v2.8';
+                    $params['default_access_token'] = '{access_token}';
                     break;
                 case 'messenger':
                     $params['client_id'] = get_config('auth/googleoauth2', 'messengerclientid');
@@ -165,11 +167,11 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     //$expiresin = $postreturnvalues->expires_in;
                     //$tokentype = $postreturnvalues->token_type;
                     break;
-                case 'facebook':
                 case 'github':
                     parse_str($postreturnvalues, $returnvalues);
                     $accesstoken = $returnvalues['access_token'];
                     break;
+                case 'facebook':
                 case 'messenger':
                     $accesstoken = json_decode($postreturnvalues)->access_token;
                     break;
@@ -201,6 +203,21 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                     case 'facebook':
                         $params = array();
                         $params['access_token'] = $accesstoken;
+                        $params['default_graph_version'] = 'v2.8';
+                        $fields = implode(',', [
+                             'id',
+                             'name',
+                             'first_name',
+                             'last_name',
+                             'email',
+                             'hometown',
+                             'picture.type(large){url}',
+                             'gender',
+                             'locale',
+                             'link',
+                             'verified'
+                        ]);
+                        $params['fields'] = $fields;
                         $postreturnvalues = $curl->get('https://graph.facebook.com/me', $params);
                         $facebookuser = json_decode($postreturnvalues);
                         $useremail = $facebookuser->email;
