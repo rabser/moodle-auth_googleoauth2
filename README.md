@@ -1,6 +1,3 @@
-
-**Warning for Facebook users:** I have been alerted that the current install of this plugin will stop working with Facebook API 2.2 the 27 March (it was already not working for the facebook API 2.8 and later). Unhappily I do not foresee any fix to this issue. However I will be happy to merge a pull request.
-
 **No new versions are planned starting from Moodle 3.3:** starting from Moodle 3.3, Oauth2 should be implemented in Moodle core. It will require you to upgrade to Moodle 3.3 and switch to the Oauth2 core authentication (and probably do some migration), but it is a great news as authentication is a really sensible matter and having Oauth2 plugins in core will guarantee their maintenance. So starting from Moodle 3.3 I recommend to use the new Oauth2 core plugins ((https://docs.moodle.org/dev/Better_Office_Integrations_3.3#Core_API_for_managing_Authorized_OAuth_Applications) ). Missing core providers will likely be implemented by someone and publish in Moodle.org plugin repository. There will probably be a new Oauth2 categories in the Moodle plugin repository. wait and see...
 
 -
