@@ -23,6 +23,7 @@ class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
     public $name = 'facebook'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
     public $readablename = 'Facebook';
     public $scopes = array('email');
+    public $responseType = 'json';
 
     /**
      * Constructor.
@@ -64,4 +65,26 @@ class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
     public function html_button($authurl, $providerdisplaystyle) {
         return googleoauth2_html_button($authurl, $providerdisplaystyle, $this);
     }
+
+    /**
+     * We have to override this method because facebook no longer supports the bio field.
+     */
+    public function urlUserDetails(\League\OAuth2\Client\Token\AccessToken $token)
+    {
+        $fields = implode(',', [
+            'id',
+            'name',
+            'first_name',
+            'last_name',
+            'email',
+            'hometown',
+            'picture.type(large){url}',
+            'gender',
+            'locale',
+            'link',
+        ]);
+
+        return 'https://graph.facebook.com/'.$this->graphApiVersion.'/me?fields='.$fields.'&access_token='.$token;
+    }
+
 }
