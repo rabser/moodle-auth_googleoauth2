@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
 function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
-        return '<a class="singinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
+        return '<a class="signinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
                   <div class="social-button ' . $provider->sskstyle . '">' .
                     get_string('signinwithanaccount', 'auth_googleoauth2', $provider->readablename) .
                  '</div>
@@ -164,7 +164,7 @@ function auth_googleoauth2_render_buttons() {
         $html .= '<br /><br />
            <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php')
-                     . '?allauthproviders=true' .'" onclick="changecss(\\\'singinprovider\\\',\\\'display\\\',\\\'inline-block\\\');">
+                     . '?allauthproviders=true' .'" onclick="changecss(\\\'signinprovider\\\',\\\'display\\\',\\\'inline-block\\\');">
                     '. get_string('moreproviderlink', 'auth_googleoauth2').'
                 </a>
             </div>';
