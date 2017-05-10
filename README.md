@@ -36,8 +36,8 @@ You can retrieve the access token from it too.
 The plugin does not include the 'vendor' folder as explained by [composer best practice](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
 If you need to know more about composer, you can read [Composer Namespaces in 5 Minutes](https://jtreminio.com/2012/10/composer-namespaces-in-5-minutes/)
 
-### Continueous integration
-[![Build Status](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2.svg?branch=master)](https://travis-ci.org/mouneyrac/moodle-auth_googleoauth2)
+### Continuous integration
+[![Build Status](https://travis-ci.org/rabser/moodle-auth_googleoauth2.svg?branch=master)](https://travis-ci.org/rabser/moodle-auth_googleoauth2)
 [![Codacy Badge](https://www.codacy.com/project/badge/84928dc4c553414786735ba745e57c93)](https://www.codacy.com/app/jerome/moodle-auth_googleoauth2)
 
 ### Credits
