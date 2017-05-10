@@ -31,5 +31,5 @@ before_script:
  - cd ../..
  - php admin/tool/behat/cli/init.php
 script:
- - vendor/bin/behat --config /home/travis/bht_moodledata/behat/behat.yml --tags @auth_googleoauth2
+ - vendor/bin/behat --config /home/travis/bht_moodledata/behatrun/behat/behat.yml --tags @auth_googleoauth2
 
