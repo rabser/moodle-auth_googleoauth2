@@ -15,7 +15,7 @@
 // along with Oauth2 authentication plugin for Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * oAuth2 provider for googleoauth2 auth plugin.
+ * Vk provider for googleoauth2 auth plugin.
  *
  * @package    auth_googleoauth2
  * @copyright  2015 Jerome Mouneyrac
@@ -26,19 +26,19 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
-class provideroauth2microsoft extends Stevenmaguire\OAuth2\Client\Provider\Microsoft {
+class provideroauth2vkontakte extends  J4k\OAuth2\Client\Provider\Vkontakte {
 
     /** @var string Classes to use for the login button. */
-    public $sskstyle = 'microsoft';
+    public $sskstyle = 'vkontakte';
 
     /** @var string Identifier of the provider. */
-    public $name = 'microsoft'; 
+    public $name = 'vkontakte'; 
 
     /** @var string Human-readable name of the provider. */
-    public $readablename = 'Microsoft';
+    public $readablename = 'VK.com';
 
     /** @var array Scopes to request. */
-    public $scopes = array('r_basicprofile', 'r_emailaddress');
+    public $scopes = array();
 
     /** @var string raw token data */
     public $rawdata = null;
@@ -55,7 +55,8 @@ class provideroauth2microsoft extends Stevenmaguire\OAuth2\Client\Provider\Micro
         parent::__construct([
             'clientId'      => get_config('auth/googleoauth2', $this->name . 'clientid'),
             'clientSecret'  => get_config('auth/googleoauth2', $this->name . 'clientsecret'),
-            'redirectUri'   => $CFG->wwwroot .'/auth/googleoauth2/' . $this->name . '_redirect.php',
+            'redirectUri'   => preg_replace('/http:/',
+                'https:', $CFG->httpswwwroot .'/auth/googleoauth2/' . $this->name . '_redirect.php', 1),
             'scopes'        => $this->scopes
         ]);
     }
@@ -99,10 +100,14 @@ class provideroauth2microsoft extends Stevenmaguire\OAuth2\Client\Provider\Micro
   		    $resource = $this->getResourceOwner($token);
                     $resourcearray = $resource->toArray();
                     $this->rawdata = $resourcearray;
-                    $userdetails->email = $resourcearray['emails']['preferred'];
+                    $userdetails->email = $resourcearray['email'];
                     $userdetails->firstname = $resourcearray['first_name'];
                     $userdetails->lastname = $resourcearray['last_name'];
-                    $userdetails->imageUrl = $resource->getImageurl();
+                    if (isset ($resourcearray['city']['title']))
+                       $userdetails->city = $resourcearray['city']['title'];
+                    $userdetails->imageUrl = '';
+                    if ( $resourcearray['has_photo'] == 1 )
+                       $userdetails->imageUrl = $resourcearray['photo_max_orig'];
                     $userdetails->emailverified = 1;
                     $userdetails->uid = $resourcearray['id'];
             }
@@ -113,6 +118,6 @@ class provideroauth2microsoft extends Stevenmaguire\OAuth2\Client\Provider\Micro
 
         debugging('Raw DATA: '.print_r($this->rawdata,true), DEBUG_DEVELOPER);
         debugging('User Details: '.print_r($userdetails,true), DEBUG_DEVELOPER);
-        return $userdetails;
+	return $userdetails;
     }
 }

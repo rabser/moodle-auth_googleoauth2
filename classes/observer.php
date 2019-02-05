@@ -39,10 +39,10 @@ class auth_googleoauth2_observer {
 
         $user = $DB->get_record('user', array('id' => $event->userid));
 
+        // Discard if source it's myself because no subtype info is available at this point
         if ($user->auth != 'googleoauth2') {
             $loginrecord = array('userid' => $user->id, 'time' => time(), 'auth' => $user->auth);
             $DB->insert_record('auth_googleoauth2_logins', $loginrecord);
         }
     }
-
 }

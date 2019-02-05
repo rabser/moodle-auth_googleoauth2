@@ -1,1 +1,427 @@
+<?php
+// This file is part of Moodle Google Oauth2 plugin
+//
+// It is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// It is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with it.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Admin settings for googleoauth2 auth plugin.
+ *
+ * @package    auth_googleoauth2
+ * @copyright  2015 Jerome Mouneyrac
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require_once("lib.php");
+require_once("locallib.php");
+
+// This is needed for getting my website url
+global $CFG,$OUTPUT;
+
+// SETUP DEFAULTS FOR SETTINGS
+if (!isset($config->googleipinfodbkey)) {
+    $config->googleipinfodbkey = '';
+}
+
+if (!isset($config->userprefix)) {
+    $config->userprefix = 'social_user_';
+}
+
+if (!isset($config->displaybuttons)) {
+    $config->displaybuttons = 1;
+}
+
+if (!isset($config->saveaccesstoken)) {
+    $config->saveaccesstoken = 0;
+}
+
+if (!isset ($config->authdomains)) {
+    $config->authdomains = '';
+}
+
+if (!isset ($config->donotcreatenewuser)) {
+    $config->donotcreatenewuser = 0;
+}
+
+if (!isset ($config->providerlinksstyle)) {
+    $config->providerlinksstyle = 'horizontal';
+}
+
+echo '<table cellspacing="0" cellpadding="5" border="0">
+            <tr>
+               <td colspan="3">
+                    <h2 class="main">';
+
+print_string('auth_googlesettings', 'auth_googleoauth2');
+
+// LIST PROVIDERS CONFIG OPTIONS
+$providers = provider_list();
+foreach ($providers as $providername) {
+    $clientidname     = $providername . 'clientid';
+    $clientsecretname = $providername . 'clientsecret';
+    
+    // Set to defaults if undefined.
+    if (!isset($config->{$clientidname})) {
+        $config->{$clientidname} = '';
+    }
+    if (!isset($config->{$clientsecretname})) {
+        $config->{$clientsecretname} = '';
+    }
+    
+    // Client id.
+    echo '</h2>
+               </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                <h4>' . get_string($providername, "auth_googleoauth2") . '</h4>
+                </td>
+            </tr>
+
+            <tr  style="vertical-align: top;">
+                <td align="right"><label for="' . $clientidname . '">';
+    
+    print_string('auth_' . $clientidname . '_key', 'auth_googleoauth2');
+    
+    echo '</label></td><td>';
+    
+    echo html_writer::empty_tag('input', array(
+        'type' => 'text',
+        'id' => $clientidname,
+        'name' => $clientidname,
+        'class' => $clientidname,
+        'value' => $config->{$clientidname}
+    ));
+    
+    if (isset($err[$clientidname])) {
+        echo $OUTPUT->error_text($err[$clientidname]);
+    }
+    
+    echo '</td><td>';
+    $parse = parse_url($CFG->wwwroot);
+    if ( $CFG->loginhttps ) { // If loginhttps is enabled, the redirect are https:// based
+	$parse['securescheme'] = "https";
+    } else {
+	$parse['securescheme'] = $parse['scheme'];
+    }
+
+    if ( isset ($parse['path']) ) { // If a path exists, then add the delimiter
+	$parse['path'] = '/' . $parse['path'];
+    } else {
+	$parse['path'] = '';
+    }
+    print_string('auth_' . $clientidname, 'auth_googleoauth2', array(
+        'jsorigins' => $parse['scheme'] . '://' . $parse['host'],
+        'siteurl' => $CFG->wwwroot,
+        'domain' => $CFG->wwwroot,
+        'redirecturls' => $parse['securescheme'] . '://' . $parse['host'] . $parse['path'] . '/auth/googleoauth2/' . $providername . '_redirect.php',
+        'callbackurl'  => $parse['securescheme'] . '://' . $parse['host'] . $parse['path'] . '/auth/googleoauth2/' . $providername . '_redirect.php',
+        'sitedomain' => $parse['host']
+    ));
+    
+    echo '</td></tr>';
+    
+    // Client secret.
+    echo '<tr  style="vertical-align: top;">
+                <td align="right"><label for="' . $clientsecretname . '">';
+    
+    print_string('auth_' . $clientsecretname . '_key', 'auth_googleoauth2');
+    
+    echo '</label></td><td>';
+    
+    echo html_writer::empty_tag('input', array(
+        'type' => 'text',
+        'id' => $clientsecretname,
+        'name' => $clientsecretname,
+        'class' => $clientsecretname,
+        'value' => $config->{$clientsecretname}
+    ));
+    
+    if (isset($err[$clientsecretname])) {
+        echo $OUTPUT->error_text($err[$clientsecretname]);
+    }
+    
+    echo '</td><td>';
+    
+    print_string('auth_' . $clientsecretname, 'auth_googleoauth2');
+    
+    echo '</td></tr>
+            <tr style="min-height: 20px"><td>&nbsp;</td></tr>';
+}
+
+// DISPLAY OTHER SETTINGS
+echo '<tr>
+                <td colspan="3">
+                <h2>' . get_string("othersettings", "auth_googleoauth2") . '</h3>
+                </td>
+        </tr>';
+
+// DISPLAY IPinfoDB.
+echo '<tr>
+                <td align="right"><label for="googleipinfodbkey">';
+
+print_string('auth_googleipinfodbkey_key', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+echo html_writer::empty_tag('input', array(
+    'type' => 'text',
+    'id' => 'googleipinfodbkey',
+    'name' => 'googleipinfodbkey',
+    'class' => 'googleipinfodbkey',
+    'value' => $config->googleipinfodbkey
+));
+
+if (isset($err["googleipinfodbkey"])) {
+    echo $OUTPUT->error_text($err["googleipinfodbkey"]);
+}
+
+echo '</td><td>';
+
+print_string('auth_googleipinfodbkey', 'auth_googleoauth2', (object) array(
+    'website' => $CFG->wwwroot
+));
+
+echo '</td></tr>';
+
+// DISPLAY User prefix.
+echo '<tr>
+                <td align="right"><label for="userprefix">';
+
+print_string('auth_userprefix', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+echo html_writer::empty_tag('input', array(
+    'type' => 'text',
+    'id' => 'userprefix',
+    'name' => 'userprefix',
+    'class' => 'userprefix',
+    'value' => $config->userprefix
+));
+
+if (isset($err["userprefix"])) {
+    echo $OUTPUT->error_text($err["userprefix"]);
+}
+
+echo '</td><td>';
+
+print_string('auth_userprefixdesc', 'auth_googleoauth2');
+
+echo '</td></tr>';
+
+// DISPLAY display buttons.
+echo '<tr>
+                <td align="right"><label for="displaybuttons">';
+
+print_string('displaybuttons', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+$checked = empty($config->displaybuttons) ? '' : 'checked';
+echo html_writer::checkbox('displaybuttons', 1, $checked, '', array(
+    'type' => 'checkbox',
+    'id' => 'displaybuttons',
+    'class' => 'displaybuttons'
+));
+
+if (isset($err["displaybuttons"])) {
+    echo $OUTPUT->error_text($err["displaybuttons"]);
+}
+
+echo '</td><td>';
+
+$code = '<code>&lt;?php require_once($CFG-&gt;dirroot . \'/auth/googleoauth2/lib.php\');
+                auth_googleoauth2_display_buttons(); ?&gt;</code>';
+print_string('displaybuttonshelp', 'auth_googleoauth2', $code);
+
+echo '</td></tr>';
+
+// DISPLAY Provider Links style
+echo '<tr>
+                <td align="right"><label for="providerlinksstyle">';
+
+print_string('providerlinksstyle', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+$providerlinksstyleoptions = array( 'vertical'   => get_string('vertical', 'auth_googleoauth2'),
+                                    'horizontal'  => get_string('horizontal', 'auth_googleoauth2'));
+
+echo html_writer::select($providerlinksstyleoptions, 'providerlinksstyle',$config->providerlinksstyle, ""  );
+
+if (isset($err["providerlinksstyle"])) {
+    echo $OUTPUT->error_text($err["providerlinksstyle"]);
+}
+echo '</td><td>';
+
+print_string('providerlinksstylehelp', 'auth_googleoauth2');
+
+echo '</td></tr>';
+
+
+// DISPLAY Save Access TOKEN
+echo '<tr>
+                <td align="right"><label for="saveaccesstoken">';
+
+print_string('saveaccesstoken', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+$checked = empty($config->saveaccesstoken) ? '' : 'checked';
+echo html_writer::checkbox('saveaccesstoken', 1, $checked, '', array(
+    'type' => 'checkbox',
+    'id' => 'saveaccesstoken',
+    'class' => 'saveaccesstoken'
+));
+
+if (isset($err["saveaccesstoken"])) {
+    echo $OUTPUT->error_text($err["saveaccesstoken"]);
+}
+echo '</td><td>';
+
+print_string('saveaccesstokenhelp', 'auth_googleoauth2');
+
+echo '</td></tr>';
+
+// DISPLAY Do Not create new user option
+echo '<tr>
+                 <td align="right"><label for="donotcreatenewuser">';
+
+print_string('donotcreatenewuser', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+$checked = empty($config->donotcreatenewuser)?'':'checked';
+echo html_writer::checkbox('donotcreatenewuser', 1, $checked, '', array(
+     'type' => 'checkbox',
+     'id' => 'donotcreatenewuser',
+     'class' => 'donotcreatenewuser'));
+
+if (isset($err["donotcreatenewuser"])) {
+    echo $OUTPUT->error_text($err["donotcreatenewuser"]);
+}
+
+echo '</td><td>';
+
+print_string('donotcreatenewuserhelp', 'auth_googleoauth2');
+
+echo '</td></tr>';
+
+// DISPLAY Authorized Domain(s) option
+echo '<tr>
+                <td align="right"><label for="authdomains">';
+
+print_string('authdomains', 'auth_googleoauth2');
+
+echo '</label></td><td>';
+
+echo html_writer::empty_tag('input', array('type' => 'text',
+     'id' => 'authdomains',
+     'name' => 'authdomains',
+     'class' => 'authdomains',
+     'value' => $config->authdomains));
+
+if (isset($err["authdomains"])) {
+    echo $OUTPUT->error_text($err["authdomains"]);
+}
+
+echo '</td><td>';
+
+print_string('authdomainshelp', 'auth_googleoauth2') ;
+
+echo '</td></tr>';
+
+
+// DISPLAY Block field options.
+// Hidden email options - email must be set to: locked.
+echo html_writer::empty_tag('input', array(
+    'type' => 'hidden',
+    'value' => 'locked',
+    'name' => 'lockconfig_field_lock_email'
+));
+
+// Display other field options.
+foreach ($user_fields as $key => $userfield) {
+    if ($userfield == 'email') {
+        unset($user_fields[$key]);
+    }
+}
+print_auth_lock_options('googleoauth2', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
+
+
+// DISPLAY STATISTICS
+echo '<tr>
+                <td colspan="3">
+                <h2>' . get_string("stattitle", "auth_googleoauth2") . '</h3>
+                </td>
+        </tr>';
+echo '<tr>
+                <td colspan="3">';
+
+echo $OUTPUT->box_start();
+
+// Calculate how many login per providers.
+$providerstats  = googleoauth2_get_stats();
+$strothermoodle = get_string('othermoodle', 'auth_googleoauth2');
+$strstattitle   = get_string('stattitlecaption', 'auth_googleoauth2', $providerstats);
+echo ' <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                  google.load("visualization", "1", {packages:["corechart"]});
+                  google.setOnLoadCallback(drawChart);
+                  function drawChart() {
+
+                    var data = google.visualization.arrayToDataTable([
+                      [\'Provider\', \'Login total\'],
+                      [\'Google\', ' . $providerstats->google . '],
+                      [\'Facebook\', ' . $providerstats->facebook . ' ],
+                      [\'Github\',  ' . $providerstats->github . ' ],
+                      [\'Linkedin\', ' . $providerstats->linkedin . ' ],
+                      [\'Microsoft\', ' . $providerstats->microsoft . ' ],
+                      [\'Dropbox\', ' . $providerstats->dropbox . ' ],
+                      [\'' . $strothermoodle . '\',    ' . $providerstats->moodle . ' ]
+                    ]);
+
+                    var options = {
+                      title: \'' . $strstattitle . '\',
+                      is3D: true,
+                      slices: {
+                        0: { color: \'#D50F25\' },
+                        1: { color: \'#3b5998\' },
+                        2: { color: \'#eee\', fontcolor: \'black\'},
+                        3: { color: \'#007bb6\'},
+                        4: { color: \'#7cbb00\'},
+                        5: { color: \'#007ee5\'},
+                        6: { color: \'#45668e\'},
+                        7: { color: \'#00B4FF\'},
+                        8: { color: \'#ee7600\'}
+                      }
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById(\'piechart\'));
+
+                    chart.draw(data, options);
+                  }
+                </script>
+             <div id="piechart" style="width: 900px; height: 500px;"></div>
+        ';
+
+echo $OUTPUT->box_end();
+
+echo '       </td>
+        </tr>';
+
+echo '</table>';
+
+// Information placeholder
+echo '<div class="alert alert-success"  role="alert">' . get_string('supportmaintenance', 'auth_googleoauth2') . '</div>';

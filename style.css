@@ -10,7 +10,7 @@
 }
 .social-button::before {
     background-color: rgba(0, 0, 0, 0.15);
-    margin: -7px 10px -7px -7px;
+    margin: -7px 10px -7px -7px; 
     padding: 7px;
     text-indent: 0;
     vertical-align: bottom;
@@ -25,7 +25,7 @@
     min-width: 24px;
     line-height: 1;
     text-align: center;
-    content: "\f090";
+    content: "\eae9";
 }
 .dir-rtl .social-button::before {
     margin: -7px -7px -7px 10px;
@@ -36,7 +36,7 @@
     background: #ccc;
     display: inline-block;
     text-align: left;
-    min-width: 185px;
+    min-width: 195px;
     color: #fff;
     padding: 7px;
     border: 1px solid rgba(0,0,0,0.1);
@@ -47,7 +47,7 @@
     text-align:right;
 }
 .social-button.google::before {
-	content: "\e901";
+	content: "\ea88";
 }
 .social-button.google {
     background-color: #dc4e41;
@@ -56,7 +56,7 @@
     background-color: #c23321;
 }
 .social-button.dropbox::before {
-	content: "\f16b";
+	content: "\eaae";
 }
 .social-button.dropbox {
     background-color: #1087dd;
@@ -64,17 +64,8 @@
 .social-button.dropbox:hover {
     background-color: #0d6aad;
 }
-.social-button.battlenet::before {
-	content: "\e900";
-}
-.social-button.battlenet {
-    background-color: #00b6ff;
-}
-.social-button.battlenet:hover {
-    background-color: #006a9b;
-}
 .social-button.facebook::before {
-	content: "\f09a";
+	content: "\ea90";
 }
 .social-button.facebook {
     background-color: #3b5998;
@@ -83,7 +74,7 @@
     background-color: #2d4373;
 }
 .social-button.github::before {
-	content: "\f09b";
+	content: "\eab0";
 }
 .social-button.github {
     background-color: #555;
@@ -92,7 +83,7 @@
     background-color: #2b2b2b;
 }
 .social-button.linkedin::before {
-	content: "\f0e1";
+	content: "\eac9";
 }
 .social-button.linkedin {
     background-color: #007bb6;
@@ -101,7 +92,7 @@
     background-color: #005983;
 }
 .social-button.microsoft::before {
-	content: "\f17a";
+	content: "\eaaf";
 }
 .social-button.microsoft {
     background-color: #2672ec;
@@ -109,12 +100,30 @@
 .social-button.microsoft:hover {
     background-color: #125acd;
 }
-.social-button.vk::before {
-	content: "\f189";
+.social-button.vkontakte::before {
+	content: "\ea98";
 }
-.social-button.vk {
-    background-color: #587ea3;
+.social-button.vkontakte {
+    background-color: #507299;
 }
-.social-button.vk:hover {
-    background-color: #466482;
+.social-button.vkontakte:hover {
+    background-color: #446693;
+}
+.providerlinks {
+    margin: 15px 0px 7px 0px; 
+    -webkit-box-shadow: 10px 10px 24px -10px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 24px -10px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 24px -10px rgba(0,0,0,0.75);
+    margin-left: auto;
+    margin-right: auto;
+}
+.providerlinks-vertical {
+    max-width: 245px;
+}
+.providerlinks-horizontal {
+    max-width: 100%;
+}
+.providerlinkstext {
+    text-align: center;
+    margin: 7px 0px 7px 0px; 
 }

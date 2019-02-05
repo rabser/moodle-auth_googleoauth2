@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * @param int $oldversion the version we are upgrading from
  * @return bool result
@@ -32,7 +34,7 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     if ($oldversion < 2014060700) {
-        set_config('oauth2displaybuttons', 0, 'auth/googleoauth2');
+        set_config('displaybuttons', 0, 'auth/googleoauth2');
         upgrade_plugin_savepoint(true, 2014060700, 'auth', 'googleoauth2');
     }
 
@@ -61,17 +63,6 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
     }
 
     if ($oldversion < 2015051502) {
-
-        // Fix the vk plugin configs.
-        $vkappid = get_config('auth/googleoauth2', 'vkappid');
-        if (!empty($vkappid)) {
-            set_config('vkclientid', $vkappid, 'auth/googleoauth2');
-        }
-
-        $vkappsecret = get_config('auth/googleoauth2', 'vkappsecret');
-        if (!empty($vkappsecret)) {
-            set_config('vkclientsecret', $vkappsecret, 'auth/googleoauth2');
-        }
 
         // Googleoauth2 savepoint reached.
         upgrade_plugin_savepoint(true, 2015051502, 'auth', 'googleoauth2');
@@ -114,7 +105,7 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015051504, 'auth', 'googleoauth2');
     }
 
-      if ($oldversion < 2015090202) {
+    if ($oldversion < 2015090202) {
 
         // Define table auth_googleoauth2_logins to be created.
         $table = new xmldb_table('auth_googleoauth2_logins');
@@ -137,7 +128,7 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2015090202, 'auth', 'googleoauth2');
     }
 
-        if ($oldversion < 2015090203) {
+    if ($oldversion < 2015090203) {
 
         // Define field subtype to be added to auth_googleoauth2_logins.
         $table = new xmldb_table('auth_googleoauth2_logins');
@@ -151,6 +142,23 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
         // Googleoauth2 savepoint reached.
         upgrade_plugin_savepoint(true, 2015090203, 'auth', 'googleoauth2');
     }
+
+    if ($oldversion < 2017032901) {
+
+        // Name change
+        set_config('userprefix', get_config('auth/googleoauth2', 'oauth2userprefix'), 'auth/googleoauth2');
+        set_config('displaybuttons', get_config('auth/googleoauth2','oauth2displaybuttons'), 'auth/googleoauth2');
+
+        // New Configs
+        set_config('saveaccesstoken', 0, 'auth/googleoauth2');
+        set_config('authdomains', '', 'auth/googleoauth2');
+        set_config('donotcreatenewuser', 0, 'auth/googleoauth2');
+        set_config('providerlinksstyle', 'horizontal', 'auth/googleoauth2');
+
+        // Googleoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2017032901, 'auth', 'googleoauth2');
+    }
+
 
     return true;
 }

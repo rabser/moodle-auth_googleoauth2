@@ -1,6 +1,41 @@
 Changelog
 ==========
 
+Release 3.1
+-----------
+* Adapted the google oauth2 provider to the Google+ API removal (March 2019)
+* Unable to add Twitter because not supported by the oauth2-client library 2.x (pls don't ask...)
+
+Release 3.0
+-----------
+* Lead Mantainer change from Jerome Mouneyrac to Sergio Rabellino
+* Updated the League library to v2.2
+* Updated the providers to v2.0
+* REMOVED BattleNet as not supported anymore by oauth2-client library 2.x (pls don't ask...)
+* Unable to add Instagram because does not provide the user email via API (pls don't ask...)
+* Unable to add Amazon because not supported by the oauth2-client library 2.x (pls don't ask...)
+* Code refactoring/cleaning (moodle code guidelines)
+* Font update
+* #165 check https is working
+* #221 guzzle is deprecated
+* #110 - configure for Restrict Domains from which accounts can authenticate ( thanks to simonevr )
+* #110 - configure for not allow create new account ( thanks to simonevr )
+* Fixed missing buttons when loginhttps is enabled
+* Fixed unworking "enable all providers" link when loginhttps is enabled
+* Changed some redirect path, so take care on updating production sites that a change in oauth2 registration should be required
+* Now the profile picture is updated from most providers (Dropbox it's the only missing one)
+* If email address needs to be verified on the provider, an error is shown to the user (code cleaned)
+* Added method get_userinfo()
+* Added option for provider links style visualization
+
+Release 2.4 -> 2.9
+-----------
+* never released
+
+Release 2.3
+-----------
+* Facebook emergency patch
+
 Release 2.2
 -----------
 * #177 Create new button similar to socialsharekit but open source

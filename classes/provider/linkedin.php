@@ -14,15 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Oauth2 authentication plugin for Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Linkedin provider for googleoauth2 auth plugin.
+ *
+ * @package    auth_googleoauth2
+ * @copyright  2015 Jerome Mouneyrac
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
 class provideroauth2linkedin extends League\OAuth2\Client\Provider\LinkedIn {
 
-    // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
+    /** @var string Classes to use for the login button. */
     public $sskstyle = 'linkedin';
-    public $name = 'linkedin'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
+
+    /** @var string Identifier of the provider. */
+    public $name = 'linkedin'; 
+
+    /** @var string Human-readable name of the provider. */
     public $readablename = 'Linkedin';
+
+    /** @var array Scopes to request. */
     public $scopes = array('r_basicprofile', 'r_emailaddress');
+
+    /** @var string raw token data */
+    public $rawdata = null;
 
     /**
      * Constructor.
@@ -63,5 +82,40 @@ class provideroauth2linkedin extends League\OAuth2\Client\Provider\LinkedIn {
      */
     public function html_button($authurl, $providerdisplaystyle) {
         return googleoauth2_html_button($authurl, $providerdisplaystyle, $this);
+    }
+
+    /**
+     * The user details
+     *
+     * @return object
+     * @throws coding_exception
+     */
+    public function get_user_details($token) {
+        $userdetails = new stdClass();
+
+        debugging('Extract user information from '.$this->readablename.' token' , DEBUG_DEVELOPER);
+        try {
+            if (!empty($token->getToken())) {
+  		    $resource = $this->getResourceOwner($token);
+                    $resourcearray = $resource->toArray();
+                    $this->rawdata = $resourcearray;
+                    $userdetails->email = $resourcearray['emailAddress'];
+                    $userdetails->firstname = $resourcearray['firstName'];
+                    $userdetails->lastname = $resourcearray['lastName'];
+                    $userdetails->country = strtoupper($resourcearray['location']['country']['code']);
+                    if ( isset($resourcearray['location']['name']))
+                       $userdetails->city = $resourcearray['location']['name'];
+                    $userdetails->imageUrl = $resourcearray['pictureUrl'];
+                    $userdetails->emailverified = 1;
+                    $userdetails->uid = $resourcearray['id'];
+            }
+        } catch (Exception $e) {
+            // Failed to get user details.
+            throw new moodle_exception('faileduserdetails', 'auth_googleoauth2');
+        }
+
+        debugging('Raw DATA: '.print_r($this->rawdata,true), DEBUG_DEVELOPER);
+        debugging('User Details: '.print_r($userdetails,true), DEBUG_DEVELOPER);
+	return $userdetails;
     }
 }

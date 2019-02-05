@@ -14,16 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Oauth2 authentication plugin for Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Facebook provider for googleoauth2 auth plugin.
+ *
+ * @package    auth_googleoauth2
+ * @copyright  2015 Jerome Mouneyrac
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
 class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
 
-    // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
+    /** @var string Classes to use for the login button. */
     public $sskstyle = 'facebook';
-    public $name = 'facebook'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
+
+    /** @var string Identifier of the provider. */
+    public $name = 'facebook';
+
+    /** @var string Human-readable name of the provider. */
     public $readablename = 'Facebook';
+
+    /** @var array Scopes to request. */
     public $scopes = array('email');
-    public $responseType = 'json';
+
+    /** @var string raw token data */
+    public $rawdata = null;
 
     /**
      * Constructor.
@@ -34,10 +52,12 @@ class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
     public function __construct() {
         global $CFG;
 
+        $url = preg_replace("/^http:/i", "https:", $CFG->wwwroot);
         parent::__construct([
             'clientId'      => get_config('auth/googleoauth2', $this->name . 'clientid'),
             'clientSecret'  => get_config('auth/googleoauth2', $this->name . 'clientsecret'),
-            'redirectUri'   => $CFG->wwwroot .'/auth/googleoauth2/' . $this->name . '_redirect.php',
+            'redirectUri'   => $url .'/auth/googleoauth2/' . $this->name . '_redirect.php',
+            'graphApiVersion'        => "v2.8",
             'scopes'        => $this->scopes
         ]);
     }
@@ -67,25 +87,34 @@ class provideroauth2facebook extends League\OAuth2\Client\Provider\Facebook {
     }
 
     /**
-     * We have to override this method because facebook no longer supports the bio field.
+     * The user details
+     *
+     * @return object
+     * @throws coding_exception
      */
-    public function urlUserDetails(\League\OAuth2\Client\Token\AccessToken $token)
-    {
-        $fields = implode(',', [
-            'id',
-            'name',
-            'first_name',
-            'last_name',
-            'email',
-            'hometown',
-            'picture.type(large){url}',
-            'gender',
-            'locale',
-            'link',
-            'verified'
-        ]);
+    public function get_user_details($token) {
+        $userdetails = new stdClass();
 
-        return 'https://graph.facebook.com/'.$this->graphApiVersion.'/me?fields='.$fields.'&access_token='.$token;
+        debugging('Extract user information from '.$this->readablename.' token' , DEBUG_DEVELOPER);
+        try {
+            if (!empty($token->getToken())) {
+  		    $resource = $this->getResourceOwner($token);
+                    $resourcearray = $resource->toArray();
+                    $this->rawdata = $resourcearray;
+                    $userdetails->email = $resourcearray['email'];
+                    $userdetails->firstname = $resourcearray['first_name'];
+                    $userdetails->lastname = $resourcearray['last_name'];
+                    $userdetails->imageUrl = $resourcearray['picture']['data']['url'];
+                    $userdetails->emailverified = 1;
+                    $userdetails->uid = $resourcearray['id'];
+            }
+        } catch (Exception $e) {
+            // Failed to get user details.
+            throw new moodle_exception('faileduserdetails', 'auth_googleoauth2');
+        }
+
+        debugging('Raw DATA: '.print_r($this->rawdata,true), DEBUG_DEVELOPER);
+        debugging('User Details: '.print_r($userdetails,true), DEBUG_DEVELOPER);
+	return $userdetails;
     }
-
 }
